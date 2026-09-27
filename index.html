@@ -1,0 +1,1327 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<title>RENATO VISION ULTRA</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    -webkit-tap-highlight-color:transparent;
+}
+
+html,body{
+    margin:0;
+    padding:0;
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    background:#020304;
+    color:white;
+    font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display",
+                 "Segoe UI",Arial,sans-serif;
+}
+
+body{
+    display:flex;
+    flex-direction:column;
+}
+
+/* =========================
+   TOPO
+========================= */
+
+.topbar{
+    height:62px;
+    flex-shrink:0;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 16px;
+    background:rgba(5,7,10,.94);
+    border-bottom:1px solid rgba(255,255,255,.08);
+    z-index:20;
+}
+
+.logo{
+    font-size:17px;
+    font-weight:900;
+    letter-spacing:2px;
+}
+
+.logo span{
+    color:#00e5ff;
+}
+
+.status{
+    display:flex;
+    align-items:center;
+    gap:7px;
+    font-size:11px;
+    color:#9ba4ad;
+}
+
+.dot{
+    width:8px;
+    height:8px;
+    border-radius:50%;
+    background:#21ff76;
+    box-shadow:0 0 12px #21ff76;
+}
+
+/* =========================
+   CAMERA
+========================= */
+
+.camera-area{
+    position:relative;
+    flex:1;
+    min-height:0;
+    background:#000;
+    overflow:hidden;
+}
+
+video,
+canvas{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+canvas{
+    display:none;
+}
+
+.camera-area.processed canvas{
+    display:block;
+}
+
+.camera-area.processed video{
+    display:none;
+}
+
+/* =========================
+   HUD
+========================= */
+
+.hud{
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+    z-index:5;
+}
+
+.corner{
+    position:absolute;
+    width:32px;
+    height:32px;
+    border-color:rgba(255,255,255,.7);
+    border-style:solid;
+}
+
+.c1{
+    left:16px;
+    top:16px;
+    border-width:2px 0 0 2px;
+}
+
+.c2{
+    right:16px;
+    top:16px;
+    border-width:2px 2px 0 0;
+}
+
+.c3{
+    left:16px;
+    bottom:16px;
+    border-width:0 0 2px 2px;
+}
+
+.c4{
+    right:16px;
+    bottom:16px;
+    border-width:0 2px 2px 0;
+}
+
+.scanline{
+    position:absolute;
+    left:0;
+    width:100%;
+    height:1px;
+    top:50%;
+    background:rgba(0,229,255,.18);
+}
+
+.info{
+    position:absolute;
+    top:16px;
+    left:18px;
+    font-size:10px;
+    line-height:1.5;
+    color:rgba(255,255,255,.8);
+    text-shadow:0 1px 4px #000;
+}
+
+.mode-display{
+    position:absolute;
+    top:17px;
+    right:18px;
+    text-align:right;
+    font-weight:800;
+    font-size:12px;
+    text-shadow:0 1px 4px #000;
+}
+
+.mode-display small{
+    display:block;
+    color:#00e5ff;
+    margin-top:3px;
+}
+
+/* =========================
+   CONTROLES PRINCIPAIS
+========================= */
+
+.controls{
+    position:absolute;
+    bottom:22px;
+    left:0;
+    width:100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:22px;
+    z-index:10;
+}
+
+.circle-btn{
+    width:48px;
+    height:48px;
+    border-radius:50%;
+    border:1px solid rgba(255,255,255,.25);
+    background:rgba(8,10,13,.72);
+    color:white;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:19px;
+    backdrop-filter:blur(12px);
+}
+
+.capture{
+    width:72px;
+    height:72px;
+    border-radius:50%;
+    background:white;
+    border:5px solid rgba(255,255,255,.3);
+    box-shadow:0 0 0 3px rgba(0,0,0,.6);
+}
+
+.capture:active{
+    transform:scale(.9);
+}
+
+/* =========================
+   PAINEL
+========================= */
+
+.panel{
+    position:absolute;
+    left:0;
+    right:0;
+    bottom:0;
+    max-height:58%;
+    background:rgba(5,7,10,.96);
+    border-top:1px solid rgba(255,255,255,.1);
+    border-radius:22px 22px 0 0;
+    padding:14px 15px 18px;
+    z-index:30;
+    transform:translateY(100%);
+    transition:.28s ease;
+    overflow:auto;
+    backdrop-filter:blur(25px);
+}
+
+.panel.open{
+    transform:translateY(0);
+}
+
+.handle{
+    width:42px;
+    height:4px;
+    background:#555;
+    border-radius:10px;
+    margin:0 auto 14px;
+}
+
+.section-title{
+    font-size:11px;
+    font-weight:800;
+    color:#89939d;
+    letter-spacing:1.4px;
+    margin:15px 0 9px;
+}
+
+.modes{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:8px;
+}
+
+.mode{
+    min-height:48px;
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:12px;
+    background:#101419;
+    color:white;
+    font-size:11px;
+    font-weight:700;
+}
+
+.mode.active{
+    background:#003d48;
+    border-color:#00e5ff;
+    color:#00e5ff;
+}
+
+.sliders{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+}
+
+.slider-box{
+    background:#0d1115;
+    padding:10px;
+    border-radius:12px;
+}
+
+.slider-box label{
+    display:flex;
+    justify-content:space-between;
+    font-size:10px;
+    color:#b6bec6;
+    margin-bottom:6px;
+}
+
+input[type=range]{
+    width:100%;
+    accent-color:#00e5ff;
+}
+
+.bottom-buttons{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+    margin-top:12px;
+}
+
+.action{
+    height:46px;
+    border-radius:12px;
+    border:1px solid rgba(255,255,255,.1);
+    background:#101419;
+    color:white;
+    font-weight:800;
+}
+
+.action.primary{
+    background:#00a8bd;
+    color:#001216;
+}
+
+/* =========================
+   MENSAGEM
+========================= */
+
+.message{
+    position:absolute;
+    left:50%;
+    top:50%;
+    transform:translate(-50%,-50%);
+    width:80%;
+    text-align:center;
+    padding:20px;
+    background:rgba(0,0,0,.65);
+    border-radius:18px;
+    backdrop-filter:blur(12px);
+    z-index:50;
+}
+
+.message button{
+    margin-top:12px;
+    padding:12px 20px;
+    border:0;
+    border-radius:12px;
+    background:#00d9f5;
+    font-weight:800;
+}
+
+/* =========================
+   RESPONSIVO
+========================= */
+
+@media(min-width:700px){
+    .modes{
+        grid-template-columns:repeat(6,1fr);
+    }
+
+    .sliders{
+        grid-template-columns:repeat(4,1fr);
+    }
+
+    .panel{
+        max-width:900px;
+        left:50%;
+        right:auto;
+        width:900px;
+        transform:translate(-50%,100%);
+    }
+
+    .panel.open{
+        transform:translate(-50%,0);
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header class="topbar">
+    <div class="logo">RENATO <span>VISION</span></div>
+
+    <div class="status">
+        <div class="dot"></div>
+        CAMERA ONLINE
+    </div>
+</header>
+
+<main class="camera-area" id="cameraArea">
+
+    <video id="video"
+           autoplay
+           playsinline
+           muted></video>
+
+    <canvas id="canvas"></canvas>
+
+    <div class="hud">
+
+        <div class="corner c1"></div>
+        <div class="corner c2"></div>
+        <div class="corner c3"></div>
+        <div class="corner c4"></div>
+
+        <div class="scanline"></div>
+
+        <div class="info">
+            RENATO VISION ULTRA<br>
+            ISO AUTO<br>
+            4K ENGINE SIMULATION
+        </div>
+
+        <div class="mode-display">
+            <span id="modeName">NORMAL</span>
+            <small id="modeSub">CAMERA</small>
+        </div>
+
+    </div>
+
+    <div class="controls">
+
+        <button class="circle-btn" id="flip">
+            ↻
+        </button>
+
+        <button class="capture" id="capture"></button>
+
+        <button class="circle-btn" id="menu">
+            ☰
+        </button>
+
+    </div>
+
+    <div class="message" id="message">
+        <strong>RENATO VISION ULTRA</strong>
+        <br><br>
+        Permita o acesso à câmera para iniciar.
+        <br>
+        <button id="start">ATIVAR CÂMERA</button>
+    </div>
+
+</main>
+
+<section class="panel" id="panel">
+
+    <div class="handle"></div>
+
+    <div class="section-title">
+        MODOS DE IMAGEM
+    </div>
+
+    <div class="modes">
+
+        <button class="mode active" data-mode="normal">
+            NORMAL
+        </button>
+
+        <button class="mode" data-mode="night">
+            🌙 NOTURNO
+        </button>
+
+        <button class="mode" data-mode="green">
+            🟢 NIGHT VISION
+        </button>
+
+        <button class="mode" data-mode="red">
+            🔴 RED NIGHT
+        </button>
+
+        <button class="mode" data-mode="ir">
+            IR SIMULADO
+        </button>
+
+        <button class="mode" data-mode="thermal">
+            🌡 TÉRMICO
+        </button>
+
+        <button class="mode" data-mode="mono">
+            P&B PRO
+        </button>
+
+        <button class="mode" data-mode="cinema">
+            CINEMA
+        </button>
+
+        <button class="mode" data-mode="vivid">
+            VIVID
+        </button>
+
+        <button class="mode" data-mode="sharp">
+            ULTRA SHARP
+        </button>
+
+        <button class="mode" data-mode="negative">
+            NEGATIVO
+        </button>
+
+        <button class="mode" data-mode="cool">
+            ICE BLUE
+        </button>
+
+    </div>
+
+    <div class="section-title">
+        ENGINE DE IMAGEM
+    </div>
+
+    <div class="sliders">
+
+        <div class="slider-box">
+            <label>
+                Brilho
+                <span id="brightnessValue">100</span>
+            </label>
+            <input id="brightness"
+                   type="range"
+                   min="0"
+                   max="200"
+                   value="100">
+        </div>
+
+        <div class="slider-box">
+            <label>
+                Contraste
+                <span id="contrastValue">100</span>
+            </label>
+            <input id="contrast"
+                   type="range"
+                   min="0"
+                   max="200"
+                   value="100">
+        </div>
+
+        <div class="slider-box">
+            <label>
+                Saturação
+                <span id="saturationValue">100</span>
+            </label>
+            <input id="saturation"
+                   type="range"
+                   min="0"
+                   max="300"
+                   value="100">
+        </div>
+
+        <div class="slider-box">
+            <label>
+                Exposição
+                <span id="exposureValue">0</span>
+            </label>
+            <input id="exposure"
+                   type="range"
+                   min="-100"
+                   max="100"
+                   value="0">
+        </div>
+
+        <div class="slider-box">
+            <label>
+                Temperatura
+                <span id="temperatureValue">0</span>
+            </label>
+            <input id="temperature"
+                   type="range"
+                   min="-100"
+                   max="100"
+                   value="0">
+        </div>
+
+        <div class="slider-box">
+            <label>
+                Nitidez
+                <span id="sharpnessValue">0</span>
+            </label>
+            <input id="sharpness"
+                   type="range"
+                   min="0"
+                   max="100"
+                   value="0">
+        </div>
+
+        <div class="slider-box">
+            <label>
+                Granulação
+                <span id="grainValue">0</span>
+            </label>
+            <input id="grain"
+                   type="range"
+                   min="0"
+                   max="100"
+                   value="0">
+        </div>
+
+        <div class="slider-box">
+            <label>
+                Zoom
+                <span id="zoomValue">1.0x</span>
+            </label>
+            <input id="zoom"
+                   type="range"
+                   min="1"
+                   max="5"
+                   step=".1"
+                   value="1">
+        </div>
+
+    </div>
+
+    <div class="bottom-buttons">
+
+        <button class="action primary" id="autoNight">
+            ✨ AUTO NIGHT
+        </button>
+
+        <button class="action" id="reset">
+            ↺ RESETAR
+        </button>
+
+    </div>
+
+</section>
+
+<script>
+
+/* ==========================================================
+   RENATO VISION ULTRA
+   ENGINE PRINCIPAL
+========================================================== */
+
+const video = document.getElementById("video");
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d", {
+    willReadFrequently:true
+});
+
+const cameraArea = document.getElementById("cameraArea");
+const panel = document.getElementById("panel");
+const message = document.getElementById("message");
+
+let stream = null;
+let facingMode = "environment";
+let currentMode = "normal";
+let processing = false;
+let zoom = 1;
+
+
+/* ==========================================================
+   INICIAR CÂMERA
+========================================================== */
+
+async function startCamera(){
+
+    try{
+
+        if(stream){
+            stream.getTracks().forEach(track => track.stop());
+        }
+
+        stream = await navigator.mediaDevices.getUserMedia({
+
+            video:{
+                facingMode:{
+                    ideal:facingMode
+                },
+
+                width:{
+                    ideal:1920
+                },
+
+                height:{
+                    ideal:1080
+                }
+            },
+
+            audio:false
+        });
+
+        video.srcObject = stream;
+
+        await video.play();
+
+        message.style.display = "none";
+
+        resizeCanvas();
+
+        requestAnimationFrame(processFrame);
+
+    }catch(error){
+
+        console.error(error);
+
+        message.innerHTML = `
+            <strong>NÃO FOI POSSÍVEL ACESSAR A CÂMERA</strong>
+            <br><br>
+            Verifique a permissão da câmera
+            no Safari e tente novamente.
+            <br>
+            <button onclick="location.reload()">
+                TENTAR NOVAMENTE
+            </button>
+        `;
+    }
+}
+
+document.getElementById("start").onclick = startCamera;
+
+
+/* ==========================================================
+   TROCAR CÂMERA
+========================================================== */
+
+document.getElementById("flip").onclick = async () => {
+
+    facingMode =
+        facingMode === "environment"
+        ? "user"
+        : "environment";
+
+    await startCamera();
+};
+
+
+/* ==========================================================
+   TAMANHO DO CANVAS
+========================================================== */
+
+function resizeCanvas(){
+
+    canvas.width = video.videoWidth || 1280;
+    canvas.height = video.videoHeight || 720;
+}
+
+
+/* ==========================================================
+   PROCESSAMENTO
+========================================================== */
+
+function processFrame(){
+
+    if(video.readyState >= 2){
+
+        if(currentMode !== "normal" || hasCustomAdjustments()){
+
+            cameraArea.classList.add("processed");
+
+            drawProcessedFrame();
+
+        }else{
+
+            cameraArea.classList.remove("processed");
+
+        }
+    }
+
+    requestAnimationFrame(processFrame);
+}
+
+
+/* ==========================================================
+   VERIFICAR AJUSTES
+========================================================== */
+
+function hasCustomAdjustments(){
+
+    return (
+        Number(brightness.value) !== 100 ||
+        Number(contrast.value) !== 100 ||
+        Number(saturation.value) !== 100 ||
+        Number(exposure.value) !== 0 ||
+        Number(temperature.value) !== 0 ||
+        Number(grain.value) !== 0 ||
+        Number(sharpness.value) !== 0
+    );
+}
+
+
+/* ==========================================================
+   PROCESSAR IMAGEM
+========================================================== */
+
+function drawProcessedFrame(){
+
+    if(!video.videoWidth) return;
+
+    ctx.save();
+
+    const w = canvas.width;
+    const h = canvas.height;
+
+    const z = Number(zoom);
+
+    const sw = w / z;
+    const sh = h / z;
+
+    const sx = (w - sw) / 2;
+    const sy = (h - sh) / 2;
+
+    ctx.drawImage(
+        video,
+        sx,
+        sy,
+        sw,
+        sh,
+        0,
+        0,
+        w,
+        h
+    );
+
+    let image = ctx.getImageData(
+        0,
+        0,
+        w,
+        h
+    );
+
+    let data = image.data;
+
+    const mode = currentMode;
+
+    const b =
+        Number(brightness.value) / 100;
+
+    const c =
+        Number(contrast.value) / 100;
+
+    const s =
+        Number(saturation.value) / 100;
+
+    const exp =
+        Number(exposure.value);
+
+    const temp =
+        Number(temperature.value);
+
+    const grainAmount =
+        Number(grain.value);
+
+    for(let i=0;i<data.length;i+=4){
+
+        let r = data[i];
+        let g = data[i+1];
+        let bl = data[i+2];
+
+        /* brilho */
+
+        r *= b;
+        g *= b;
+        bl *= b;
+
+        /* exposição */
+
+        const exposureFactor =
+            Math.pow(
+                2,
+                exp / 100
+            );
+
+        r *= exposureFactor;
+        g *= exposureFactor;
+        bl *= exposureFactor;
+
+        /* contraste */
+
+        r =
+            ((r / 255 - .5) * c + .5) * 255;
+
+        g =
+            ((g / 255 - .5) * c + .5) * 255;
+
+        bl =
+            ((bl / 255 - .5) * c + .5) * 255;
+
+        /* temperatura */
+
+        r += temp * .45;
+        bl -= temp * .45;
+
+        /* saturação */
+
+        const gray =
+            0.299*r +
+            0.587*g +
+            0.114*bl;
+
+        r = gray + (r-gray)*s;
+        g = gray + (g-gray)*s;
+        bl = gray + (bl-gray)*s;
+
+
+        /* ==========================
+           MODOS
+        ========================== */
+
+        if(mode === "night"){
+
+            r *= .55;
+            g *= 1.35;
+            bl *= .75;
+
+            g += 15;
+        }
+
+
+        if(mode === "green"){
+
+            const lum =
+                0.299*r +
+                0.587*g +
+                0.114*bl;
+
+            r = lum * .18;
+            g = lum * 1.28;
+            bl = lum * .25;
+        }
+
+
+        if(mode === "red"){
+
+            const lum =
+                0.299*r +
+                0.587*g +
+                0.114*bl;
+
+            r = lum * 1.25;
+            g = lum * .12;
+            bl = lum * .08;
+        }
+
+
+        if(mode === "ir"){
+
+            const lum =
+                0.299*r +
+                0.587*g +
+                0.114*bl;
+
+            r = lum * 1.20;
+            g = lum * .85;
+            bl = lum * .20;
+        }
+
+
+        if(mode === "thermal"){
+
+            const lum =
+                0.299*r +
+                0.587*g +
+                0.114*bl;
+
+            if(lum < 70){
+
+                r = 0;
+                g = lum * .15;
+                bl = lum * .9;
+
+            }else if(lum < 140){
+
+                r = (lum-70)*2.8;
+                g = 80;
+                bl = 255-(lum-70)*1.5;
+
+            }else{
+
+                r = 255;
+                g = Math.min(
+                    255,
+                    80+(lum-140)*2
+                );
+                bl = Math.max(
+                    0,
+                    80-(lum-140)
+                );
+            }
+        }
+
+
+        if(mode === "mono"){
+
+            const lum =
+                0.299*r +
+                0.587*g +
+                0.114*bl;
+
+            r = g = bl = lum;
+        }
+
+
+        if(mode === "cinema"){
+
+            r *= .92;
+            g *= .94;
+            bl *= 1.04;
+
+            r = Math.min(255,r*1.08);
+        }
+
+
+        if(mode === "vivid"){
+
+            r *= 1.12;
+            g *= 1.12;
+            bl *= 1.12;
+        }
+
+
+        if(mode === "sharp"){
+
+            const lum =
+                0.299*r +
+                0.587*g +
+                0.114*bl;
+
+            r += (r-lum)*.35;
+            g += (g-lum)*.35;
+            bl += (bl-lum)*.35;
+        }
+
+
+        if(mode === "negative"){
+
+            r = 255-r;
+            g = 255-g;
+            bl = 255-bl;
+        }
+
+
+        if(mode === "cool"){
+
+            r *= .75;
+            g *= .95;
+            bl *= 1.25;
+        }
+
+
+        /* granulação */
+
+        if(grainAmount > 0){
+
+            const noise =
+                (Math.random()-.5)
+                * grainAmount;
+
+            r += noise;
+            g += noise;
+            bl += noise;
+        }
+
+        data[i] =
+            Math.max(0,Math.min(255,r));
+
+        data[i+1] =
+            Math.max(0,Math.min(255,g));
+
+        data[i+2] =
+            Math.max(0,Math.min(255,bl));
+    }
+
+    ctx.putImageData(image,0,0);
+
+    ctx.restore();
+}
+
+
+/* ==========================================================
+   MODOS
+========================================================== */
+
+document.querySelectorAll(".mode").forEach(button => {
+
+    button.addEventListener("click",()=>{
+
+        document.querySelectorAll(".mode")
+        .forEach(b=>b.classList.remove("active"));
+
+        button.classList.add("active");
+
+        currentMode =
+            button.dataset.mode;
+
+        document.getElementById("modeName")
+            .textContent =
+            button.textContent.trim();
+
+        document.getElementById("modeSub")
+            .textContent =
+            currentMode === "night"
+            ? "LOW LIGHT ENHANCER"
+            : currentMode === "ir"
+            ? "IR SIMULATION"
+            : currentMode === "thermal"
+            ? "THERMAL SIMULATION"
+            : "IMAGE ENGINE";
+    });
+});
+
+
+/* ==========================================================
+   PAINEL
+========================================================== */
+
+document.getElementById("menu").onclick = () => {
+
+    panel.classList.toggle("open");
+};
+
+
+/* ==========================================================
+   SLIDERS
+========================================================== */
+
+const sliders = [
+    "brightness",
+    "contrast",
+    "saturation",
+    "exposure",
+    "temperature",
+    "sharpness",
+    "grain",
+    "zoom"
+];
+
+sliders.forEach(id => {
+
+    const input =
+        document.getElementById(id);
+
+    const output =
+        document.getElementById(
+            id + "Value"
+        );
+
+    input.addEventListener("input",()=>{
+
+        if(id === "zoom"){
+
+            output.textContent =
+                Number(input.value).toFixed(1)
+                + "x";
+
+            zoom =
+                Number(input.value);
+
+        }else{
+
+            output.textContent =
+                input.value;
+        }
+    });
+});
+
+
+/* ==========================================================
+   AUTO NIGHT
+========================================================== */
+
+document.getElementById("autoNight").onclick = () => {
+
+    currentMode = "night";
+
+    document.querySelectorAll(".mode")
+    .forEach(b=>b.classList.remove("active"));
+
+    document
+        .querySelector('[data-mode="night"]')
+        .classList.add("active");
+
+    brightness.value = 150;
+    contrast.value = 115;
+    saturation.value = 85;
+    exposure.value = 35;
+
+    document.getElementById("brightnessValue").textContent="150";
+    document.getElementById("contrastValue").textContent="115";
+    document.getElementById("saturationValue").textContent="85";
+    document.getElementById("exposureValue").textContent="35";
+
+    document.getElementById("modeName")
+        .textContent="🌙 NOTURNO";
+
+    document.getElementById("modeSub")
+        .textContent="AUTO NIGHT";
+};
+
+
+/* ==========================================================
+   RESET
+========================================================== */
+
+document.getElementById("reset").onclick = () => {
+
+    currentMode = "normal";
+
+    brightness.value = 100;
+    contrast.value = 100;
+    saturation.value = 100;
+    exposure.value = 0;
+    temperature.value = 0;
+    sharpness.value = 0;
+    grain.value = 0;
+    zoom.value = 1;
+
+    zoom = 1;
+
+    sliders.forEach(id=>{
+
+        const input =
+            document.getElementById(id);
+
+        const output =
+            document.getElementById(
+                id+"Value"
+            );
+
+        output.textContent =
+            id === "zoom"
+            ? "1.0x"
+            : input.value;
+    });
+
+    document.querySelectorAll(".mode")
+        .forEach(b=>b.classList.remove("active"));
+
+    document
+        .querySelector('[data-mode="normal"]')
+        .classList.add("active");
+
+    document.getElementById("modeName")
+        .textContent="NORMAL";
+
+    document.getElementById("modeSub")
+        .textContent="CAMERA";
+};
+
+
+/* ==========================================================
+   CAPTURA DE FOTO
+========================================================== */
+
+document.getElementById("capture").onclick = () => {
+
+    if(!video.videoWidth) return;
+
+    const photo =
+        document.createElement("canvas");
+
+    photo.width =
+        canvas.width || video.videoWidth;
+
+    photo.height =
+        canvas.height || video.videoHeight;
+
+    const pctx =
+        photo.getContext("2d");
+
+    if(
+        currentMode !== "normal"
+        || hasCustomAdjustments()
+    ){
+
+        drawProcessedFrame();
+
+        pctx.drawImage(
+            canvas,
+            0,
+            0,
+            photo.width,
+            photo.height
+        );
+
+    }else{
+
+        pctx.drawImage(
+            video,
+            0,
+            0,
+            photo.width,
+            photo.height
+        );
+    }
+
+    const link =
+        document.createElement("a");
+
+    link.download =
+        "renato-vision-" +
+        Date.now() +
+        ".jpg";
+
+    link.href =
+        photo.toDataURL(
+            "image/jpeg",
+            .95
+        );
+
+    link.click();
+};
+
+
+/* ==========================================================
+   AUTO RESIZE
+========================================================== */
+
+window.addEventListener(
+    "resize",
+    resizeCanvas
+);
+
+</script>
+
+</body>
+</html>
