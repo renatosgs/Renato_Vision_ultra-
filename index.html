@@ -4,48 +4,50 @@
 <meta charset="UTF-8">
 
 <meta name="viewport"
-content="width=device-width,
-initial-scale=1,
-maximum-scale=1,
-user-scalable=no,
-viewport-fit=cover">
+      content="width=device-width,
+      initial-scale=1,
+      maximum-scale=1,
+      user-scalable=no,
+      viewport-fit=cover">
 
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Renato Vision AI">
 
-<title>RENATO VISION 3D AI</title>
+<meta name="theme-color" content="#050507">
+
+<title>RENATO VISION AI</title>
 
 <style>
-:root{
-    --accent:#ffffff;
-    --accent2:#8b5cf6;
-    --bg:#050507;
-    --panel:rgba(12,12,17,.94);
-    --button:rgba(255,255,255,.09);
-    --border:rgba(255,255,255,.14);
-    --text:#fff;
-    --muted:#9b9ba5;
-    --shadow:0 25px 80px rgba(0,0,0,.65);
-}
+
+/* =========================================================
+   RESET
+========================================================= */
 
 *{
     box-sizing:border-box;
     -webkit-tap-highlight-color:transparent;
 }
 
-html,body{
-    margin:0;
+html,
+body{
     width:100%;
     height:100%;
+    margin:0;
+    padding:0;
     overflow:hidden;
-    background:#000;
-    color:var(--text);
+    background:#050507;
+    color:#fff;
     font-family:
-    -apple-system,
-    BlinkMacSystemFont,
-    "SF Pro Display",
-    "Segoe UI",
-    sans-serif;
+        -apple-system,
+        BlinkMacSystemFont,
+        "SF Pro Display",
+        "Segoe UI",
+        sans-serif;
+}
+
+body{
+    overscroll-behavior:none;
 }
 
 button,
@@ -55,251 +57,340 @@ select{
 }
 
 button{
+    border:0;
     color:inherit;
 }
+
+button:active{
+    transform:scale(.96);
+}
+
+/* =========================================================
+   APP
+========================================================= */
 
 #app{
     position:fixed;
     inset:0;
     overflow:hidden;
-    background:#000;
+    background:#050507;
+    isolation:isolate;
 }
 
-/* CAMERA */
+/* =========================================================
+   CAMERA
+========================================================= */
 
 #camera{
     position:absolute;
     inset:0;
+
     width:100%;
     height:100%;
+
     object-fit:cover;
+
     background:#000;
 
+    transform-origin:center center;
+
     transition:
-    transform .12s linear,
-    filter .15s linear;
+        filter .16s ease,
+        transform .12s ease;
 }
 
-/* 3D OVERLAY */
+/* =========================================================
+   CINEMATIC OVERLAY
+========================================================= */
 
-#depthOverlay{
+#cinematic{
     position:absolute;
     inset:0;
+
     pointer-events:none;
-    opacity:0;
-    z-index:8;
 
-    mix-blend-mode:screen;
+    z-index:5;
 
-    transition:.25s;
+    background:
+        radial-gradient(
+            circle at center,
+            transparent 42%,
+            rgba(0,0,0,.12) 100%
+        );
+
+    opacity:.8;
 }
 
-#depthOverlay.active{
-    opacity:.28;
-}
-
-.depthRed{
-    box-shadow:
-    inset 0 0 80px rgba(255,0,0,.18);
-}
-
-.depthBlue{
-    box-shadow:
-    inset 0 0 80px rgba(0,160,255,.18);
-}
-
-/* TOP */
+/* =========================================================
+   TOP BAR
+========================================================= */
 
 #top{
     position:absolute;
-    z-index:50;
 
     top:
-    calc(
-        env(safe-area-inset-top,0px)
-        + 12px
-    );
+        calc(
+            env(safe-area-inset-top,0px)
+            + 12px
+        );
 
-    left:12px;
-    right:12px;
+    left:14px;
+    right:14px;
 
     display:flex;
-    justify-content:space-between;
     align-items:center;
+    justify-content:space-between;
+
+    z-index:30;
 
     pointer-events:none;
 }
 
 .glass{
     background:
-    rgba(8,8,12,.55);
+        rgba(10,10,14,.54);
 
     border:
-    1px solid
-    rgba(255,255,255,.12);
+        1px solid
+        rgba(255,255,255,.13);
 
     backdrop-filter:
-    blur(24px);
+        blur(24px)
+        saturate(150%);
 
     -webkit-backdrop-filter:
-    blur(24px);
+        blur(24px)
+        saturate(150%);
 
     box-shadow:
-    0 10px 35px
-    rgba(0,0,0,.28);
+        0 10px 35px
+        rgba(0,0,0,.28);
 }
 
 .brand{
     padding:9px 12px;
+
     border-radius:15px;
 
-    font-size:10px;
+    font-size:9px;
     font-weight:950;
-    letter-spacing:1.8px;
+
+    letter-spacing:2px;
 }
 
-#status{
+.status{
     padding:9px 12px;
+
     border-radius:15px;
 
     font-size:9px;
     font-weight:900;
+
     letter-spacing:1px;
 }
 
-/* 3D BADGE */
+/* =========================================================
+   FOCUS
+========================================================= */
 
-#threeBadge{
+#focusBox{
     position:absolute;
+
+    width:70px;
+    height:70px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.75);
+
+    border-radius:50%;
+
+    transform:
+        translate(-50%,-50%)
+        scale(.7);
+
+    opacity:0;
+
+    z-index:20;
+
+    pointer-events:none;
+
+    transition:
+        opacity .2s,
+        transform .25s;
+}
+
+#focusBox.show{
+    opacity:1;
+    transform:
+        translate(-50%,-50%)
+        scale(1);
+}
+
+/* =========================================================
+   RECORDING
+========================================================= */
+
+#recording{
+    position:absolute;
+
     top:
-    calc(
-        env(safe-area-inset-top,0px)
-        + 65px
-    );
+        calc(
+            env(safe-area-inset-top,0px)
+            + 68px
+        );
 
     left:50%;
+
     transform:translateX(-50%);
 
-    z-index:60;
+    display:none;
+
+    z-index:40;
 
     padding:8px 14px;
+
     border-radius:20px;
 
     background:
-    linear-gradient(
-        135deg,
-        rgba(255,0,60,.75),
-        rgba(0,120,255,.75)
-    );
+        rgba(130,0,0,.78);
 
-    border:1px solid rgba(255,255,255,.2);
+    border:
+        1px solid
+        rgba(255,255,255,.15);
 
     font-size:10px;
     font-weight:950;
-
-    letter-spacing:1px;
-
-    display:none;
 }
 
-#threeBadge.show{
-    display:block;
-}
-
-/* RECORD */
-
-#recording{
-    display:none;
-
-    position:absolute;
-    top:
-    calc(
-        env(safe-area-inset-top,0px)
-        + 65px
-    );
-
-    left:50%;
-    transform:translateX(-50%);
-
-    z-index:70;
-
-    padding:8px 14px;
-    border-radius:20px;
-
-    background:rgba(130,0,0,.85);
-
-    font-size:10px;
-    font-weight:900;
-}
-
-.dot{
+.recDot{
     display:inline-block;
+
     width:8px;
     height:8px;
+
     border-radius:50%;
+
     background:#ff2020;
+
     margin-right:6px;
 
-    animation:blink .8s infinite;
+    animation:
+        blink .8s infinite;
 }
 
 @keyframes blink{
-    50%{opacity:.2}
+    50%{
+        opacity:.25;
+    }
 }
 
-/* BOTTOM */
+/* =========================================================
+   FILTER NAME
+========================================================= */
+
+#filterName{
+    position:absolute;
+
+    left:50%;
+
+    bottom:
+        calc(
+            150px +
+            env(safe-area-inset-bottom,0px)
+        );
+
+    transform:
+        translateX(-50%)
+        translateY(10px);
+
+    z-index:25;
+
+    padding:7px 12px;
+
+    border-radius:15px;
+
+    background:
+        rgba(0,0,0,.45);
+
+    border:
+        1px solid
+        rgba(255,255,255,.1);
+
+    backdrop-filter:blur(15px);
+
+    font-size:9px;
+    font-weight:900;
+
+    opacity:0;
+
+    transition:.25s;
+
+    pointer-events:none;
+}
+
+#filterName.show{
+    opacity:1;
+
+    transform:
+        translateX(-50%)
+        translateY(0);
+}
+
+/* =========================================================
+   BOTTOM CAMERA
+========================================================= */
 
 #bottom{
     position:absolute;
+
     left:0;
     right:0;
     bottom:0;
 
-    z-index:80;
+    z-index:50;
 
     display:flex;
     align-items:center;
     justify-content:center;
-    gap:20px;
+
+    gap:22px;
 
     padding:
-    15px 14px
-    calc(
-        18px +
-        env(safe-area-inset-bottom,0px)
-    );
+        14px
+        16px
+        calc(
+            18px +
+            env(safe-area-inset-bottom,0px)
+        );
 
     background:
-    linear-gradient(
-        transparent,
-        rgba(0,0,0,.82)
-    );
+        linear-gradient(
+            transparent,
+            rgba(0,0,0,.72)
+        );
 }
 
-.circle{
-    width:55px;
-    height:55px;
+.camButton{
+    width:54px;
+    height:54px;
 
     border-radius:50%;
 
     display:flex;
-    justify-content:center;
     align-items:center;
+    justify-content:center;
 
     background:
-    rgba(15,15,18,.78);
+        rgba(15,15,18,.72);
 
     border:
-    1px solid
-    rgba(255,255,255,.16);
+        1px solid
+        rgba(255,255,255,.16);
 
-    backdrop-filter:blur(20px);
+    backdrop-filter:blur(18px);
 
     font-size:20px;
-}
-
-.circle:active{
-    transform:scale(.9);
 }
 
 #capture{
@@ -307,9 +398,11 @@ button{
     height:82px;
 
     border:
-    5px solid rgba(255,255,255,.95);
+        5px solid
+        rgba(255,255,255,.95);
 
-    background:rgba(255,255,255,.08);
+    background:
+        rgba(255,255,255,.08);
 }
 
 #capture span{
@@ -317,66 +410,69 @@ button{
     height:62px;
 
     border-radius:50%;
+
     background:#fff;
 
     transition:.2s;
 }
 
-#capture.three span{
-    background:
-    linear-gradient(
-        90deg,
-        #ff253f 0 48%,
-        #fff 48% 52%,
-        #1595ff 52% 100%
-    );
-}
-
 #capture.recording span{
-    width:32px;
-    height:32px;
-    border-radius:7px;
+    width:31px;
+    height:31px;
+
+    border-radius:8px;
+
     background:#ff2020;
 }
 
-/* MENU */
+/* =========================================================
+   MENU BUTTON
+========================================================= */
 
-#menu{
+#menuButton{
     position:absolute;
-    z-index:100;
 
     right:14px;
 
     bottom:
-    calc(
-        120px +
-        env(safe-area-inset-bottom,0px)
-    );
+        calc(
+            122px +
+            env(safe-area-inset-bottom,0px)
+        );
 
-    padding:12px 16px;
+    z-index:70;
 
-    border-radius:17px;
+    padding:12px 15px;
+
+    border-radius:18px;
 
     background:
-    rgba(8,8,12,.78);
+        rgba(8,8,11,.68);
 
-    border:1px solid var(--border);
+    border:
+        1px solid
+        rgba(255,255,255,.14);
 
-    backdrop-filter:blur(22px);
+    backdrop-filter:blur(20px);
 
-    font-size:10px;
+    font-size:9px;
     font-weight:950;
+
     letter-spacing:1px;
 }
 
-/* HIDDEN */
+/* =========================================================
+   HIDDEN
+========================================================= */
 
 .hidden{
     opacity:0!important;
     pointer-events:none!important;
 }
 
-/* PANELS */
+/* =========================================================
+   PANELS
+========================================================= */
 
 .panel{
     position:absolute;
@@ -385,27 +481,43 @@ button{
     right:8px;
     bottom:8px;
 
-    max-height:90vh;
-
     z-index:200;
 
-    padding:15px;
+    max-height:
+        calc(
+            92vh -
+            env(safe-area-inset-top,0px)
+        );
 
     overflow:auto;
 
+    padding:16px;
+
     border-radius:28px;
 
-    background:var(--panel);
+    background:
+        rgba(9,9,13,.96);
 
-    backdrop-filter:blur(35px);
-    -webkit-backdrop-filter:blur(35px);
+    border:
+        1px solid
+        rgba(255,255,255,.13);
 
-    border:1px solid var(--border);
+    backdrop-filter:
+        blur(35px)
+        saturate(160%);
 
-    box-shadow:var(--shadow);
+    -webkit-backdrop-filter:
+        blur(35px)
+        saturate(160%);
+
+    box-shadow:
+        0 30px 100px
+        rgba(0,0,0,.85);
 
     transform:translateY(120%);
+
     opacity:0;
+
     pointer-events:none;
 
     transition:.3s ease;
@@ -413,28 +525,41 @@ button{
 
 .panel.open{
     transform:translateY(0);
+
     opacity:1;
+
     pointer-events:auto;
 }
 
+/* =========================================================
+   PANEL HEADER
+========================================================= */
+
 .panelHeader{
     position:sticky;
-    top:-15px;
+
+    top:-16px;
+
     z-index:10;
 
-    margin:-15px -15px 15px;
+    margin:
+        -16px
+        -16px
+        15px
+        -16px;
 
-    padding:14px 15px;
+    padding:14px 16px;
 
     display:flex;
-    justify-content:space-between;
     align-items:center;
+    justify-content:space-between;
 
-    background:var(--panel);
+    background:
+        rgba(9,9,13,.96);
 
     border-bottom:
-    1px solid
-    rgba(255,255,255,.07);
+        1px solid
+        rgba(255,255,255,.07);
 }
 
 .panelTitle{
@@ -449,259 +574,233 @@ button{
 
     border-radius:50%;
 
-    border:1px solid var(--border);
+    background:
+        rgba(255,255,255,.08);
 
-    background:var(--button);
+    border:
+        1px solid
+        rgba(255,255,255,.16);
 
-    font-size:27px;
+    font-size:26px;
 }
 
-/* SECTIONS */
+/* =========================================================
+   SECTIONS
+========================================================= */
 
 .section{
     margin-top:17px;
 }
 
 .sectionTitle{
-    margin-bottom:9px;
+    margin-bottom:8px;
 
-    color:var(--muted);
+    color:#999;
 
     font-size:9px;
+
     font-weight:950;
 
-    letter-spacing:1.5px;
+    letter-spacing:1.4px;
+}
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+.mainButton{
+    width:100%;
+
+    min-height:50px;
+
+    padding:10px 13px;
+
+    border-radius:15px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #222227,
+            #111115
+        );
+
+    border:
+        1px solid
+        rgba(255,255,255,.12);
+
+    font-size:11px;
+    font-weight:900;
+
+    text-align:left;
 }
 
 .grid{
     display:grid;
-    grid-template-columns:repeat(2,1fr);
+
+    grid-template-columns:
+        repeat(2,1fr);
+
     gap:8px;
 }
 
 .option{
-    min-height:50px;
+    min-height:49px;
 
-    border-radius:15px;
+    border-radius:14px;
 
-    border:1px solid var(--border);
+    background:#17171c;
 
-    background:var(--button);
+    border:
+        1px solid
+        rgba(255,255,255,.09);
 
-    font-size:10px;
+    font-size:9px;
+
     font-weight:850;
 }
 
 .option.active{
-    border-color:var(--accent);
-    background:
-    linear-gradient(
-        135deg,
-        rgba(255,255,255,.16),
-        rgba(255,255,255,.05)
-    );
+    border-color:
+        rgba(255,255,255,.55);
+
+    background:#303038;
 }
 
-/* 3D BUTTON */
-
-.threeButton{
-    width:100%;
-    min-height:62px;
-
-    border-radius:18px;
-
-    border:1px solid rgba(255,255,255,.2);
-
-    background:
-    linear-gradient(
-        110deg,
-        rgba(255,0,45,.18),
-        rgba(0,90,255,.2)
-    );
-
-    font-weight:950;
-    letter-spacing:.6px;
-}
-
-.threeButton.active{
-    box-shadow:
-    0 0 25px rgba(70,130,255,.2);
-}
-
-/* SELECT */
+/* =========================================================
+   SELECT
+========================================================= */
 
 select{
     width:100%;
-    min-height:49px;
+
+    min-height:48px;
 
     padding:10px;
 
-    border-radius:15px;
-
-    border:1px solid var(--border);
-
-    background:var(--button);
-
     color:#fff;
+
+    background:#17171c;
+
+    border:
+        1px solid
+        rgba(255,255,255,.12);
+
+    border-radius:14px;
 
     outline:none;
 }
 
-/* RANGE */
+/* =========================================================
+   RANGE
+========================================================= */
 
 .control{
     display:grid;
-    grid-template-columns:75px 1fr 48px;
-    gap:8px;
+
+    grid-template-columns:
+        78px
+        1fr
+        48px;
+
     align-items:center;
 
-    margin:12px 0;
+    gap:8px;
+
+    margin:11px 0;
 }
 
 .control label{
-    font-size:10px;
+    font-size:9px;
+    color:#ccc;
 }
 
 .control input{
     width:100%;
-    accent-color:var(--accent2);
+    accent-color:#fff;
 }
 
 .value{
-    text-align:right;
-    color:#999;
+    color:#888;
     font-size:9px;
+    text-align:right;
 }
 
-/* FILTER CARDS */
-
-.filterStrip{
-    display:flex;
-    gap:9px;
-
-    overflow-x:auto;
-
-    padding-bottom:5px;
-
-    scrollbar-width:none;
-}
-
-.filterStrip::-webkit-scrollbar{
-    display:none;
-}
-
-.filterCard{
-    flex:0 0 86px;
-    height:70px;
-
-    border-radius:15px;
-
-    border:1px solid var(--border);
-
-    background:
-    linear-gradient(
-        135deg,
-        #222,
-        #090909
-    );
-
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-
-    font-size:8px;
-    font-weight:900;
-}
-
-.filterCard.active{
-    border-color:#fff;
-}
-
-/* THEME PREVIEW */
+/* =========================================================
+   THEME GRID
+========================================================= */
 
 .themeGrid{
     display:grid;
-    grid-template-columns:repeat(2,1fr);
-    gap:9px;
+
+    grid-template-columns:
+        repeat(2,1fr);
+
+    gap:8px;
 }
 
 .themeCard{
+    min-height:74px;
+
+    border-radius:17px;
+
     position:relative;
-
-    min-height:105px;
-
-    border-radius:18px;
 
     overflow:hidden;
 
-    border:1px solid rgba(255,255,255,.12);
+    border:
+        1px solid
+        rgba(255,255,255,.12);
+
+    background:#17171b;
 
     text-align:left;
-
-    background:#111;
-
-    transition:.2s;
-}
-
-.themeCard:active{
-    transform:scale(.97);
-}
-
-.themePreview{
-    position:absolute;
-    inset:0;
 
     padding:10px;
 
     display:flex;
-    flex-direction:column;
-    justify-content:space-between;
-}
-
-.themeMiniTop{
-    display:flex;
-    justify-content:space-between;
-}
-
-.themeMiniDot{
-    width:13px;
-    height:13px;
-    border-radius:50%;
-}
-
-.themeMiniButton{
-    height:20px;
-    width:52px;
-    border-radius:8px;
-}
-
-.themeName{
-    position:absolute;
-    left:10px;
-    bottom:9px;
+    align-items:flex-end;
 
     font-size:9px;
     font-weight:950;
 
+    letter-spacing:.5px;
+}
+
+.themeCard::before{
+    content:"";
+
+    position:absolute;
+    inset:0;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--a),
+            var(--b)
+        );
+
+    opacity:.9;
+
+    z-index:-1;
+}
+
+.themeCard span{
+    position:relative;
+
     text-shadow:
-    0 2px 7px #000;
+        0 2px 8px
+        rgba(0,0,0,.8);
 }
 
-@media(min-width:700px){
-
-    .panel{
-        left:auto;
-        right:20px;
-        width:460px;
-    }
-
-    .themeGrid{
-        grid-template-columns:repeat(3,1fr);
-    }
+.themeCard.active{
+    outline:
+        2px solid
+        rgba(255,255,255,.85);
 }
 
-/* GALLERY */
+/* =========================================================
+   GALLERY
+========================================================= */
 
 #gallery{
     position:absolute;
@@ -709,85 +808,113 @@ select{
 
     z-index:400;
 
+    overflow:auto;
+
+    padding:
+        calc(
+            14px +
+            env(safe-area-inset-top,0px)
+        )
+        12px
+        calc(
+            20px +
+            env(safe-area-inset-bottom,0px)
+        );
+
     background:#050507;
 
     transform:translateX(100%);
 
     transition:.3s ease;
-
-    overflow:auto;
-
-    padding:
-    calc(15px + env(safe-area-inset-top,0px))
-    12px
-    calc(20px + env(safe-area-inset-bottom,0px));
 }
 
 #gallery.open{
     transform:translateX(0);
 }
 
-.galleryHeader{
+.galleryTop{
     display:flex;
-    justify-content:space-between;
     align-items:center;
+    justify-content:space-between;
 
-    margin-bottom:14px;
+    margin-bottom:15px;
 }
 
 .galleryTitle{
-    font-size:21px;
+    font-size:23px;
     font-weight:950;
 }
 
-.galleryTools{
+.galleryActions{
     display:flex;
     gap:7px;
 }
 
-.smallButton{
-    min-height:40px;
+.iconButton{
+    width:43px;
+    height:43px;
 
-    padding:0 12px;
+    border-radius:50%;
 
-    border-radius:13px;
+    background:#18181d;
 
-    border:1px solid var(--border);
+    border:
+        1px solid
+        rgba(255,255,255,.12);
 
-    background:var(--button);
-
-    font-size:9px;
-    font-weight:900;
+    font-size:19px;
 }
 
 .galleryTabs{
     display:flex;
+
     gap:7px;
-    margin-bottom:12px;
+
+    overflow-x:auto;
+
+    margin-bottom:13px;
+
+    scrollbar-width:none;
+}
+
+.galleryTabs::-webkit-scrollbar{
+    display:none;
 }
 
 .galleryTab{
-    flex:1;
-    min-height:42px;
+    flex:0 0 auto;
 
-    border-radius:13px;
+    padding:9px 14px;
 
-    border:1px solid var(--border);
+    border-radius:16px;
 
-    background:var(--button);
+    background:#15151a;
+
+    color:#aaa;
+
+    border:
+        1px solid
+        rgba(255,255,255,.08);
 
     font-size:9px;
     font-weight:900;
 }
 
 .galleryTab.active{
-    background:#fff;
-    color:#000;
+    color:#fff;
+
+    background:#303038;
+
+    border-color:
+        rgba(255,255,255,.35);
 }
 
 .galleryGrid{
     display:grid;
-    grid-template-columns:repeat(3,1fr);
+
+    grid-template-columns:
+        repeat(3,1fr);
+
     gap:5px;
 }
 
@@ -801,25 +928,32 @@ select{
     border-radius:9px;
 
     background:#111;
+
+    border:
+        1px solid
+        rgba(255,255,255,.06);
 }
 
 .galleryItem img,
 .galleryItem video{
     width:100%;
     height:100%;
+
     object-fit:cover;
 }
 
-.badge{
+.mediaType{
     position:absolute;
-    bottom:5px;
-    left:5px;
+
+    left:6px;
+    bottom:6px;
 
     padding:4px 6px;
 
-    border-radius:6px;
+    border-radius:7px;
 
-    background:rgba(0,0,0,.72);
+    background:
+        rgba(0,0,0,.7);
 
     font-size:7px;
     font-weight:950;
@@ -827,157 +961,167 @@ select{
 
 .delete{
     position:absolute;
-    top:5px;
+
     right:5px;
+    top:5px;
 
     width:27px;
     height:27px;
 
     border-radius:50%;
 
-    border:0;
+    background:
+        rgba(0,0,0,.72);
 
-    background:rgba(0,0,0,.72);
-
-    color:#fff;
+    font-size:16px;
 }
 
-/* VIEWER */
+/* =========================================================
+   IMPORT INPUT
+========================================================= */
+
+#importInput{
+    display:none;
+}
+
+/* =========================================================
+   VIEWER
+========================================================= */
 
 #viewer{
     position:fixed;
     inset:0;
 
-    z-index:700;
+    z-index:800;
 
     display:none;
 
     align-items:center;
     justify-content:center;
 
-    background:rgba(0,0,0,.97);
+    background:
+        rgba(0,0,0,.98);
 }
 
 #viewer.open{
     display:flex;
 }
 
-#viewerContent{
-    width:100%;
-    height:100%;
-
-    display:flex;
-    justify-content:center;
-    align-items:center;
-
-    padding:50px 12px;
-}
-
-#viewerContent img,
-#viewerContent video{
+#viewerMedia{
     max-width:100%;
-    max-height:88%;
+    max-height:100%;
 
     object-fit:contain;
 }
 
-#viewerContent.threeD{
-    perspective:900px;
-}
-
-.viewer3D{
-    position:relative;
-
-    max-width:94%;
-    max-height:82%;
-
-    transform-style:preserve-3d;
-
-    animation:float3d 4s ease-in-out infinite;
-}
-
-.viewer3D img{
-    display:block;
-    max-width:100%;
-    max-height:80vh;
-}
-
-.viewer3D .red{
-    position:absolute;
-    inset:0;
-
-    transform:translateX(-8px);
-
-    mix-blend-mode:screen;
-
-    opacity:.5;
-
-    filter:
-    sepia(1)
-    saturate(6)
-    hue-rotate(315deg);
-}
-
-.viewer3D .blue{
-    position:absolute;
-    inset:0;
-
-    transform:translateX(8px);
-
-    mix-blend-mode:screen;
-
-    opacity:.5;
-
-    filter:
-    sepia(1)
-    saturate(6)
-    hue-rotate(175deg);
-}
-
-@keyframes float3d{
-    0%,100%{
-        transform:
-        rotateY(-2deg)
-        rotateX(1deg)
-        translateZ(0);
-    }
-
-    50%{
-        transform:
-        rotateY(2deg)
-        rotateX(-1deg)
-        translateZ(15px);
-    }
-}
-
-.viewerClose{
+#viewerClose{
     position:absolute;
 
-    z-index:10;
+    right:15px;
 
     top:
-    calc(
-        14px +
-        env(safe-area-inset-top,0px)
-    );
+        calc(
+            15px +
+            env(safe-area-inset-top,0px)
+        );
 
-    right:14px;
-
-    width:44px;
-    height:44px;
+    width:45px;
+    height:45px;
 
     border-radius:50%;
 
-    border:1px solid var(--border);
-
-    background:#18181b;
-
-    color:#fff;
+    background:#202026;
 
     font-size:25px;
+
+    z-index:10;
 }
 
-/* TOAST */
+#viewer3D{
+    position:absolute;
+
+    left:50%;
+    top:50%;
+
+    width:min(92vw,700px);
+    max-height:80vh;
+
+    transform:
+        translate(-50%,-50%);
+
+    display:none;
+
+    perspective:1000px;
+
+    touch-action:none;
+}
+
+#viewer3D.active{
+    display:block;
+}
+
+#viewer3D img{
+    display:block;
+
+    width:100%;
+    max-height:80vh;
+
+    object-fit:contain;
+
+    border-radius:15px;
+
+    transform:
+        rotateX(var(--rx,0deg))
+        rotateY(var(--ry,0deg))
+        scale(1.03);
+
+    transition:
+        transform .08s linear;
+
+    box-shadow:
+        0 30px 100px
+        rgba(0,0,0,.8);
+}
+
+#viewerControls{
+    position:absolute;
+
+    bottom:
+        calc(
+            20px +
+            env(safe-area-inset-bottom,0px)
+        );
+
+    left:50%;
+
+    transform:translateX(-50%);
+
+    display:flex;
+
+    gap:8px;
+
+    z-index:20;
+}
+
+.viewerBtn{
+    padding:10px 14px;
+
+    border-radius:16px;
+
+    background:
+        rgba(25,25,30,.85);
+
+    border:
+        1px solid
+        rgba(255,255,255,.14);
+
+    font-size:9px;
+    font-weight:900;
+}
+
+/* =========================================================
+   TOAST
+========================================================= */
 
 #toast{
     position:absolute;
@@ -985,24 +1129,29 @@ select{
     left:50%;
 
     bottom:
-    calc(
-        112px +
-        env(safe-area-inset-bottom,0px)
-    );
+        calc(
+            108px +
+            env(safe-area-inset-bottom,0px)
+        );
 
-    transform:translate(-50%,20px);
+    transform:
+        translate(-50%,20px);
 
-    z-index:900;
+    z-index:1000;
 
-    padding:11px 15px;
+    padding:10px 14px;
 
     border-radius:15px;
 
-    background:rgba(0,0,0,.86);
+    background:
+        rgba(0,0,0,.84);
 
-    border:1px solid var(--border);
+    border:
+        1px solid
+        rgba(255,255,255,.12);
 
-    font-size:10px;
+    font-size:9px;
+    font-weight:850;
 
     opacity:0;
 
@@ -1015,53 +1164,138 @@ select{
 
 #toast.show{
     opacity:1;
-    transform:translate(-50%,0);
+
+    transform:
+        translate(-50%,0);
 }
 
-/* LOADING */
+/* =========================================================
+   LOADING
+========================================================= */
 
 #loading{
     position:absolute;
     inset:0;
 
-    z-index:1000;
+    z-index:2000;
 
     display:flex;
+
     flex-direction:column;
 
-    justify-content:center;
     align-items:center;
+    justify-content:center;
 
     gap:13px;
 
-    background:#000;
+    background:#050507;
 }
 
 .loader{
-    width:43px;
-    height:43px;
+    width:44px;
+    height:44px;
 
-    border:3px solid rgba(255,255,255,.12);
+    border:
+        3px solid
+        rgba(255,255,255,.1);
 
     border-top-color:#fff;
 
     border-radius:50%;
 
-    animation:spin .8s linear infinite;
+    animation:
+        spin .8s linear infinite;
 }
 
 @keyframes spin{
-    to{transform:rotate(360deg)}
+    to{
+        transform:rotate(360deg);
+    }
 }
 
-#loadingText{
-    color:#999;
-
-    font-size:10px;
-    font-weight:850;
-
+.loadingText{
+    font-size:9px;
+    color:#888;
+    font-weight:900;
     letter-spacing:1px;
 }
+
+/* =========================================================
+   THEME VARIABLES
+========================================================= */
+
+body.theme-neon{
+    --accent:#00f5ff;
+}
+
+body.theme-luxury{
+    --accent:#d6ad62;
+}
+
+body.theme-violet{
+    --accent:#9b7cff;
+}
+
+body.theme-ocean{
+    --accent:#35b9ff;
+}
+
+body.theme-forest{
+    --accent:#5bd18c;
+}
+
+body.theme-sunset{
+    --accent:#ff7b47;
+}
+
+body.theme-rose{
+    --accent:#ff6d9a;
+}
+
+body.theme-ice{
+    --accent:#9ce8ff;
+}
+
+body.theme-cyber{
+    --accent:#55ff9b;
+}
+
+body.theme-gold{
+    --accent:#ffd45c;
+}
+
+body.theme-red{
+    --accent:#ff3344;
+}
+
+body.theme-monochrome{
+    --accent:#fff;
+}
+
+/* =========================================================
+   DESKTOP
+========================================================= */
+
+@media(min-width:700px){
+
+    .panel{
+        left:auto;
+        right:20px;
+        width:460px;
+    }
+
+    .themeGrid{
+        grid-template-columns:
+            repeat(3,1fr);
+    }
+
+    .galleryGrid{
+        grid-template-columns:
+            repeat(5,1fr);
+    }
+
+}
+
 </style>
 </head>
 
@@ -1069,1019 +1303,1133 @@ select{
 
 <div id="app">
 
-<video id="camera"
-autoplay
-muted
-playsinline
-webkit-playsinline></video>
+    <video
+        id="camera"
+        autoplay
+        muted
+        playsinline
+        webkit-playsinline>
+    </video>
 
-<div id="depthOverlay"></div>
+    <div id="cinematic"></div>
 
-<div id="top">
+    <div id="top">
 
-    <div class="brand glass">
-        RENATO VISION 3D AI
+        <div class="brand glass">
+            RENATO VISION AI
+        </div>
+
+        <div
+            id="status"
+            class="status glass">
+            CAMERA
+        </div>
+
     </div>
 
-    <div id="status" class="glass">
-        FOTO
+    <div id="focusBox"></div>
+
+    <div id="recording">
+        <span class="recDot"></span>
+        REC
+        <span id="recordTime">00:00</span>
     </div>
 
-</div>
+    <div id="filterName"></div>
 
-<div id="threeBadge">
-    🧊 3D DEPTH
-</div>
+    <div id="bottom">
 
-<div id="recording">
-    <span class="dot"></span>
-    REC
-    <span id="timer">00:00</span>
-</div>
+        <button
+            class="camButton"
+            id="galleryQuick">
+            🖼️
+        </button>
 
-<div id="bottom">
+        <button
+            class="camButton"
+            id="flip">
+            ↻
+        </button>
 
-    <button
-    class="circle"
-    id="flip">
-        🔄
-    </button>
+        <button
+            id="capture"
+            class="camButton">
+            <span></span>
+        </button>
 
-    <button
-    class="circle"
-    id="capture">
-        <span></span>
-    </button>
+        <button
+            class="camButton"
+            id="videoButton">
+            🎥
+        </button>
 
-    <button
-    class="circle"
-    id="videoButton">
-        🎥
-    </button>
+        <button
+            class="camButton"
+            id="menuQuick">
+            ☰
+        </button>
 
-</div>
-
-<button id="menu">
-    ☰ MENU
-</button>
-
-
-<!-- MAIN PANEL -->
-
-<div id="mainPanel" class="panel">
-
-<div class="panelHeader">
-
-    <div class="panelTitle">
-        RENATO VISION 3D
     </div>
 
-    <button
-    class="close"
-    id="closeMain">
-        ×
+    <button id="menuButton">
+        ☰ MENU
     </button>
 
-</div>
 
+    <!-- =====================================================
+         MENU
+    ====================================================== -->
 
-<div class="section">
+    <div
+        id="mainPanel"
+        class="panel">
 
-<div class="sectionTitle">
-    MODO DE CAPTURA
-</div>
+        <div class="panelHeader">
 
-<div class="grid">
+            <div class="panelTitle">
+                RENATO VISION AI
+            </div>
 
-<button
-class="option active"
-id="normalMode">
-    📸 FOTO NORMAL
-</button>
+            <button
+                class="close"
+                id="closeMenu">
+                ×
+            </button>
 
-<button
-class="option"
-id="threeMode">
-    🧊 FOTO 3D
-</button>
+        </div>
 
-</div>
 
-</div>
+        <div class="section">
 
+            <div class="sectionTitle">
+                APARÊNCIA DO APLICATIVO
+            </div>
 
-<div class="section">
+            <button
+                class="mainButton"
+                id="openThemes">
+                ✨ 90 TEMAS VISUAIS
+            </button>
 
-<div class="sectionTitle">
-    FOTO 3D
-</div>
+        </div>
 
-<button
-class="threeButton"
-id="threeType">
 
-    🔴🔵 3D ANAGLÍFICO
-    <br>
-    <small>
-        PROFUNDIDADE ESTEREOSCÓPICA SIMULADA
-    </small>
+        <div class="section">
 
-</button>
+            <div class="sectionTitle">
+                CÂMERA
+            </div>
 
-</div>
+            <select id="resolution">
 
+                <option value="native">
+                    AUTOMÁTICA / NATIVA
+                </option>
 
-<div class="section">
+                <option value="1920x1080">
+                    FULL HD — 1920 × 1080
+                </option>
 
-<div class="sectionTitle">
-    QUALIDADE
-</div>
+                <option value="3840x2160">
+                    4K UHD — 3840 × 2160
+                </option>
 
-<select id="quality">
+            </select>
 
-<option value="native">
-    ORIGINAL DA CÂMERA
-</option>
+            <br><br>
 
-<option value="1920x1080">
-    FULL HD
-</option>
+            <select id="fps">
 
-<option value="3840x2160">
-    4K UHD
-</option>
+                <option value="24">
+                    24 FPS — CINEMA
+                </option>
 
-<option value="7680x4320">
-    8K UPSCALE
-</option>
+                <option value="30" selected>
+                    30 FPS
+                </option>
 
-<option value="15360x8640">
-    16K UPSCALE
-</option>
+                <option value="60">
+                    60 FPS
+                </option>
 
-</select>
+            </select>
 
-</div>
+        </div>
 
 
-<div class="section">
+        <div class="section">
 
-<div class="sectionTitle">
-    FILTROS DA CÂMERA
-</div>
+            <div class="sectionTitle">
+                VELOCIDADE DO VÍDEO
+            </div>
 
-<div
-class="filterStrip"
-id="filterStrip">
-</div>
+            <div class="grid">
 
-</div>
+                <button
+                    class="option active"
+                    data-speed="1">
+                    1× NORMAL
+                </button>
 
+                <button
+                    class="option"
+                    data-speed=".5">
+                    0.5× LENTO
+                </button>
 
-<div class="section">
+                <button
+                    class="option"
+                    data-speed=".25">
+                    0.25× SUPER LENTO
+                </button>
 
-<div class="sectionTitle">
-    PROCESSAMENTO
-</div>
+                <button
+                    class="option"
+                    data-speed="2">
+                    2× RÁPIDO
+                </button>
 
-<div class="grid">
+            </div>
 
-<button
-class="option active"
-id="ai">
-    🤖 AI PHOTO
-</button>
+        </div>
 
-<button
-class="option"
-id="night">
-    🌙 NIGHT AI
-</button>
 
-</div>
+        <div class="section">
 
-</div>
+            <div class="sectionTitle">
+                PROCESSAMENTO
+            </div>
 
+            <div class="grid">
 
-<div class="section">
+                <button
+                    class="option active"
+                    id="ai">
+                    🧠 AI LOCAL
+                </button>
 
-<div class="sectionTitle">
-    CONTROLES
-</div>
+                <button
+                    class="option"
+                    id="night">
+                    🌙 NOTURNO
+                </button>
 
-<div class="control">
+                <button
+                    class="option"
+                    id="superZoom">
+                    🔭 SUPER ZOOM
+                </button>
 
-<label>Brilho</label>
+                <button
+                    class="option"
+                    id="threeD">
+                    🧊 FOTO 3D
+                </button>
 
-<input
-id="brightness"
-type="range"
-min=".5"
-max="2"
-step=".01"
-value="1">
+            </div>
 
-<span
-class="value"
-id="bv">
-1.00
-</span>
+        </div>
 
-</div>
 
+        <div class="section">
 
-<div class="control">
+            <div class="sectionTitle">
+                CONTROLE DE IMAGEM
+            </div>
 
-<label>Contraste</label>
+            <div class="control">
 
-<input
-id="contrast"
-type="range"
-min=".5"
-max="2.5"
-step=".01"
-value="1">
+                <label>Brilho</label>
 
-<span
-class="value"
-id="cv">
-1.00
-</span>
+                <input
+                    id="brightness"
+                    type="range"
+                    min=".5"
+                    max="1.8"
+                    step=".01"
+                    value="1">
 
-</div>
+                <span
+                    class="value"
+                    id="brightnessValue">
+                    1.00
+                </span>
 
+            </div>
 
-<div class="control">
+            <div class="control">
 
-<label>Saturação</label>
+                <label>Contraste</label>
 
-<input
-id="saturation"
-type="range"
-min="0"
-max="3"
-step=".01"
-value="1">
+                <input
+                    id="contrast"
+                    type="range"
+                    min=".5"
+                    max="2"
+                    step=".01"
+                    value="1">
 
-<span
-class="value"
-id="sv">
-1.00
-</span>
+                <span
+                    class="value"
+                    id="contrastValue">
+                    1.00
+                </span>
 
-</div>
+            </div>
 
+            <div class="control">
 
-<div class="control">
+                <label>Saturação</label>
 
-<label>Super Zoom</label>
+                <input
+                    id="saturation"
+                    type="range"
+                    min="0"
+                    max="2.5"
+                    step=".01"
+                    value="1">
 
-<input
-id="zoom"
-type="range"
-min="1"
-max="8"
-step=".05"
-value="1">
+                <span
+                    class="value"
+                    id="saturationValue">
+                    1.00
+                </span>
 
-<span
-class="value"
-id="zv">
-1.00x
-</span>
+            </div>
 
-</div>
+            <div class="control">
 
-</div>
+                <label>Zoom</label>
 
+                <input
+                    id="zoom"
+                    type="range"
+                    min="1"
+                    max="12"
+                    step=".05"
+                    value="1">
 
-<div class="section">
+                <span
+                    class="value"
+                    id="zoomValue">
+                    1.00x
+                </span>
 
-<div class="sectionTitle">
-    VÍDEO
-</div>
+            </div>
 
-<select id="fps">
+        </div>
 
-<option value="24">
-24 FPS — CINEMA
-</option>
 
-<option value="30" selected>
-30 FPS
-</option>
+        <div class="section">
 
-<option value="60">
-60 FPS
-</option>
+            <div class="sectionTitle">
+                GALERIA
+            </div>
 
-</select>
+            <button
+                class="mainButton"
+                id="openGallery">
+                🖼️ ABRIR GALERIA PREMIUM
+            </button>
 
-<br><br>
+            <br><br>
 
-<select id="videoSpeed">
+            <button
+                class="mainButton"
+                id="importButton">
+                📥 TRAZER DA GALERIA DO IPHONE
+            </button>
 
-<option value="1">
-VELOCIDADE NORMAL
-</option>
+        </div>
 
-<option value=".5">
-🐌 CÂMERA LENTA 0.5×
-</option>
 
-<option value=".25">
-🐌 CÂMERA LENTA 0.25×
-</option>
+        <div class="section">
 
-</select>
+            <button
+                class="mainButton"
+                id="reset">
+                ↺ RESTAURAR CONFIGURAÇÕES
+            </button>
 
-</div>
+        </div>
 
+    </div>
 
-<div class="section">
 
-<div class="sectionTitle">
-    APARÊNCIA DO APLICATIVO
-</div>
+    <!-- =====================================================
+         THEMES
+    ====================================================== -->
 
-<button
-class="threeButton"
-id="themesButton">
+    <div
+        id="themePanel"
+        class="panel">
 
-🎨 90 TEMAS DO APLICATIVO
+        <div class="panelHeader">
 
-</button>
+            <div class="panelTitle">
+                ✨ TEMAS
+            </div>
 
-</div>
+            <button
+                class="close"
+                id="closeThemes">
+                ×
+            </button>
 
+        </div>
 
-<div class="section">
+        <div
+            id="themeGrid"
+            class="themeGrid">
+        </div>
 
-<button
-class="threeButton"
-id="galleryButton">
+    </div>
 
-🖼️ ABRIR GALERIA
 
-</button>
+    <!-- =====================================================
+         GALLERY
+    ====================================================== -->
 
-<br><br>
+    <div id="gallery">
 
-<button
-class="threeButton"
-id="importButton">
+        <div class="galleryTop">
 
-📂 TRAZER DA GALERIA DO IPHONE
+            <div class="galleryTitle">
+                GALERIA
+            </div>
 
-</button>
+            <div class="galleryActions">
 
-<input
-id="fileInput"
-type="file"
-accept="image/*,video/*"
-multiple
-hidden>
+                <button
+                    class="iconButton"
+                    id="importGallery">
+                    ＋
+                </button>
 
-</div>
+                <button
+                    class="iconButton"
+                    id="closeGallery">
+                    ×
+                </button>
 
+            </div>
 
-<div class="section">
+        </div>
 
-<button
-class="threeButton"
-id="reset">
 
-↺ RESTAURAR CONFIGURAÇÕES
+        <div class="galleryTabs">
 
-</button>
+            <button
+                class="galleryTab active"
+                data-filter="all">
+                TUDO
+            </button>
 
-</div>
+            <button
+                class="galleryTab"
+                data-filter="photo">
+                FOTOS
+            </button>
 
-</div>
+            <button
+                class="galleryTab"
+                data-filter="video">
+                VÍDEOS
+            </button>
 
+            <button
+                class="galleryTab"
+                data-filter="3d">
+                3D
+            </button>
 
-<!-- THEMES -->
+        </div>
 
-<div id="themePanel" class="panel">
 
-<div class="panelHeader">
+        <div
+            id="galleryGrid"
+            class="galleryGrid">
+        </div>
 
-<div class="panelTitle">
-🎨 TEMAS
-</div>
+    </div>
 
-<button
-class="close"
-id="closeThemes">
-×
-</button>
 
-</div>
+    <!-- =====================================================
+         IMPORT
+    ====================================================== -->
 
-<div
-class="themeGrid"
-id="themeGrid">
-</div>
+    <input
+        id="importInput"
+        type="file"
+        accept="image/*,video/*"
+        multiple>
 
-</div>
 
+    <!-- =====================================================
+         VIEWER
+    ====================================================== -->
 
-<!-- GALLERY -->
+    <div id="viewer">
 
-<div id="gallery">
+        <button
+            id="viewerClose">
+            ×
+        </button>
 
-<div class="galleryHeader">
+        <img
+            id="viewerMedia"
+            style="display:none">
 
-<div class="galleryTitle">
-MINHA GALERIA
-</div>
+        <video
+            id="viewerVideo"
+            controls
+            playsinline
+            style="display:none">
+        </video>
 
-<div class="galleryTools">
+        <div id="viewer3D">
 
-<button
-class="smallButton"
-id="importGallery">
-＋ IMPORTAR
-</button>
+            <img id="viewer3DImage">
 
-<button
-class="smallButton"
-id="closeGallery">
-×
-</button>
+        </div>
 
-</div>
+        <div id="viewerControls">
 
-</div>
+            <button
+                class="viewerBtn"
+                id="normalView">
+                NORMAL
+            </button>
 
+            <button
+                class="viewerBtn"
+                id="view3D">
+                🧊 3D
+            </button>
 
-<div class="galleryTabs">
+        </div>
 
-<button
-class="galleryTab active"
-data-filter="all">
-TODOS
-</button>
+    </div>
 
-<button
-class="galleryTab"
-data-filter="photo">
-FOTOS
-</button>
 
-<button
-class="galleryTab"
-data-filter="video">
-VÍDEOS
-</button>
+    <div id="toast"></div>
 
-</div>
 
+    <div id="loading">
 
-<div
-class="galleryGrid"
-id="galleryGrid">
-</div>
+        <div class="loader"></div>
 
-</div>
+        <div class="loadingText"
+             id="loadingText">
+            INICIANDO RENATO VISION AI
+        </div>
 
-
-<!-- VIEWER -->
-
-<div id="viewer">
-
-<button
-class="viewerClose"
-id="closeViewer">
-×
-</button>
-
-<div id="viewerContent"></div>
-
-</div>
-
-
-<div id="toast"></div>
-
-
-<div id="loading">
-
-<div class="loader"></div>
-
-<div id="loadingText">
-INICIANDO RENATO VISION 3D AI...
-</div>
+    </div>
 
 </div>
 
 
 <script>
+
+/* =========================================================
+   RENATO VISION AI
+   SEM SUPABASE
+   STORAGE LOCAL: INDEXEDDB
+========================================================= */
+
 "use strict";
 
-/* =====================================================
-ELEMENTOS
-===================================================== */
+
+/* =========================================================
+   ELEMENTOS
+========================================================= */
+
+const $ = id =>
+    document.getElementById(id);
 
 const camera =
-document.getElementById("camera");
+    $("camera");
 
-const capture =
-document.getElementById("capture");
+const loading =
+    $("loading");
 
-const menu =
-document.getElementById("menu");
+const loadingText =
+    $("loadingText");
 
 const mainPanel =
-document.getElementById("mainPanel");
+    $("mainPanel");
 
 const themePanel =
-document.getElementById("themePanel");
-
-const themeGrid =
-document.getElementById("themeGrid");
+    $("themePanel");
 
 const gallery =
-document.getElementById("gallery");
+    $("gallery");
 
 const galleryGrid =
-document.getElementById("galleryGrid");
-
-const viewer =
-document.getElementById("viewer");
-
-const viewerContent =
-document.getElementById("viewerContent");
+    $("galleryGrid");
 
 const toast =
-document.getElementById("toast");
+    $("toast");
 
-const depthOverlay =
-document.getElementById("depthOverlay");
+const filterName =
+    $("filterName");
 
-const threeBadge =
-document.getElementById("threeBadge");
+const focusBox =
+    $("focusBox");
 
-const status =
-document.getElementById("status");
+
+/* =========================================================
+   ESTADO
+========================================================= */
 
 let stream = null;
-let facing = "environment";
-let threeMode = false;
-let aiEnabled = true;
-let nightEnabled = false;
-let recording = false;
+
+let facing =
+    "environment";
+
 let recorder = null;
+
+let recording =
+    false;
+
 let chunks = [];
-let currentFilter = "normal";
-let currentGalleryFilter = "all";
+
+let recordStarted =
+    0;
+
+let recordInterval = null;
+
+let currentSpeed = 1;
+
+let aiEnabled = true;
+
+let nightEnabled = false;
+
+let superZoom = false;
+
+let threeDEnabled = false;
+
+let currentFilter = 0;
+
+let galleryFilter = "all";
+
+let touchStartX = 0;
+
+let touchStartY = 0;
+
 let db = null;
 
+
+/* =========================================================
+   CANVAS
+========================================================= */
+
 const canvas =
-document.createElement("canvas");
+    document.createElement("canvas");
 
 const ctx =
-canvas.getContext("2d");
+    canvas.getContext(
+        "2d",
+        {
+            willReadFrequently:true
+        }
+    );
 
 
-/* =====================================================
-90 TEMAS DE INTERFACE
-===================================================== */
-
-const themes = [
-["obsidian","#050507","#17171c","#ffffff","#8b5cf6"],
-["midnight","#02030a","#101426","#6ea8ff","#335cff"],
-["graphite","#090909","#1b1b1b","#eeeeee","#777777"],
-["titanium","#111315","#24272a","#f0f3f5","#9ba4aa"],
-["silver","#111213","#27292b","#ffffff","#bfc7cc"],
-["platinum","#111315","#292d30","#ffffff","#d9e1e5"],
-["blackgold","#080706","#21190b","#ffe6a1","#c58b20"],
-["gold","#0c0903","#261b06","#ffe8a3","#e5a928"],
-["luxury","#09070b","#201522","#f3c8ff","#b95cff"],
-["diamond","#08090c","#18202b","#dff8ff","#75dfff"],
-
-["ruby","#0d0306","#27080f","#ffb2bd","#e51e45"],
-["rose","#0c0508","#28101a","#ffc5d7","#f05d91"],
-["pink","#0d050b","#281024","#ffd0ed","#f42ba5"],
-["purple","#08050f","#1b0e2e","#dfc7ff","#8b5cf6"],
-["violet","#06050d","#180e2d","#c9b4ff","#6d28d9"],
-["lavender","#08070d","#201a30","#e7dcff","#b18cff"],
-["amethyst","#08040d","#25113b","#edcaff","#a855f7"],
-["indigo","#050611","#11163a","#bdc8ff","#4f46e5"],
-["blue","#03080e","#0d1b2d","#bde0ff","#238bff"],
-["electric","#02070b","#08243a","#b8f1ff","#00bfff"],
-
-["cyan","#020a0d","#0b2730","#b9ffff","#00e5ff"],
-["aqua","#020b0b","#0a2925","#bafff1","#00d4aa"],
-["mint","#030a07","#0e281d","#c5ffe5","#2dd4a3"],
-["emerald","#030a06","#0d281b","#bafed5","#00b96b"],
-["forest","#020804","#0b1d10","#b9e8c6","#2e8b57"],
-["lime","#070a02","#202b05","#e9ffc0","#a3e635"],
-["green","#020803","#0c2110","#b9ffc8","#22c55e"],
-["matrix","#010603","#06200d","#aaffbd","#00ff66"],
-["teal","#02090a","#0c2325","#bafcff","#14b8a6"],
-["ocean","#02070c","#0b2035","#b9e5ff","#0284c7"],
-
-["navy","#02040b","#0b132b","#bfd2ff","#1d4ed8"],
-["royal","#03050d","#111a42","#d0d9ff","#4169e1"],
-["sapphire","#02060c","#09223b","#c2e6ff","#2563eb"],
-["arctic","#04090e","#142631","#d7f5ff","#67e8f9"],
-["ice","#061016","#18313d","#e0fbff","#7dd3fc"],
-["sky","#04090e","#12273b","#d5efff","#38bdf8"],
-["storm","#07090c","#171c25","#d2d8e2","#64748b"],
-["steel","#0a0d10","#1e252c","#d9e2e9","#718096"],
-["chrome","#080a0c","#202428","#ffffff","#a8b0b8"],
-["carbon","#030303","#151515","#eeeeee","#555555"],
-
-["fire","#0c0301","#2b0c03","#ffd0b2","#ff4d00"],
-["lava","#0c0200","#2b0803","#ffd0a8","#f43f00"],
-["orange","#0c0702","#281606","#ffe0ad","#f97316"],
-["amber","#0b0701","#291d04","#ffe9a9","#f59e0b"],
-["sunset","#0d0503","#29120c","#ffd4bf","#ff7043"],
-["coral","#0c0504","#29120e","#ffd1c6","#fb7185"],
-["copper","#0a0705","#25150c","#f4d1b7","#b87333"],
-["bronze","#0a0805","#24190c","#f0d3a8","#cd7f32"],
-["sand","#0b0905","#282116","#f8e5c5","#d4a373"],
-["desert","#0a0804","#251d0d","#f6ddb0","#c49a4a"],
-
-["coffee","#070503","#21160e","#ead1b5","#9a6a45"],
-["mocha","#080604","#25150c","#f1d0af","#8b5e3c"],
-["chocolate","#060403","#21100b","#efd0bd","#7b3f2f"],
-["wine","#0b0306","#260914","#ffd0dc","#8f1238"],
-["burgundy","#090306","#250914","#ffd1db","#991b45"],
-["plum","#08040a","#211024","#f0cfff","#7e22ce"],
-["berry","#0b0308","#290c1e","#ffcbe8","#be185d"],
-["magenta","#0b0208","#2a0624","#ffc8ef","#db2777"],
-["neonpink","#0b0208","#250522","#ffd1f4","#ff1493"],
-["neonpurple","#07020d","#19052b","#e7c7ff","#b026ff"],
-
-["neonblue","#02050b","#05203a","#c7efff","#009dff"],
-["neongreen","#020804","#06230e","#c7ffd2","#00ff66"],
-["neonorange","#090400","#291103","#ffe1c7","#ff6600"],
-["neonred","#0a0203","#28070b","#ffd0d6","#ff1744"],
-["cyber","#020309","#091b2c","#b8efff","#00d9ff"],
-["cyberpurple","#06020c","#17072d","#e3c5ff","#8b5cff"],
-["cybergreen","#010603","#06200e","#b7ffd0","#00ff88"],
-["synthwave","#07020d","#21082d","#ffc7ff","#ff4ecd"],
-["retrowave","#0a0309","#281022","#ffd0f0","#ff3cac"],
-["hologram","#05080d","#132331","#dcfaff","#6fffe9"],
-
-["galaxy","#03030b","#10102a","#ddd5ff","#7c5cff"],
-["nebula","#05020c","#1b0a2e","#e8caff","#a855f7"],
-["cosmos","#02030a","#0d1530","#d0e0ff","#6366f1"],
-["space","#020204","#10131c","#dce7ff","#64748b"],
-["moonlight","#05070b","#151b27","#dce7ff","#9ca3af"],
-["aurora","#02090a","#0b2826","#caffef","#22d3ee"],
-["northern","#02080b","#092824","#d1fff1","#34d399"],
-["starlight","#050509","#151528","#fff4cc","#f5f5dc"],
-["eclipse","#030305","#12121a","#dddde8","#6366f1"],
-["blackice","#030609","#0d1b23","#d0f5ff","#38bdf8"],
-
-["vintage","#090704","#241b10","#f4dfbd","#a47c48"],
-["classic","#080807","#1b1b18","#f1f0e8","#9b9b8b"],
-["retro","#090604","#24150b","#f5d3a9","#d0874d"],
-["film","#070707","#191919","#eeeeee","#999999"],
-["noir","#030303","#151515","#ffffff","#777777"],
-["editorial","#070709","#17171d","#ffffff","#9ca3af"],
-["minimal","#050505","#111111","#ffffff","#888888"],
-["studio","#08090a","#181b1f","#ffffff","#8ea3b8"],
-["professional","#060708","#131820","#d9e7f5","#4f8db8"],
-["signature","#050505","#161218","#ffffff","#e11d48"]
-];
-
-
-/* =====================================================
-FILTROS
-===================================================== */
+/* =========================================================
+   FILTROS
+========================================================= */
 
 const filters = [
-["normal","NORMAL","none"],
-["cinema","CINEMA","contrast(1.15) saturate(.9)"],
-["vivid","VIVID","contrast(1.12) saturate(1.55)"],
-["portrait","PORTRAIT","contrast(.96) saturate(.9) brightness(1.04)"],
-["warm","WARM","sepia(.18) saturate(1.25)"],
-["cool","COOL","hue-rotate(150deg) saturate(.85)"],
-["noir","NOIR","grayscale(1) contrast(1.5)"],
-["vintage","VINTAGE","sepia(.3) contrast(1.05)"],
-["dream","DREAM","brightness(1.08) contrast(.88) saturate(1.1)"],
-["dramatic","DRAMATIC","contrast(1.5) brightness(.9)"],
-["night","NIGHT","brightness(.7) contrast(1.4) saturate(.75)"],
-["neon","NEON","saturate(2) contrast(1.3)"],
-["teal","TEAL","hue-rotate(165deg) saturate(1.3)"],
-["gold","GOLD","sepia(.25) saturate(1.4)"],
-["mono","MONO","grayscale(1) contrast(1.2)"]
+
+    ["ORIGINAL","none"],
+
+    ["CINEMA",
+        "contrast(1.15) saturate(.9) brightness(.98)"],
+
+    ["VINTAGE",
+        "sepia(.28) saturate(.85) contrast(1.05)"],
+
+    ["PORTRAIT",
+        "brightness(1.04) contrast(.94) saturate(.88)"],
+
+    ["VIVID",
+        "saturate(1.65) contrast(1.12)"],
+
+    ["NOIR",
+        "grayscale(1) contrast(1.55)"],
+
+    ["GOLD",
+        "sepia(.18) saturate(1.35) contrast(1.08)"],
+
+    ["COOL",
+        "saturate(.8) hue-rotate(160deg) contrast(1.08)"],
+
+    ["WARM",
+        "sepia(.14) saturate(1.3)"],
+
+    ["MATTE",
+        "contrast(.88) brightness(1.06) saturate(.85)"],
+
+    ["DREAM",
+        "brightness(1.08) contrast(.86) saturate(1.08)"],
+
+    ["DRAMATIC",
+        "contrast(1.5) brightness(.9) saturate(.8)"],
+
+    ["STREET",
+        "contrast(1.3) saturate(.9)"],
+
+    ["FASHION",
+        "contrast(1.18) saturate(1.08)"],
+
+    ["SUNSET",
+        "sepia(.18) saturate(1.5)"],
+
+    ["OCEAN",
+        "saturate(1.1) hue-rotate(150deg)"],
+
+    ["EMERALD",
+        "saturate(1.4) hue-rotate(75deg)"],
+
+    ["RUBY",
+        "saturate(1.5) hue-rotate(325deg)"],
+
+    ["CYBER",
+        "contrast(1.35) saturate(1.8) hue-rotate(150deg)"],
+
+    ["MONO",
+        "grayscale(1) contrast(1.2)"]
+
 ];
 
 
-/* =====================================================
-FILTROS UI
-===================================================== */
+/* =========================================================
+   90 TEMAS VISUAIS
+========================================================= */
 
-const filterStrip =
-document.getElementById("filterStrip");
+const themeNames = [
 
-filters.forEach(f=>{
-    const b =
-    document.createElement("button");
+"Midnight",
+"Obsidian",
+"Carbon",
+"Graphite",
+"Platinum",
+"Silver",
+"Crystal",
+"Diamond",
+"Luxury",
+"Gold",
 
-    b.className="filterCard";
+"Rose Gold",
+"Ruby",
+"Scarlet",
+"Crimson",
+"Wine",
+"Coral",
+"Sunset",
+"Amber",
+"Orange",
+"Fire",
 
-    b.textContent=f[1];
+"Lemon",
+"Golden",
+"Olive",
+"Forest",
+"Emerald",
+"Mint",
+"Jade",
+"Turquoise",
+"Cyan",
+"Ocean",
 
-    b.dataset.filter=f[0];
+"Deep Ocean",
+"Blue",
+"Sapphire",
+"Royal Blue",
+"Sky",
+"Ice",
+"Arctic",
+"Indigo",
+"Violet",
+"Purple",
 
-    b.onclick=()=>{
-        currentFilter=f[0];
+"Amethyst",
+"Lavender",
+"Magenta",
+"Pink",
+"Rose",
+"Neon Pink",
+"Neon Blue",
+"Neon Green",
+"Cyber",
+"Matrix",
 
-        document
-        .querySelectorAll(".filterCard")
-        .forEach(x=>{
-            x.classList.toggle(
-                "active",
-                x===b
-            );
-        });
+"Vaporwave",
+"Futuristic",
+"Minimal",
+"Pure Black",
+"Pure White",
+"Studio",
+"Cinema",
+"Film",
+"Vintage",
+"Retro",
 
-        updateCamera();
-    };
+"Classic",
+"Editorial",
+"Fashion",
+"Professional",
+"Executive",
+"Premium",
+"Elegant",
+"Dark Glass",
+"Soft Glass",
+"Crystal Glass",
 
-    filterStrip.appendChild(b);
-});
+"Carbon Fiber",
+"Metal",
+"Chrome",
+"Steel",
+"Bronze",
+"Copper",
+"Pearl",
+"Silk",
+"Velvet",
+"Midnight Blue",
 
-
-/* =====================================================
-TEMA
-===================================================== */
-
-function applyTheme(t){
-
-    const root=document.documentElement;
-
-    root.style.setProperty(
-        "--bg",t[1]
-    );
-
-    root.style.setProperty(
-        "--panel",t[2]
-    );
-
-    root.style.setProperty(
-        "--accent",t[3]
-    );
-
-    root.style.setProperty(
-        "--accent2",t[4]
-    );
-
-    document.body.style.background=t[1];
-
-    localStorage.setItem(
-        "rv-theme",
-        t[0]
-    );
-
-    showToast(
-        "Tema "+t[0]+" ativado"
-    );
-}
-
-
-themes.forEach(t=>{
-
-    const card=
-    document.createElement("button");
-
-    card.className="themeCard";
-
-    card.innerHTML=`
-
-        <div
-        class="themePreview"
-        style="
-        background:
-        linear-gradient(
-        145deg,
-        ${t[1]},
-        ${t[2]}
-        );
-        ">
-
-            <div class="themeMiniTop">
-
-                <span
-                class="themeMiniDot"
-                style="
-                background:${t[4]};
-                box-shadow:
-                0 0 15px ${t[4]};
-                ">
-                </span>
-
-                <span
-                class="themeMiniButton"
-                style="
-                background:${t[4]};
-                opacity:.8;
-                ">
-                </span>
-
-            </div>
-
-            <div
-            class="themeName">
-            ${t[0].toUpperCase()}
-            </div>
-
-        </div>
-    `;
-
-    card.onclick=()=>{
-        applyTheme(t);
-        themePanel.classList.remove("open");
-    };
-
-    themeGrid.appendChild(card);
-});
+"Deep Purple",
+"Deep Red",
+"Deep Green",
+"Deep Cyan",
+"Deep Gold",
+"Storm",
+"Rain",
+"Cloud",
+"Moon",
+"Solar"
+];
 
 
-const savedTheme =
-localStorage.getItem("rv-theme");
+/* =========================================================
+   GERAR TEMAS
+========================================================= */
 
-if(savedTheme){
+const palettes = [
 
-    const t =
-    themes.find(x=>x[0]===savedTheme);
+["#09090c","#25252c"],
+["#050507","#15151d"],
+["#111216","#292b31"],
+["#17191d","#36383f"],
+["#c9ced6","#5d626b"],
+["#9da3ad","#30343c"],
+["#eef3ff","#667085"],
+["#f4f4f5","#71717a"],
+["#c9a35b","#17120a"],
+["#ffd45c","#553b00"],
 
-    if(t) applyTheme(t);
+["#e9b5b8","#542c34"],
+["#ff304f","#250008"],
+["#ff2438","#54000b"],
+["#c50024","#250006"],
+["#66152c","#17030a"],
+["#ff705c","#48130e"],
+["#ff7a45","#351207"],
+["#ffb347","#402100"],
+["#ff8a00","#421b00"],
+["#ff3000","#350600"],
 
-}else{
+["#fff200","#443f00"],
+["#ffd21f","#463700"],
+["#9aa33b","#20230a"],
+["#43b96c","#071f0e"],
+["#00d084","#03261a"],
+["#56e39f","#07271b"],
+["#00a878","#04221a"],
+["#18c9c0","#032222"],
+["#00e5ff","#03252b"],
+["#087ea4","#031722"],
 
-    applyTheme(themes[0]);
+["#005b78","#02151d"],
+["#168cff","#04142d"],
+["#1464ff","#061642"],
+["#3654ff","#0c1242"],
+["#58b7ff","#071b2c"],
+["#a5e9ff","#0b2938"],
+["#a6ddff","#0b2230"],
+["#5f4cff","#100b36"],
+["#7a42ff","#16082f"],
+["#b044ff","#22062f"],
 
-}
+["#d946ef","#29072e"],
+["#9b5cff","#1b0a3a"],
+["#ff3cac","#35051f"],
+["#ff69b4","#3b0c26"],
+["#ff6d9a","#350816"],
+["#ff29a8","#3c0529"],
+["#00d9ff","#04233a"],
+["#54ff89","#062c18"],
+["#00ff91","#042b1d"],
+["#00ff66","#032814"],
+
+["#8a2be2","#071b5e"],
+["#00f5ff","#22004a"],
+["#ff00d4","#12002f"],
+["#00ffb7","#002b25"],
+["#111827","#374151"],
+["#ffffff","#d4d4d8"],
+["#f8fafc","#64748b"],
+["#111827","#0f172a"],
+["#141414","#292929"],
+["#1a1a1a","#3b3b3b"],
+
+["#d4af37","#191307"],
+["#a8a29e","#292524"],
+["#d1d5db","#3f3f46"],
+["#71717a","#27272a"],
+["#111827","#1e3a8a"],
+["#111827","#4c1d95"],
+["#0b1220","#312e81"],
+["#111827","#7f1d1d"],
+["#111827","#14532d"],
+["#111827","#164e63"],
+
+["#171717","#3f3f46"],
+["#202020","#525252"],
+["#252525","#737373"],
+["#7c2d12","#431407"],
+["#a16207","#422006"],
+["#d97706","#451a03"],
+["#f5f5f4","#57534e"],
+["#f1f5f9","#334155"],
+["#312e81","#0f172a"],
+["#0b1020","#1e3a8a"],
+
+["#581c87","#1e0a3a"],
+["#7e22ce","#2e1065"],
+["#991b1b","#450a0a"],
+["#14532d","#052e16"],
+["#164e63","#083344"],
+["#713f12","#422006"],
+["#334155","#111827"],
+["#475569","#0f172a"],
+["#1e293b","#020617"],
+["#312e81","#020617"]
+
+];
 
 
-/* =====================================================
-DATABASE
-===================================================== */
+/* =========================================================
+   DATABASE
+========================================================= */
 
-function openDB(){
+function openDatabase(){
 
-    return new Promise((resolve,reject)=>{
+    return new Promise(
+        (resolve,reject)=>{
 
-        const req =
-        indexedDB.open(
-            "RenatoVision3D",
-            1
-        );
-
-        req.onupgradeneeded=e=>{
-
-            const d=e.target.result;
-
-            if(
-                !d.objectStoreNames.contains(
-                    "media"
-                )
-            ){
-
-                d.createObjectStore(
-                    "media",
-                    {
-                        keyPath:"id"
-                    }
+            const request =
+                indexedDB.open(
+                    "RenatoVisionPremium",
+                    1
                 );
+
+            request.onupgradeneeded =
+                event => {
+
+                    const database =
+                        event.target.result;
+
+                    if(
+                        !database.objectStoreNames.contains(
+                            "media"
+                        )
+                    ){
+
+                        database.createObjectStore(
+                            "media",
+                            {
+                                keyPath:"id"
+                            }
+                        );
+
+                    }
+
+                };
+
+            request.onsuccess =
+                event => {
+
+                    db =
+                        event.target.result;
+
+                    resolve(db);
+
+                };
+
+            request.onerror =
+                () =>
+                    reject(
+                        request.error
+                    );
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   SAVE MEDIA
+========================================================= */
+
+function saveMedia(
+    blob,
+    type,
+    is3D=false
+){
+
+    return new Promise(
+        (resolve,reject)=>{
+
+            if(!db){
+
+                reject(
+                    new Error(
+                        "DB indisponível"
+                    )
+                );
+
+                return;
 
             }
 
-        };
+            const tx =
+                db.transaction(
+                    "media",
+                    "readwrite"
+                );
 
-        req.onsuccess=e=>{
-            db=e.target.result;
-            resolve();
-        };
+            tx.objectStore(
+                "media"
+            ).put({
 
-        req.onerror=()=>{
-            reject(req.error);
-        };
+                id:
+                    Date.now()
+                    +
+                    Math.random(),
 
-    });
+                blob,
 
-}
+                type,
 
+                is3D,
 
-/* =====================================================
-SALVAR
-===================================================== */
+                created:
+                    Date.now()
 
-function saveMedia(blob,type,extra={}){
+            });
 
-    return new Promise((resolve,reject)=>{
+            tx.oncomplete =
+                resolve;
 
-        const tx=
-        db.transaction(
-            "media",
-            "readwrite"
-        );
+            tx.onerror =
+                () =>
+                    reject(
+                        tx.error
+                    );
 
-        tx.objectStore("media").put({
-
-            id:
-            Date.now()+
-            Math.random(),
-
-            blob,
-
-            type,
-
-            threeD:
-            !!extra.threeD,
-
-            filter:
-            currentFilter,
-
-            created:
-            Date.now()
-
-        });
-
-        tx.oncomplete=resolve;
-
-        tx.onerror=()=>{
-            reject(tx.error);
-        };
-
-    });
+        }
+    );
 
 }
 
 
-/* =====================================================
-LISTAR
-===================================================== */
+/* =========================================================
+   GET MEDIA
+========================================================= */
 
 function getMedia(){
 
-    return new Promise((resolve,reject)=>{
+    return new Promise(
+        (resolve,reject)=>{
 
-        const tx=
-        db.transaction(
-            "media",
-            "readonly"
-        );
+            const tx =
+                db.transaction(
+                    "media",
+                    "readonly"
+                );
 
-        const req=
-        tx.objectStore("media")
-        .getAll();
+            const req =
+                tx.objectStore(
+                    "media"
+                ).getAll();
 
-        req.onsuccess=()=>{
+            req.onsuccess =
+                () => {
 
-            const data=req.result||[];
+                    const list =
+                        req.result || [];
 
-            data.sort(
-                (a,b)=>
-                b.created-a.created
-            );
+                    list.sort(
+                        (a,b) =>
+                            b.created -
+                            a.created
+                    );
 
-            resolve(data);
+                    resolve(list);
 
-        };
+                };
 
-        req.onerror=()=>{
-            reject(req.error);
-        };
+            req.onerror =
+                () =>
+                    reject(
+                        req.error
+                    );
 
-    });
-
-}
-
-
-/* =====================================================
-DELETE
-===================================================== */
-
-function deleteItem(id){
-
-    return new Promise(resolve=>{
-
-        const tx=
-        db.transaction(
-            "media",
-            "readwrite"
-        );
-
-        tx.objectStore("media")
-        .delete(id);
-
-        tx.oncomplete=resolve;
-
-    });
+        }
+    );
 
 }
 
 
-/* =====================================================
-TOAST
-===================================================== */
+/* =========================================================
+   DELETE
+========================================================= */
+
+function removeMedia(id){
+
+    return new Promise(
+        (resolve,reject)=>{
+
+            const tx =
+                db.transaction(
+                    "media",
+                    "readwrite"
+                );
+
+            tx.objectStore(
+                "media"
+            ).delete(id);
+
+            tx.oncomplete =
+                resolve;
+
+            tx.onerror =
+                () =>
+                    reject(
+                        tx.error
+                    );
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   TOAST
+========================================================= */
 
 let toastTimer;
 
@@ -2089,236 +2437,633 @@ function showToast(text){
 
     clearTimeout(toastTimer);
 
-    toast.textContent=text;
+    toast.textContent =
+        text;
 
-    toast.classList.add("show");
+    toast.classList.add(
+        "show"
+    );
 
-    toastTimer=
-    setTimeout(()=>{
-        toast.classList.remove("show");
-    },2200);
+    toastTimer =
+        setTimeout(
+            () =>
+                toast.classList.remove(
+                    "show"
+                ),
+            2200
+        );
 
 }
 
 
-/* =====================================================
-MENU
-===================================================== */
+/* =========================================================
+   MENU
+========================================================= */
 
-menu.onclick=()=>{
-    mainPanel.classList.add("open");
-};
+function openMenu(){
 
-document.getElementById("closeMain")
-.onclick=()=>{
-    mainPanel.classList.remove("open");
-};
-
-document.getElementById("themesButton")
-.onclick=()=>{
-    mainPanel.classList.remove("open");
-    themePanel.classList.add("open");
-};
-
-document.getElementById("closeThemes")
-.onclick=()=>{
-    themePanel.classList.remove("open");
-};
-
-
-/* =====================================================
-MODO 3D
-===================================================== */
-
-function set3DMode(value){
-
-    threeMode=value;
-
-    document
-    .getElementById("threeMode")
-    .classList.toggle(
-        "active",
-        value
+    mainPanel.classList.add(
+        "open"
     );
-
-    document
-    .getElementById("normalMode")
-    .classList.toggle(
-        "active",
-        !value
-    );
-
-    capture.classList.toggle(
-        "three",
-        value
-    );
-
-    threeBadge.classList.toggle(
-        "show",
-        value
-    );
-
-    status.textContent=
-    value
-    ?
-    "FOTO 3D"
-    :
-    "FOTO";
 
 }
 
-document.getElementById("threeMode")
-.onclick=()=>{
-    set3DMode(true);
-};
+function closeMenu(){
 
-document.getElementById("normalMode")
-.onclick=()=>{
-    set3DMode(false);
-};
-
-
-/* =====================================================
-FILTER CSS
-===================================================== */
-
-function getFilter(){
-
-    const f =
-    filters.find(
-        x=>x[0]===currentFilter
+    mainPanel.classList.remove(
+        "open"
     );
 
-    let value =
-    f ? f[2] : "none";
+}
 
-    value +=
-    ` brightness(${document.getElementById("brightness").value})`;
+$("menuButton").onclick =
+    openMenu;
 
-    value +=
-    ` contrast(${document.getElementById("contrast").value})`;
+$("menuQuick").onclick =
+    openMenu;
 
-    value +=
-    ` saturate(${document.getElementById("saturation").value})`;
+$("closeMenu").onclick =
+    closeMenu;
+
+
+/* =========================================================
+   TEMAS
+========================================================= */
+
+function createThemes(){
+
+    const grid =
+        $("themeGrid");
+
+    grid.innerHTML =
+        "";
+
+    themeNames.forEach(
+        (name,index)=>{
+
+            const button =
+                document.createElement(
+                    "button"
+                );
+
+            button.className =
+                "themeCard";
+
+            const colors =
+                palettes[
+                    index %
+                    palettes.length
+                ];
+
+            button.style.setProperty(
+                "--a",
+                colors[0]
+            );
+
+            button.style.setProperty(
+                "--b",
+                colors[1]
+            );
+
+            button.innerHTML =
+                `<span>${String(index+1).padStart(2,"0")} · ${name}</span>`;
+
+            button.onclick =
+                () => {
+
+                    applyAppTheme(
+                        index,
+                        name
+                    );
+
+                    themePanel.classList.remove(
+                        "open"
+                    );
+
+                };
+
+            grid.appendChild(
+                button
+            );
+
+        }
+    );
+
+}
+
+
+function applyAppTheme(
+    index,
+    name
+){
+
+    document.body.className =
+        "theme-"+index;
+
+    const colors =
+        palettes[
+            index %
+            palettes.length
+        ];
+
+    document.documentElement.style.setProperty(
+        "--accent",
+        colors[0]
+    );
+
+    showToast(
+        "Tema: "+name
+    );
+
+    localStorage.setItem(
+        "rvTheme",
+        index
+    );
+
+}
+
+
+$("openThemes").onclick =
+    () => {
+
+        mainPanel.classList.remove(
+            "open"
+        );
+
+        themePanel.classList.add(
+            "open"
+        );
+
+    };
+
+
+$("closeThemes").onclick =
+    () => {
+
+        themePanel.classList.remove(
+            "open"
+        );
+
+    };
+
+
+/* =========================================================
+   FILTER
+========================================================= */
+
+function currentFilterCSS(){
+
+    let css =
+        filters[
+            currentFilter
+        ][1];
+
+    if(css === "none"){
+        css = "";
+    }
+
+    css +=
+        ` brightness(${ $("brightness").value })
+          contrast(${ $("contrast").value })
+          saturate(${ $("saturation").value })`;
 
     if(nightEnabled){
 
-        value +=
-        " brightness(.75) contrast(1.35)";
+        css +=
+            " brightness(.72) contrast(1.45)";
 
     }
 
-    return value;
+    return css;
+
 }
 
 
 function updateCamera(){
 
-    camera.style.filter=
-    getFilter();
+    camera.style.filter =
+        currentFilterCSS();
 
-    camera.style.transform=
-    `scale(${document.getElementById("zoom").value})`;
+    let z =
+        Number(
+            $("zoom").value
+        );
+
+    if(superZoom){
+
+        z =
+            Math.max(
+                z,
+                3
+            );
+
+    }
+
+    camera.style.transform =
+        `scale(${z})`;
 
 }
 
 
-/* =====================================================
-CONTROLES
-===================================================== */
+/* =========================================================
+   FILTER LABEL
+========================================================= */
 
-const brightness=
-document.getElementById("brightness");
+function showFilter(){
 
-const contrast=
-document.getElementById("contrast");
+    filterName.textContent =
+        filters[
+            currentFilter
+        ][0];
 
-const saturation=
-document.getElementById("saturation");
+    filterName.classList.add(
+        "show"
+    );
 
-const zoom=
-document.getElementById("zoom");
+    clearTimeout(
+        showFilter.timer
+    );
 
-function updateValues(){
+    showFilter.timer =
+        setTimeout(
+            () =>
+                filterName.classList.remove(
+                    "show"
+                ),
+            900
+        );
 
-    document.getElementById("bv")
-    .textContent=
-    Number(brightness.value).toFixed(2);
+}
 
-    document.getElementById("cv")
-    .textContent=
-    Number(contrast.value).toFixed(2);
 
-    document.getElementById("sv")
-    .textContent=
-    Number(saturation.value).toFixed(2);
+/* =========================================================
+   SWIPE FILTER
+========================================================= */
 
-    document.getElementById("zv")
-    .textContent=
-    Number(zoom.value).toFixed(2)+"x";
+function nextFilter(direction){
+
+    currentFilter +=
+        direction;
+
+    if(
+        currentFilter <
+        0
+    ){
+
+        currentFilter =
+            filters.length-1;
+
+    }
+
+    if(
+        currentFilter >=
+        filters.length
+    ){
+
+        currentFilter =
+            0;
+
+    }
 
     updateCamera();
+
+    showFilter();
+
 }
+
+
+/* =========================================================
+   SWIPE
+========================================================= */
+
+$("app").addEventListener(
+    "touchstart",
+    event => {
+
+        if(
+            event.touches.length === 1
+        ){
+
+            touchStartX =
+                event.touches[0].clientX;
+
+            touchStartY =
+                event.touches[0].clientY;
+
+        }
+
+    },
+    {
+        passive:true
+    }
+);
+
+
+$("app").addEventListener(
+    "touchend",
+    event => {
+
+        if(
+            event.changedTouches.length !== 1
+        ){
+
+            return;
+
+        }
+
+        const x =
+            event.changedTouches[0].clientX;
+
+        const y =
+            event.changedTouches[0].clientY;
+
+        const dx =
+            x-touchStartX;
+
+        const dy =
+            y-touchStartY;
+
+        if(
+            Math.abs(dx)>70 &&
+            Math.abs(dx)>Math.abs(dy)
+        ){
+
+            if(
+                dx < 0
+            ){
+
+                nextFilter(1);
+
+            }else{
+
+                nextFilter(-1);
+
+            }
+
+        }
+
+    },
+    {
+        passive:true
+    }
+);
+
+
+/* =========================================================
+   FOCUS
+========================================================= */
+
+$("app").addEventListener(
+    "click",
+    event => {
+
+        if(
+            event.target.closest(
+                "button"
+            )
+            ||
+            event.target.closest(
+                ".panel"
+            )
+        ){
+
+            return;
+
+        }
+
+        if(
+            event.clientY <
+            window.innerHeight-180
+        ){
+
+            focusBox.style.left =
+                event.clientX+"px";
+
+            focusBox.style.top =
+                event.clientY+"px";
+
+            focusBox.classList.add(
+                "show"
+            );
+
+            setTimeout(
+                () =>
+                    focusBox.classList.remove(
+                        "show"
+                    ),
+                700
+            );
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   CONTROLES
+========================================================= */
 
 [
-brightness,
-contrast,
-saturation,
-zoom
-].forEach(x=>{
-    x.oninput=updateValues;
-});
+    "brightness",
+    "contrast",
+    "saturation",
+    "zoom"
+]
+.forEach(
+    id => {
+
+        $(id).addEventListener(
+            "input",
+            () => {
+
+                $(id+"Value").textContent =
+                    Number(
+                        $(id).value
+                    ).toFixed(2);
+
+                updateCamera();
+
+            }
+        );
+
+    }
+);
 
 
-/* =====================================================
-AI
-===================================================== */
+/* =========================================================
+   AI
+========================================================= */
 
-document.getElementById("ai")
-.onclick=()=>{
+$("ai").onclick =
+    () => {
 
-    aiEnabled=!aiEnabled;
+        aiEnabled =
+            !aiEnabled;
 
-    document
-    .getElementById("ai")
-    .classList.toggle(
-        "active",
-        aiEnabled
-    );
+        $("ai").classList.toggle(
+            "active",
+            aiEnabled
+        );
 
-    showToast(
-        aiEnabled
-        ?
-        "AI ativada"
-        :
-        "AI desativada"
-    );
+        showToast(
+            aiEnabled
+            ?
+            "AI local ativada"
+            :
+            "AI local desativada"
+        );
 
-};
-
-
-document.getElementById("night")
-.onclick=()=>{
-
-    nightEnabled=!nightEnabled;
-
-    document
-    .getElementById("night")
-    .classList.toggle(
-        "active",
-        nightEnabled
-    );
-
-    updateCamera();
-
-};
+    };
 
 
-/* =====================================================
-CAMERA
-===================================================== */
+/* =========================================================
+   NIGHT
+========================================================= */
+
+$("night").onclick =
+    () => {
+
+        nightEnabled =
+            !nightEnabled;
+
+        $("night").classList.toggle(
+            "active",
+            nightEnabled
+        );
+
+        updateCamera();
+
+    };
+
+
+/* =========================================================
+   SUPER ZOOM
+========================================================= */
+
+$("superZoom").onclick =
+    () => {
+
+        superZoom =
+            !superZoom;
+
+        $("superZoom").classList.toggle(
+            "active",
+            superZoom
+        );
+
+        if(superZoom){
+
+            $("zoom").value =
+                Math.max(
+                    3,
+                    Number(
+                        $("zoom").value
+                    )
+                );
+
+        }
+
+        updateCamera();
+
+        showToast(
+            superZoom
+            ?
+            "Super Zoom ativado"
+            :
+            "Super Zoom desativado"
+        );
+
+    };
+
+
+/* =========================================================
+   3D
+========================================================= */
+
+$("threeD").onclick =
+    () => {
+
+        threeDEnabled =
+            !threeDEnabled;
+
+        $("threeD").classList.toggle(
+            "active",
+            threeDEnabled
+        );
+
+        showToast(
+            threeDEnabled
+            ?
+            "Modo foto 3D ativado"
+            :
+            "Modo foto 3D desativado"
+        );
+
+    };
+
+
+/* =========================================================
+   VIDEO SPEED
+========================================================= */
+
+document
+.querySelectorAll(
+    "[data-speed]"
+)
+.forEach(
+    button => {
+
+        button.onclick =
+            () => {
+
+                currentSpeed =
+                    Number(
+                        button.dataset.speed
+                    );
+
+                document
+                .querySelectorAll(
+                    "[data-speed]"
+                )
+                .forEach(
+                    b =>
+                        b.classList.remove(
+                            "active"
+                        )
+                );
+
+                button.classList.add(
+                    "active"
+                );
+
+                showToast(
+                    "Velocidade "+currentSpeed+"×"
+                );
+
+            };
+
+    }
+);
+
+
+/* =========================================================
+   CAMERA
+========================================================= */
 
 async function startCamera(){
+
+    if(
+        !navigator.mediaDevices ||
+        !navigator.mediaDevices.getUserMedia
+    ){
+
+        loadingText.textContent =
+            "CÂMERA NÃO SUPORTADA";
+
+        return;
+
+    }
 
     try{
 
@@ -2326,156 +3071,168 @@ async function startCamera(){
 
             stream
             .getTracks()
-            .forEach(t=>t.stop());
+            .forEach(
+                track =>
+                    track.stop()
+            );
 
         }
 
-        const fps=
-        Number(
-            document.getElementById("fps").value
-        );
+        const fps =
+            Number(
+                $("fps").value
+            );
 
-        stream=
-        await navigator.mediaDevices
-        .getUserMedia({
+        const resolution =
+            $("resolution").value;
 
-            video:{
-                facingMode:facing,
+        let width =
+            1920;
 
-                width:{
-                    ideal:3840
+        let height =
+            1080;
+
+        if(
+            resolution ===
+            "3840x2160"
+        ){
+
+            width =
+                3840;
+
+            height =
+                2160;
+
+        }
+
+        stream =
+            await navigator.mediaDevices
+            .getUserMedia({
+
+                video:{
+
+                    facingMode:facing,
+
+                    width:{
+                        ideal:width
+                    },
+
+                    height:{
+                        ideal:height
+                    },
+
+                    frameRate:{
+                        ideal:fps
+                    }
+
                 },
 
-                height:{
-                    ideal:2160
-                },
+                audio:true
 
-                frameRate:{
-                    ideal:fps,
-                    max:fps
-                }
-            },
+            });
 
-            audio:true
-
-        });
-
-        camera.srcObject=stream;
+        camera.srcObject =
+            stream;
 
         await camera.play();
 
-        document.getElementById(
-            "loading"
-        ).style.display="none";
+        loading.style.display =
+            "none";
+
+        $("status").textContent =
+            facing ===
+            "environment"
+            ?
+            "TRASEIRA"
+            :
+            "FRONTAL";
 
         updateCamera();
 
+    }catch(error){
+
+        console.error(error);
+
+        loadingText.textContent =
+            "PERMISSÃO DA CÂMERA NECESSÁRIA";
+
         showToast(
-            "Câmera pronta"
+            "Permita o acesso à câmera"
         );
-
-    }catch(e){
-
-        console.error(e);
-
-        document.getElementById(
-            "loadingText"
-        ).textContent=
-        "PERMITA O ACESSO À CÂMERA";
 
     }
 
 }
 
 
-/* =====================================================
-FLIP
-===================================================== */
+/* =========================================================
+   FLIP
+========================================================= */
 
-document.getElementById("flip")
-.onclick=async()=>{
+$("flip").onclick =
+    async () => {
 
-    if(recording)return;
+        if(recording){
 
-    facing=
-    facing==="environment"
-    ?
-    "user"
-    :
-    "environment";
+            return;
 
-    await startCamera();
+        }
 
-};
+        facing =
+            facing ===
+            "environment"
+            ?
+            "user"
+            :
+            "environment";
+
+        await startCamera();
+
+    };
 
 
-/* =====================================================
-CAPTURA FOTO
-===================================================== */
+/* =========================================================
+   CANVAS FRAME
+========================================================= */
 
-capture.onclick=async()=>{
-
-    if(recording){
-
-        stopRecording();
-        return;
-
-    }
-
-    showToast(
-        threeMode
-        ?
-        "Criando foto 3D..."
-        :
-        "Processando foto..."
-    );
-
-    menu.classList.add("hidden");
-
-    await new Promise(
-        r=>requestAnimationFrame(r)
-    );
+function drawFrame(){
 
     if(
         !camera.videoWidth ||
         !camera.videoHeight
     ){
 
-        showToast("Câmera indisponível");
-
-        menu.classList.remove("hidden");
-
-        return;
+        return false;
 
     }
 
+    canvas.width =
+        camera.videoWidth;
 
-    canvas.width=
-    camera.videoWidth;
-
-    canvas.height=
-    camera.videoHeight;
-
+    canvas.height =
+        camera.videoHeight;
 
     ctx.save();
 
-    ctx.filter=
-    getFilter();
+    ctx.filter =
+        currentFilterCSS();
 
-    const z=
-    Number(zoom.value);
+    const z =
+        Number(
+            $("zoom").value
+        );
 
-    const w=
-    canvas.width*z;
+    const w =
+        canvas.width*z;
 
-    const h=
-    canvas.height*z;
+    const h =
+        canvas.height*z;
 
-    const x=
-    (canvas.width-w)/2;
+    const x =
+        (canvas.width-w)/2;
 
-    const y=
-    (canvas.height-h)/2;
+    const y =
+        (canvas.height-h)/2;
 
     ctx.drawImage(
         camera,
@@ -2487,334 +3244,231 @@ capture.onclick=async()=>{
 
     ctx.restore();
 
-
     if(aiEnabled){
 
-        processAI();
+        improveImage();
 
     }
 
+    return true;
 
-    let blob;
-
-
-    if(threeMode){
-
-        blob=
-        await create3DPhoto();
-
-    }else{
-
-        blob=
-        await canvasToBlob(
-            canvas,
-            "image/jpeg",
-            .96
-        );
-
-    }
+}
 
 
-    await saveMedia(
-        blob,
-        "photo",
-        {
-            threeD:threeMode
+/* =========================================================
+   MELHORIA LOCAL
+========================================================= */
+
+function improveImage(){
+
+    try{
+
+        const image =
+            ctx.getImageData(
+                0,
+                0,
+                canvas.width,
+                canvas.height
+            );
+
+        const data =
+            image.data;
+
+        for(
+            let i=0;
+            i<data.length;
+            i+=4
+        ){
+
+            let r =
+                data[i];
+
+            let g =
+                data[i+1];
+
+            let b =
+                data[i+2];
+
+            const lum =
+                .2126*r+
+                .7152*g+
+                .0722*b;
+
+            if(
+                lum < 65
+            ){
+
+                const boost =
+                    (65-lum)*.10;
+
+                r+=boost;
+                g+=boost;
+                b+=boost;
+
+            }
+
+            r =
+                (r-128)*1.025+128;
+
+            g =
+                (g-128)*1.025+128;
+
+            b =
+                (b-128)*1.025+128;
+
+            data[i] =
+                Math.max(
+                    0,
+                    Math.min(
+                        255,
+                        r
+                    )
+                );
+
+            data[i+1] =
+                Math.max(
+                    0,
+                    Math.min(
+                        255,
+                        g
+                    )
+                );
+
+            data[i+2] =
+                Math.max(
+                    0,
+                    Math.min(
+                        255,
+                        b
+                    )
+                );
+
         }
-    );
+
+        ctx.putImageData(
+            image,
+            0,
+            0
+        );
+
+    }catch(error){
+
+        console.warn(
+            "AI local:",
+            error
+        );
+
+    }
+
+}
 
 
-    showToast(
-        threeMode
-        ?
-        "🧊 FOTO 3D SALVA NA GALERIA"
-        :
-        "📸 FOTO SALVA NA GALERIA"
-    );
+/* =========================================================
+   CAPTURA DE FOTO
+========================================================= */
 
+$("capture").onclick =
+    async () => {
 
-    setTimeout(()=>{
-        menu.classList.remove("hidden");
-    },900);
+        if(recording){
 
-};
+            stopRecording();
 
-
-/* =====================================================
-AI LOCAL
-===================================================== */
-
-function processAI(){
-
-    const image=
-    ctx.getImageData(
-        0,
-        0,
-        canvas.width,
-        canvas.height
-    );
-
-    const d=image.data;
-
-    for(
-        let i=0;
-        i<d.length;
-        i+=4
-    ){
-
-        const r=d[i];
-        const g=d[i+1];
-        const b=d[i+2];
-
-        const lum=
-        .2126*r+
-        .7152*g+
-        .0722*b;
-
-        let boost=0;
-
-        if(lum<65){
-
-            boost=
-            (65-lum)*.13;
+            return;
 
         }
 
-        d[i]=Math.max(
-            0,
-            Math.min(
-                255,
-                (r-128)*1.025+
-                128+
-                boost
-            )
+        if(
+            !drawFrame()
+        ){
+
+            showToast(
+                "Câmera ainda não está pronta"
+            );
+
+            return;
+
+        }
+
+        $("menuButton").classList.add(
+            "hidden"
         );
 
-        d[i+1]=Math.max(
-            0,
-            Math.min(
-                255,
-                (g-128)*1.025+
-                128+
-                boost
-            )
+        showToast(
+            "Processando fotografia..."
         );
 
-        d[i+2]=Math.max(
-            0,
-            Math.min(
-                255,
-                (b-128)*1.025+
-                128+
-                boost
-            )
+        const blob =
+            await new Promise(
+                resolve =>
+                    canvas.toBlob(
+                        resolve,
+                        "image/jpeg",
+                        .96
+                    )
+            );
+
+        if(!blob){
+
+            showToast(
+                "Erro ao criar imagem"
+            );
+
+            return;
+
+        }
+
+        await saveMedia(
+            blob,
+            "photo",
+            threeDEnabled
         );
 
-    }
-
-    ctx.putImageData(
-        image,
-        0,
-        0
-    );
-
-}
-
-
-/* =====================================================
-CANVAS BLOB
-===================================================== */
-
-function canvasToBlob(
-    source,
-    type,
-    quality
-){
-
-    return new Promise(resolve=>{
-
-        source.toBlob(
-            resolve,
-            type,
-            quality
+        showToast(
+            threeDEnabled
+            ?
+            "📸 Foto 3D salva"
+            :
+            "📸 Foto salva na galeria"
         );
 
-    });
+        setTimeout(
+            () =>
+                $("menuButton").classList.remove(
+                    "hidden"
+                ),
+            1000
+        );
 
-}
-
-
-/* =====================================================
-CRIAR FOTO 3D
-===================================================== */
-
-async function create3DPhoto(){
-
-    /*
-    Cria uma composição estereoscópica
-    simulada.
-
-    A imagem esquerda e direita
-    recebem deslocamentos pequenos,
-    produzindo um efeito anaglífico
-    vermelho/ciano.
-    */
-
-    const width=
-    canvas.width;
-
-    const height=
-    canvas.height;
+    };
 
 
-    const output=
-    document.createElement("canvas");
+/* =========================================================
+   VIDEO
+========================================================= */
 
-    output.width=width;
-    output.height=height;
+$("videoButton").onclick =
+    () => {
 
-    const octx=
-    output.getContext("2d");
+        if(recording){
 
+            stopRecording();
 
-    const left=
-    document.createElement("canvas");
+        }else{
 
-    left.width=width;
-    left.height=height;
+            startRecording();
 
-    const lctx=
-    left.getContext("2d");
+        }
 
-
-    const right=
-    document.createElement("canvas");
-
-    right.width=width;
-    right.height=height;
-
-    const rctx=
-    right.getContext("2d");
+    };
 
 
-    /*
-    Olho esquerdo
-    */
-
-    lctx.drawImage(
-        canvas,
-        -7,
-        0
-    );
-
-
-    /*
-    Olho direito
-    */
-
-    rctx.drawImage(
-        canvas,
-        7,
-        0
-    );
-
-
-    const L=
-    lctx.getImageData(
-        0,
-        0,
-        width,
-        height
-    );
-
-    const R=
-    rctx.getImageData(
-        0,
-        0,
-        width,
-        height
-    );
-
-
-    const result=
-    octx.createImageData(
-        width,
-        height
-    );
-
-
-    for(
-        let i=0;
-        i<result.data.length;
-        i+=4
-    ){
-
-        /*
-        Canal vermelho
-        vem do olho esquerdo.
-        */
-
-        result.data[i]=
-        L.data[i];
-
-
-        /*
-        Verde + azul
-        vêm do olho direito.
-        */
-
-        result.data[i+1]=
-        R.data[i+1];
-
-        result.data[i+2]=
-        R.data[i+2];
-
-        result.data[i+3]=255;
-
-    }
-
-
-    octx.putImageData(
-        result,
-        0,
-        0
-    );
-
-
-    return await canvasToBlob(
-        output,
-        "image/jpeg",
-        .96
-    );
-
-}
-
-
-/* =====================================================
-VÍDEO
-===================================================== */
-
-document.getElementById("videoButton")
-.onclick=()=>{
-
-    if(recording){
-
-        stopRecording();
-
-    }else{
-
-        startRecording();
-
-    }
-
-};
-
-
-function startRecording(){
+async function startRecording(){
 
     if(
         !stream ||
-        typeof MediaRecorder==="undefined"
+        typeof MediaRecorder ===
+        "undefined"
     ){
 
         showToast(
@@ -2825,126 +3479,150 @@ function startRecording(){
 
     }
 
-
     try{
 
-        const fps=
-        Number(
-            document.getElementById("fps").value
+        const fps =
+            Number(
+                $("fps").value
+            );
+
+        const videoStream =
+            camera.captureStream
+            ?
+            camera.captureStream(fps)
+            :
+            stream;
+
+        stream
+        .getAudioTracks()
+        .forEach(
+            track => {
+
+                if(
+                    !videoStream
+                    .getAudioTracks()
+                    .includes(track)
+                ){
+
+                    videoStream.addTrack(
+                        track
+                    );
+
+                }
+
+            }
         );
 
-        const videoStream=
-        camera.captureStream
-        ?
-        camera.captureStream(fps)
-        :
-        stream;
+        let mime = "";
 
+        const types = [
 
-        let mime="";
+            "video/mp4;codecs=avc1",
 
-
-        const types=[
             "video/mp4",
+
             "video/webm;codecs=vp9",
+
             "video/webm"
+
         ];
 
-
         for(
-            const t of types
+            const type
+            of types
         ){
 
             if(
-                MediaRecorder.isTypeSupported &&
-                MediaRecorder.isTypeSupported(t)
+                MediaRecorder.isTypeSupported(
+                    type
+                )
             ){
 
-                mime=t;
+                mime =
+                    type;
+
                 break;
 
             }
 
         }
 
+        recorder =
+            new MediaRecorder(
+                videoStream,
+                mime
+                ?
+                {
+                    mimeType:mime
+                }
+                :
+                undefined
+            );
 
-        recorder=
-        new MediaRecorder(
-            videoStream,
-            mime
-            ?
-            {mimeType:mime}
-            :
-            undefined
+        chunks = [];
+
+        recorder.ondataavailable =
+            event => {
+
+                if(
+                    event.data &&
+                    event.data.size
+                ){
+
+                    chunks.push(
+                        event.data
+                    );
+
+                }
+
+            };
+
+        recorder.onstop =
+            saveVideo;
+
+        recorder.start(
+            1000
         );
 
+        recording =
+            true;
 
-        chunks=[];
-
-
-        recorder.ondataavailable=e=>{
-
-            if(e.data.size){
-
-                chunks.push(e.data);
-
-            }
-
-        };
-
-
-        recorder.onstop=async()=>{
-
-            const blob=
-            new Blob(
-                chunks,
-                {
-                    type:
-                    recorder.mimeType
-                    ||
-                    "video/webm"
-                }
-            );
-
-
-            await saveMedia(
-                blob,
-                "video"
-            );
-
-
-            showToast(
-                "🎥 VÍDEO SALVO"
-            );
-
-        };
-
-
-        recorder.start(500);
-
-
-        recording=true;
-
-        capture.classList.add(
+        $("capture")
+        .classList
+        .add(
             "recording"
         );
 
-        document
-        .getElementById("recording")
-        .style.display="block";
+        $("recording")
+        .style
+        .display =
+            "block";
 
-        menu.classList.add("hidden");
+        $("menuButton")
+        .classList
+        .add(
+            "hidden"
+        );
+
+        recordStarted =
+            Date.now();
+
+        recordInterval =
+            setInterval(
+                updateRecordTimer,
+                500
+            );
 
         showToast(
             "🎥 Gravação iniciada"
         );
 
-    }catch(e){
+    }catch(error){
 
-        console.error(e);
+        console.error(error);
 
         showToast(
-            "Erro na gravação"
+            "Não foi possível iniciar o vídeo"
         );
 
     }
@@ -2952,701 +3630,1019 @@ function startRecording(){
 }
 
 
+/* =========================================================
+   TIMER
+========================================================= */
+
+function updateRecordTimer(){
+
+    const seconds =
+        Math.floor(
+            (
+                Date.now() -
+                recordStarted
+            )/1000
+        );
+
+    const minutes =
+        Math.floor(
+            seconds/60
+        );
+
+    const secondsRest =
+        seconds%60;
+
+    $("recordTime")
+    .textContent =
+        String(minutes)
+        .padStart(2,"0")
+        +
+        ":"
+        +
+        String(secondsRest)
+        .padStart(2,"0");
+
+}
+
+
+/* =========================================================
+   STOP
+========================================================= */
+
 function stopRecording(){
 
     if(
         recorder &&
-        recorder.state!=="inactive"
+        recorder.state !==
+        "inactive"
     ){
 
         recorder.stop();
 
     }
 
-    recording=false;
+    recording =
+        false;
 
-    capture.classList.remove(
-        "recording"
+    clearInterval(
+        recordInterval
     );
 
-    document
-    .getElementById("recording")
-    .style.display="none";
+    $("recording")
+    .style
+    .display =
+        "none";
 
-    menu.classList.remove(
-        "hidden"
+    $("capture")
+    .classList
+    .remove(
+        "recording"
     );
 
 }
 
 
-/* =====================================================
-GALERIA
-===================================================== */
+/* =========================================================
+   SAVE VIDEO
+========================================================= */
 
-document.getElementById("galleryButton")
-.onclick=async()=>{
+async function saveVideo(){
 
-    mainPanel.classList.remove("open");
-
-    gallery.classList.add("open");
-
-    await loadGallery();
-
-};
-
-
-document.getElementById("closeGallery")
-.onclick=()=>{
-    gallery.classList.remove("open");
-};
-
-
-document.getElementById("importButton")
-.onclick=()=>{
-    document.getElementById(
-        "fileInput"
-    ).click();
-};
-
-
-document.getElementById("importGallery")
-.onclick=()=>{
-    document.getElementById(
-        "fileInput"
-    ).click();
-};
-
-
-document.getElementById("fileInput")
-.onchange=async e=>{
-
-    const files=
-    [...e.target.files];
-
-    for(
-        const file of files
+    if(
+        chunks.length === 0
     ){
 
-        if(
-            file.type.startsWith("image/")
-        ){
-
-            await saveMedia(
-                file,
-                "photo"
-            );
-
-        }else if(
-            file.type.startsWith("video/")
-        ){
-
-            await saveMedia(
-                file,
-                "video"
-            );
-
-        }
-
-    }
-
-
-    showToast(
-        files.length+
-        " arquivo(s) importado(s)"
-    );
-
-
-    if(gallery.classList.contains("open")){
-
-        await loadGallery();
-
-    }
-
-    e.target.value="";
-
-};
-
-
-/* =====================================================
-GALERIA TABS
-===================================================== */
-
-document
-.querySelectorAll(".galleryTab")
-.forEach(tab=>{
-
-    tab.onclick=async()=>{
-
-        currentGalleryFilter=
-        tab.dataset.filter;
-
-        document
-        .querySelectorAll(".galleryTab")
-        .forEach(x=>{
-            x.classList.toggle(
-                "active",
-                x===tab
-            );
-        });
-
-        await loadGallery();
-
-    };
-
-});
-
-
-/* =====================================================
-CARREGAR GALERIA
-===================================================== */
-
-async function loadGallery(){
-
-    galleryGrid.innerHTML="";
-
-    const items=
-    await getMedia();
-
-
-    const filtered=
-    items.filter(item=>{
-
-        if(
-            currentGalleryFilter==="all"
-        ){
-            return true;
-        }
-
-        return item.type===
-        currentGalleryFilter;
-
-    });
-
-
-    if(!filtered.length){
-
-        galleryGrid.innerHTML=`
-
-        <div style="
-        grid-column:1/-1;
-        text-align:center;
-        padding:70px 20px;
-        color:#777;
-        font-size:11px;
-        ">
-
-        NENHUM ARQUIVO
-
-        <br><br>
-
-        Capture uma foto,
-        grave um vídeo ou
-        importe arquivos.
-
-        </div>
-
-        `;
+        showToast(
+            "Nenhum vídeo capturado"
+        );
 
         return;
 
     }
 
+    const type =
+        recorder.mimeType ||
+        "video/webm";
 
-    filtered.forEach(item=>{
-
-        const element=
-        document.createElement("div");
-
-        element.className=
-        "galleryItem";
-
-
-        const url=
-        URL.createObjectURL(
-            item.blob
+    const blob =
+        new Blob(
+            chunks,
+            {
+                type
+            }
         );
 
+    /*
+       A velocidade é aplicada também
+       no player/edição local.
+       O arquivo original permanece
+       preservado.
+    */
 
-        let media;
+    await saveMedia(
+        blob,
+        "video",
+        false
+    );
 
+    showToast(
+        "🎥 Vídeo salvo na galeria"
+    );
 
-        if(
-            item.type==="photo"
-        ){
+    setTimeout(
+        () => {
 
-            media=
-            document.createElement("img");
-
-        }else{
-
-            media=
-            document.createElement("video");
-
-            media.muted=true;
-            media.playsInline=true;
-
-        }
-
-
-        media.src=url;
-
-        element.appendChild(media);
-
-
-        const badge=
-        document.createElement("div");
-
-        badge.className="badge";
-
-        badge.textContent=
-        item.type==="photo"
-        ?
-        (
-            item.threeD
-            ?
-            "🧊 FOTO 3D"
-            :
-            "FOTO"
-        )
-        :
-        "VÍDEO";
-
-        element.appendChild(badge);
-
-
-        const del=
-        document.createElement("button");
-
-        del.className="delete";
-
-        del.textContent="×";
-
-
-        del.onclick=async e=>{
-
-            e.stopPropagation();
-
-            await deleteItem(
-                item.id
+            $("menuButton")
+            .classList
+            .remove(
+                "hidden"
             );
 
-            URL.revokeObjectURL(
-                url
-            );
-
-            await loadGallery();
-
-        };
-
-
-        element.appendChild(del);
-
-
-        element.onclick=()=>{
-
-            openViewer(
-                item,
-                url
-            );
-
-        };
-
-
-        galleryGrid.appendChild(
-            element
-        );
-
-    });
+        },
+        1000
+    );
 
 }
 
 
-/* =====================================================
-VIEWER
-===================================================== */
+/* =========================================================
+   GALERIA
+========================================================= */
+
+async function openGallery(){
+
+    gallery.classList.add(
+        "open"
+    );
+
+    await renderGallery();
+
+}
+
+
+$("openGallery").onclick =
+    openGallery;
+
+$("galleryQuick").onclick =
+    openGallery;
+
+$("closeGallery").onclick =
+    () =>
+        gallery.classList.remove(
+            "open"
+        );
+
+
+/* =========================================================
+   GALERIA FILTER
+========================================================= */
+
+document
+.querySelectorAll(
+    ".galleryTab"
+)
+.forEach(
+    button => {
+
+        button.onclick =
+            async () => {
+
+                galleryFilter =
+                    button.dataset.filter;
+
+                document
+                .querySelectorAll(
+                    ".galleryTab"
+                )
+                .forEach(
+                    b =>
+                        b.classList.remove(
+                            "active"
+                        )
+                );
+
+                button.classList.add(
+                    "active"
+                );
+
+                await renderGallery();
+
+            };
+
+    }
+);
+
+
+/* =========================================================
+   RENDER GALLERY
+========================================================= */
+
+async function renderGallery(){
+
+    galleryGrid.innerHTML =
+        "";
+
+    const items =
+        await getMedia();
+
+    const filtered =
+        items.filter(
+            item => {
+
+                if(
+                    galleryFilter ===
+                    "all"
+                ){
+
+                    return true;
+
+                }
+
+                if(
+                    galleryFilter ===
+                    "photo"
+                ){
+
+                    return item.type ===
+                        "photo";
+
+                }
+
+                if(
+                    galleryFilter ===
+                    "video"
+                ){
+
+                    return item.type ===
+                        "video";
+
+                }
+
+                if(
+                    galleryFilter ===
+                    "3d"
+                ){
+
+                    return item.is3D;
+
+                }
+
+                return true;
+
+            }
+        );
+
+    if(
+        filtered.length === 0
+    ){
+
+        galleryGrid.innerHTML =
+            `
+            <div style="
+                grid-column:1/-1;
+                text-align:center;
+                padding:70px 20px;
+                color:#777;
+                font-size:11px;
+                line-height:1.8;
+            ">
+                SUA GALERIA ESTÁ VAZIA<br><br>
+                Capture uma foto ou importe arquivos
+                do seu iPhone.
+            </div>
+            `;
+
+        return;
+
+    }
+
+    filtered.forEach(
+        item => {
+
+            const element =
+                document.createElement(
+                    "div"
+                );
+
+            element.className =
+                "galleryItem";
+
+            const url =
+                URL.createObjectURL(
+                    item.blob
+                );
+
+            let media;
+
+            if(
+                item.type ===
+                "photo"
+            ){
+
+                media =
+                    document.createElement(
+                        "img"
+                    );
+
+            }else{
+
+                media =
+                    document.createElement(
+                        "video"
+                    );
+
+                media.muted =
+                    true;
+
+                media.playsInline =
+                    true;
+
+            }
+
+            media.src =
+                url;
+
+            element.appendChild(
+                media
+            );
+
+            const badge =
+                document.createElement(
+                    "div"
+                );
+
+            badge.className =
+                "mediaType";
+
+            badge.textContent =
+                item.is3D
+                ?
+                "3D"
+                :
+                item.type ===
+                "photo"
+                ?
+                "FOTO"
+                :
+                "VÍDEO";
+
+            element.appendChild(
+                badge
+            );
+
+            const del =
+                document.createElement(
+                    "button"
+                );
+
+            del.className =
+                "delete";
+
+            del.textContent =
+                "×";
+
+            del.onclick =
+                async event => {
+
+                    event.stopPropagation();
+
+                    await removeMedia(
+                        item.id
+                    );
+
+                    URL.revokeObjectURL(
+                        url
+                    );
+
+                    await renderGallery();
+
+                    showToast(
+                        "Arquivo removido"
+                    );
+
+                };
+
+            element.appendChild(
+                del
+            );
+
+            element.onclick =
+                () => {
+
+                    openViewer(
+                        item,
+                        url
+                    );
+
+                };
+
+            galleryGrid.appendChild(
+                element
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   VIEWER
+========================================================= */
 
 function openViewer(
     item,
     url
 ){
 
-    viewerContent.innerHTML="";
+    $("viewer").classList.add(
+        "open"
+    );
 
-    viewerContent.className="";
+    $("viewerMedia").style.display =
+        "none";
 
+    $("viewerVideo").style.display =
+        "none";
+
+    $("viewer3D").classList.remove(
+        "active"
+    );
 
     if(
-        item.type==="photo" &&
-        item.threeD
+        item.type ===
+        "photo"
     ){
 
-        viewerContent.classList.add(
-            "threeD"
-        );
+        $("viewerMedia").src =
+            url;
 
+        $("viewerMedia").style.display =
+            "block";
 
-        const box=
-        document.createElement("div");
+        if(item.is3D){
 
-        box.className="viewer3D";
-
-
-        const base=
-        document.createElement("img");
-
-        base.src=url;
-
-
-        const red=
-        document.createElement("img");
-
-        red.src=url;
-
-        red.className="red";
-
-
-        const blue=
-        document.createElement("img");
-
-        blue.src=url;
-
-        blue.className="blue";
-
-
-        box.appendChild(base);
-        box.appendChild(red);
-        box.appendChild(blue);
-
-        viewerContent.appendChild(box);
-
-    }else{
-
-        let media;
-
-
-        if(
-            item.type==="photo"
-        ){
-
-            media=
-            document.createElement("img");
+            $("view3D").style.display =
+                "block";
 
         }else{
 
-            media=
-            document.createElement("video");
-
-            media.controls=true;
-            media.autoplay=true;
-            media.playsInline=true;
+            $("view3D").style.display =
+                "none";
 
         }
 
+    }else{
 
-        media.src=url;
+        $("viewerVideo").src =
+            url;
 
-        viewerContent.appendChild(
-            media
-        );
+        $("viewerVideo").playbackRate =
+            currentSpeed;
+
+        $("viewerVideo").style.display =
+            "block";
+
+        $("view3D").style.display =
+            "none";
 
     }
-
-
-    viewer.classList.add(
-        "open"
-    );
 
 }
 
 
-document.getElementById("closeViewer")
-.onclick=()=>{
+$("viewerClose").onclick =
+    () => {
 
-    viewer.classList.remove(
-        "open"
-    );
-
-    viewerContent.innerHTML="";
-
-};
-
-
-/* =====================================================
-PINÇA DE ZOOM
-===================================================== */
-
-let initialDistance=0;
-let initialZoom=1;
-
-document
-.getElementById("app")
-.addEventListener(
-"touchstart",
-e=>{
-
-    if(
-        e.touches.length===2
-    ){
-
-        const dx=
-        e.touches[0].clientX-
-        e.touches[1].clientX;
-
-        const dy=
-        e.touches[0].clientY-
-        e.touches[1].clientY;
-
-        initialDistance=
-        Math.hypot(dx,dy);
-
-        initialZoom=
-        Number(zoom.value);
-
-    }
-
-},
-{passive:true}
-);
-
-
-document
-.getElementById("app")
-.addEventListener(
-"touchmove",
-e=>{
-
-    if(
-        e.touches.length!==2
-    )return;
-
-
-    const dx=
-    e.touches[0].clientX-
-    e.touches[1].clientX;
-
-    const dy=
-    e.touches[0].clientY-
-    e.touches[1].clientY;
-
-    const distance=
-    Math.hypot(dx,dy);
-
-
-    if(!initialDistance)return;
-
-
-    let value=
-    initialZoom*
-    distance/
-    initialDistance;
-
-
-    value=
-    Math.max(
-        1,
-        Math.min(
-            8,
-            value
-        )
-    );
-
-
-    zoom.value=value;
-
-    updateValues();
-
-},
-{passive:true}
-);
-
-
-/* =====================================================
-DESLIZAR PARA FILTROS
-===================================================== */
-
-let swipeX=0;
-
-camera.addEventListener(
-"touchstart",
-e=>{
-
-    if(
-        e.touches.length===1
-    ){
-
-        swipeX=
-        e.touches[0].clientX;
-
-    }
-
-},
-{passive:true}
-);
-
-
-camera.addEventListener(
-"touchend",
-e=>{
-
-    const end=
-    e.changedTouches[0].clientX;
-
-    const diff=
-    end-swipeX;
-
-
-    if(
-        Math.abs(diff)<60
-    )return;
-
-
-    let index=
-    filters.findIndex(
-        x=>x[0]===currentFilter
-    );
-
-
-    if(diff<0){
-
-        index++;
-
-        if(index>=filters.length){
-            index=0;
-        }
-
-    }else{
-
-        index--;
-
-        if(index<0){
-            index=filters.length-1;
-        }
-
-    }
-
-
-    currentFilter=
-    filters[index][0];
-
-
-    document
-    .querySelectorAll(".filterCard")
-    .forEach(b=>{
-        b.classList.toggle(
-            "active",
-            b.dataset.filter===currentFilter
+        $("viewer").classList.remove(
+            "open"
         );
-    });
+
+        $("viewerMedia").src =
+            "";
+
+        $("viewerVideo").pause();
+
+        $("viewerVideo").src =
+            "";
+
+        $("viewer3D").classList.remove(
+            "active"
+        );
+
+    };
 
 
-    updateCamera();
+/* =========================================================
+   3D VIEW
+========================================================= */
+
+$("view3D").onclick =
+    () => {
+
+        $("viewerMedia").style.display =
+            "none";
+
+        $("viewer3D").classList.add(
+            "active"
+        );
+
+        $("viewer3DImage").src =
+            $("viewerMedia").src;
+
+    };
 
 
-    showToast(
-        filters[index][1]
-    );
+$("normalView").onclick =
+    () => {
 
-},
-{passive:true}
+        $("viewer3D").classList.remove(
+            "active"
+        );
+
+        if(
+            $("viewerMedia").src
+        ){
+
+            $("viewerMedia").style.display =
+                "block";
+
+        }
+
+    };
+
+
+$("viewer3D")
+.addEventListener(
+    "pointermove",
+    event => {
+
+        const rect =
+            $("viewer3D")
+            .getBoundingClientRect();
+
+        const x =
+            (
+                event.clientX -
+                rect.left
+            )
+            /
+            rect.width;
+
+        const y =
+            (
+                event.clientY -
+                rect.top
+            )
+            /
+            rect.height;
+
+        const ry =
+            (
+                x-.5
+            )*14;
+
+        const rx =
+            (
+                .5-y
+            )*14;
+
+        $("viewer3DImage")
+        .style
+        .setProperty(
+            "--rx",
+            rx+"deg"
+        );
+
+        $("viewer3DImage")
+        .style
+        .setProperty(
+            "--ry",
+            ry+"deg"
+        );
+
+    }
 );
 
 
-/* =====================================================
-RESET
-===================================================== */
+/* =========================================================
+   IMPORTAÇÃO DA GALERIA
+========================================================= */
 
-document.getElementById("reset")
-.onclick=()=>{
+function importFiles(){
 
-    brightness.value=1;
-    contrast.value=1;
-    saturation.value=1;
-    zoom.value=1;
+    $("importInput").click();
 
-    currentFilter="normal";
+}
 
-    aiEnabled=true;
-    nightEnabled=false;
+$("importButton").onclick =
+    importFiles;
 
-    set3DMode(false);
-
-    document
-    .getElementById("ai")
-    .classList.add("active");
-
-    document
-    .getElementById("night")
-    .classList.remove("active");
-
-    updateValues();
-
-    showToast(
-        "Configurações restauradas"
-    );
-
-};
+$("importGallery").onclick =
+    importFiles;
 
 
-/* =====================================================
-FPS
-===================================================== */
+$("importInput").addEventListener(
+    "change",
+    async event => {
 
-document.getElementById("fps")
-.onchange=async()=>{
+        const files =
+            Array.from(
+                event.target.files
+            );
 
-    if(!recording){
+        if(
+            files.length === 0
+        ){
 
-        await startCamera();
+            return;
+
+        }
+
+        showToast(
+            "Importando "+files.length+" arquivo(s)..."
+        );
+
+        for(
+            const file
+            of files
+        ){
+
+            if(
+                file.type.startsWith(
+                    "image/"
+                )
+            ){
+
+                await saveMedia(
+                    file,
+                    "photo",
+                    false
+                );
+
+            }else if(
+                file.type.startsWith(
+                    "video/"
+                )
+            ){
+
+                await saveMedia(
+                    file,
+                    "video",
+                    false
+                );
+
+            }
+
+        }
+
+        event.target.value =
+            "";
+
+        showToast(
+            "Arquivos adicionados à galeria"
+        );
+
+        if(
+            gallery.classList.contains(
+                "open"
+            )
+        ){
+
+            await renderGallery();
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   RESET
+========================================================= */
+
+$("reset").onclick =
+    () => {
+
+        $("brightness").value =
+            1;
+
+        $("contrast").value =
+            1;
+
+        $("saturation").value =
+            1;
+
+        $("zoom").value =
+            1;
+
+        currentFilter =
+            0;
+
+        nightEnabled =
+            false;
+
+        superZoom =
+            false;
+
+        threeDEnabled =
+            false;
+
+        aiEnabled =
+            true;
+
+        $("ai").classList.add(
+            "active"
+        );
+
+        $("night").classList.remove(
+            "active"
+        );
+
+        $("superZoom").classList.remove(
+            "active"
+        );
+
+        $("threeD").classList.remove(
+            "active"
+        );
+
+        [
+            "brightness",
+            "contrast",
+            "saturation",
+            "zoom"
+        ]
+        .forEach(
+            id => {
+
+                $(id+"Value")
+                .textContent =
+                    Number(
+                        $(id).value
+                    ).toFixed(2);
+
+            }
+        );
+
+        updateCamera();
+
+        showToast(
+            "Configurações restauradas"
+        );
+
+    };
+
+
+/* =========================================================
+   RESOLUTION / FPS
+========================================================= */
+
+$("resolution").addEventListener(
+    "change",
+    async () => {
+
+        if(!recording){
+
+            await startCamera();
+
+        }
+
+    }
+);
+
+
+$("fps").addEventListener(
+    "change",
+    async () => {
+
+        if(!recording){
+
+            await startCamera();
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   PINCH ZOOM
+========================================================= */
+
+let pinchStart =
+    0;
+
+let zoomStart =
+    1;
+
+$("app").addEventListener(
+    "touchstart",
+    event => {
+
+        if(
+            event.touches.length === 2
+        ){
+
+            const a =
+                event.touches[0];
+
+            const b =
+                event.touches[1];
+
+            const dx =
+                a.clientX -
+                b.clientX;
+
+            const dy =
+                a.clientY -
+                b.clientY;
+
+            pinchStart =
+                Math.hypot(
+                    dx,
+                    dy
+                );
+
+            zoomStart =
+                Number(
+                    $("zoom").value
+                );
+
+        }
+
+    },
+    {
+        passive:true
+    }
+);
+
+
+$("app").addEventListener(
+    "touchmove",
+    event => {
+
+        if(
+            event.touches.length !== 2
+        ){
+
+            return;
+
+        }
+
+        const a =
+            event.touches[0];
+
+        const b =
+            event.touches[1];
+
+        const dx =
+            a.clientX -
+            b.clientX;
+
+        const dy =
+            a.clientY -
+            b.clientY;
+
+        const distance =
+            Math.hypot(
+                dx,
+                dy
+            );
+
+        if(
+            pinchStart <= 0
+        ){
+
+            return;
+
+        }
+
+        let value =
+            zoomStart *
+            (
+                distance /
+                pinchStart
+            );
+
+        value =
+            Math.max(
+                1,
+                Math.min(
+                    12,
+                    value
+                )
+            );
+
+        $("zoom").value =
+            value;
+
+        $("zoomValue")
+        .textContent =
+            value.toFixed(2);
+
+        updateCamera();
+
+    },
+    {
+        passive:true
+    }
+);
+
+
+/* =========================================================
+   LOCAL STORAGE
+========================================================= */
+
+function restorePreferences(){
+
+    const savedTheme =
+        Number(
+            localStorage.getItem(
+                "rvTheme"
+            )
+        );
+
+    if(
+        Number.isFinite(
+            savedTheme
+        )
+        &&
+        savedTheme >= 0
+        &&
+        savedTheme <
+        themeNames.length
+    ){
+
+        applyAppTheme(
+            savedTheme,
+            themeNames[
+                savedTheme
+            ]
+        );
 
     }
 
-};
+}
 
 
-/* =====================================================
-INICIALIZAÇÃO
-===================================================== */
+/* =========================================================
+   INIT
+========================================================= */
 
 async function init(){
 
     try{
 
-        await openDB();
+        await openDatabase();
 
-    }catch(e){
+    }catch(error){
 
-        console.error(e);
+        console.error(
+            error
+        );
 
         showToast(
-            "Galeria local indisponível"
+            "Armazenamento local indisponível"
         );
 
     }
 
+    createThemes();
 
-    updateValues();
+    restorePreferences();
 
+    [
+        "brightness",
+        "contrast",
+        "saturation",
+        "zoom"
+    ]
+    .forEach(
+        id => {
 
-    if(
-        !navigator.mediaDevices ||
-        !navigator.mediaDevices.getUserMedia
-    ){
+            $(id+"Value")
+            .textContent =
+                Number(
+                    $(id).value
+                ).toFixed(2);
 
-        document.getElementById(
-            "loadingText"
-        ).textContent=
-        "ABRA O APP EM HTTPS PARA USAR A CÂMERA";
+        }
+    );
 
-        return;
-
-    }
-
+    /*
+       A câmera solicita a permissão
+       somente aqui.
+    */
 
     await startCamera();
 
 }
 
+
+/* =========================================================
+   START
+========================================================= */
 
 init();
 
