@@ -2,544 +2,907 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
+
 <meta name="viewport"
       content="width=device-width,
-               initial-scale=1,
-               maximum-scale=1,
-               user-scalable=no,
-               viewport-fit=cover">
+      initial-scale=1,
+      maximum-scale=1,
+      user-scalable=no,
+      viewport-fit=cover">
 
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="theme-color" content="#000000">
 
-<title>RENATO VISION ULTRA</title>
+<meta name="theme-color" content="#050505">
+
+<title>RENATO VISION AI</title>
 
 <style>
+
 *{
     box-sizing:border-box;
     -webkit-tap-highlight-color:transparent;
 }
 
-html,body{
-    margin:0;
+html,
+body{
     width:100%;
     height:100%;
+    margin:0;
+    padding:0;
     overflow:hidden;
     background:#000;
     color:#fff;
-    font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display",
-                 "Segoe UI",Arial,sans-serif;
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "SF Pro Display",
+        "Segoe UI",
+        Arial,
+        sans-serif;
 }
 
-body{
-    touch-action:manipulation;
+button,
+select,
+input{
+    font-family:inherit;
+}
+
+button{
+    cursor:pointer;
 }
 
 #app{
     position:fixed;
     inset:0;
-    background:#000;
     overflow:hidden;
+    background:#000;
 }
+
+/* CAMERA */
 
 #camera{
     position:absolute;
     inset:0;
+
     width:100%;
     height:100%;
+
     object-fit:cover;
+
     background:#000;
+
+    transition:
+        filter .12s linear,
+        transform .12s linear;
 }
 
-#processingCanvas{
-    position:absolute;
-    inset:0;
-    width:100%;
-    height:100%;
-    object-fit:cover;
-    display:none;
-}
+/* TOP */
 
-#cameraOverlay{
+#top{
     position:absolute;
-    inset:0;
-    pointer-events:none;
-}
 
-#topInfo{
-    position:absolute;
-    top:env(safe-area-inset-top,20px);
-    left:16px;
-    right:16px;
+    top:
+        calc(
+            env(safe-area-inset-top,0px)
+            + 13px
+        );
+
+    left:14px;
+    right:14px;
+
     display:flex;
     justify-content:space-between;
     align-items:center;
+
     z-index:20;
+
     pointer-events:none;
-    transition:.25s;
+}
+
+.glass{
+    background:
+        rgba(10,10,12,.62);
+
+    backdrop-filter:
+        blur(20px);
+
+    -webkit-backdrop-filter:
+        blur(20px);
+
+    border:
+        1px solid
+        rgba(255,255,255,.12);
+
+    box-shadow:
+        0 8px 30px
+        rgba(0,0,0,.28);
 }
 
 .brand{
-    font-size:12px;
-    font-weight:800;
-    letter-spacing:2px;
     padding:8px 11px;
-    border-radius:12px;
-    background:rgba(0,0,0,.48);
-    backdrop-filter:blur(12px);
-    border:1px solid rgba(255,255,255,.12);
+
+    border-radius:13px;
+
+    font-size:10px;
+    font-weight:900;
+
+    letter-spacing:2px;
 }
 
-#modeName{
-    font-size:11px;
-    font-weight:700;
-    letter-spacing:1px;
+#modeLabel{
     padding:8px 11px;
-    border-radius:12px;
-    background:rgba(0,0,0,.48);
-    backdrop-filter:blur(12px);
-    border:1px solid rgba(255,255,255,.12);
+
+    border-radius:13px;
+
+    font-size:9px;
+    font-weight:800;
+
+    letter-spacing:1px;
 }
+
+/* RECORD */
 
 #recording{
-    position:absolute;
-    top:calc(env(safe-area-inset-top,20px) + 60px);
-    left:50%;
-    transform:translateX(-50%);
-    z-index:30;
     display:none;
-    align-items:center;
-    gap:8px;
-    padding:7px 12px;
+
+    position:absolute;
+
+    top:
+        calc(
+            env(safe-area-inset-top,0px)
+            + 65px
+        );
+
+    left:50%;
+
+    transform:translateX(-50%);
+
+    z-index:50;
+
+    padding:8px 14px;
+
     border-radius:20px;
-    background:rgba(160,0,0,.75);
-    font-size:12px;
-    font-weight:800;
-    letter-spacing:1px;
-    box-shadow:0 0 20px rgba(255,0,0,.4);
+
+    background:
+        rgba(120,0,0,.85);
+
+    border:
+        1px solid
+        rgba(255,255,255,.12);
+
+    font-size:11px;
+    font-weight:900;
 }
 
 .recDot{
-    width:9px;
-    height:9px;
+    display:inline-block;
+
+    width:8px;
+    height:8px;
+
+    margin-right:6px;
+
     border-radius:50%;
-    background:#ff0000;
-    animation:blink .9s infinite;
+
+    background:red;
+
+    animation:blink .8s infinite;
 }
 
 @keyframes blink{
-    0%,100%{opacity:1}
-    50%{opacity:.25}
+    50%{
+        opacity:.2;
+    }
 }
 
-#bottomBar{
+/* BOTTOM */
+
+#bottom{
     position:absolute;
+
     left:0;
     right:0;
     bottom:0;
+
+    z-index:60;
+
+    display:flex;
+
+    justify-content:center;
+    align-items:center;
+
+    gap:23px;
+
     padding:
-      16px
-      16px
-      calc(18px + env(safe-area-inset-bottom));
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    gap:24px;
-    z-index:50;
-    background:linear-gradient(
-        transparent,
-        rgba(0,0,0,.55)
-    );
-    transition:.25s;
+        15px
+        16px
+        calc(
+            18px +
+            env(safe-area-inset-bottom,0px)
+        );
+
+    background:
+        linear-gradient(
+            transparent,
+            rgba(0,0,0,.72)
+        );
 }
 
-.roundBtn{
-    width:52px;
-    height:52px;
-    border:0;
+.circle{
+    width:54px;
+    height:54px;
+
     border-radius:50%;
-    color:white;
-    background:rgba(15,15,15,.72);
-    backdrop-filter:blur(15px);
-    border:1px solid rgba(255,255,255,.16);
+
+    border:
+        1px solid
+        rgba(255,255,255,.18);
+
+    background:
+        rgba(15,15,17,.78);
+
+    color:#fff;
+
+    backdrop-filter:
+        blur(18px);
+
+    font-size:20px;
+
     display:flex;
-    justify-content:center;
     align-items:center;
-    font-size:22px;
-    cursor:pointer;
+    justify-content:center;
 }
 
-.roundBtn:active{
-    transform:scale(.92);
+.circle:active{
+    transform:scale(.91);
 }
 
-#capture{
-    width:78px;
-    height:78px;
-    border:5px solid rgba(255,255,255,.9);
-    background:rgba(255,255,255,.08);
+/* PHOTO */
+
+#photo{
+    width:80px;
+    height:80px;
+
+    border:
+        5px solid
+        rgba(255,255,255,.95);
+
+    background:
+        rgba(255,255,255,.08);
 }
 
-#captureInner{
+#photo span{
     width:62px;
     height:62px;
+
     border-radius:50%;
-    background:white;
-    transition:.2s;
+
+    background:#fff;
 }
 
-#capture.recordMode #captureInner{
+#photo.recording span{
     width:32px;
     height:32px;
+
     border-radius:7px;
-    background:#ff3030;
+
+    background:#ff1f1f;
 }
+
+/* MENU */
 
 #menuButton{
     position:absolute;
-    right:16px;
-    bottom:calc(125px + env(safe-area-inset-bottom));
-    z-index:60;
 
-    border:1px solid rgba(255,255,255,.2);
-    border-radius:18px;
+    right:15px;
+
+    bottom:
+        calc(
+            125px +
+            env(safe-area-inset-bottom,0px)
+        );
+
+    z-index:80;
+
     padding:12px 16px;
 
-    color:white;
-    background:rgba(8,8,8,.75);
-    backdrop-filter:blur(20px);
+    border-radius:18px;
 
-    font-size:12px;
-    font-weight:800;
+    border:
+        1px solid
+        rgba(255,255,255,.17);
+
+    background:
+        rgba(8,8,10,.78);
+
+    color:#fff;
+
+    backdrop-filter:
+        blur(20px);
+
+    font-size:10px;
+
+    font-weight:900;
+
     letter-spacing:1px;
-
-    box-shadow:0 8px 30px rgba(0,0,0,.35);
-    transition:.25s;
 }
 
-#menuButton:active{
-    transform:scale(.94);
-}
+/* HIDE */
 
 .hidden{
     opacity:0!important;
     pointer-events:none!important;
 }
 
-#menuPanel{
+/* PANEL */
+
+.panel{
     position:absolute;
-    left:10px;
-    right:10px;
-    bottom:calc(10px + env(safe-area-inset-bottom));
-    max-height:82vh;
 
-    z-index:100;
+    left:8px;
+    right:8px;
+    bottom:8px;
 
-    padding:16px;
-    border-radius:26px;
+    z-index:200;
 
-    background:rgba(9,9,11,.94);
-    backdrop-filter:blur(30px);
+    max-height:88vh;
 
-    border:1px solid rgba(255,255,255,.13);
-
-    box-shadow:
-      0 25px 80px rgba(0,0,0,.7),
-      inset 0 1px 0 rgba(255,255,255,.05);
-
-    transform:translateY(120%);
-    opacity:0;
-    pointer-events:none;
+    padding:15px;
 
     overflow:auto;
-    -webkit-overflow-scrolling:touch;
 
-    transition:.3s ease;
+    border-radius:27px;
+
+    background:
+        rgba(9,9,11,.97);
+
+    backdrop-filter:
+        blur(30px);
+
+    -webkit-backdrop-filter:
+        blur(30px);
+
+    border:
+        1px solid
+        rgba(255,255,255,.13);
+
+    box-shadow:
+        0 25px 100px
+        rgba(0,0,0,.85);
+
+    transform:translateY(120%);
+
+    opacity:0;
+
+    pointer-events:none;
+
+    transition:
+        .3s ease;
 }
 
-#menuPanel.open{
+.panel.open{
     transform:translateY(0);
+
     opacity:1;
+
     pointer-events:auto;
 }
 
-.menuHeader{
+/* HEADER */
+
+.panelHeader{
+    position:sticky;
+
+    top:-15px;
+
+    z-index:20;
+
+    margin:
+        -15px
+        -15px
+        14px
+        -15px;
+
+    padding:14px 15px;
+
     display:flex;
-    justify-content:space-between;
+
     align-items:center;
-    margin-bottom:12px;
+
+    justify-content:space-between;
+
+    background:
+        rgba(9,9,11,.97);
+
+    border-bottom:
+        1px solid
+        rgba(255,255,255,.07);
 }
 
-.menuTitle{
-    font-size:17px;
-    font-weight:900;
+.panelTitle{
+    font-size:16px;
+
+    font-weight:950;
+
     letter-spacing:1px;
 }
 
-.closeMenu{
-    width:38px;
-    height:38px;
+.close{
+    width:43px;
+    height:43px;
+
     border-radius:50%;
-    border:1px solid rgba(255,255,255,.15);
-    background:#18181b;
+
+    border:
+        1px solid
+        rgba(255,255,255,.2);
+
+    background:
+        rgba(255,255,255,.08);
+
     color:#fff;
-    font-size:18px;
+
+    font-size:27px;
+
+    line-height:1;
 }
 
+/* SECTION */
+
 .section{
-    margin-top:15px;
+    margin-top:16px;
 }
 
 .sectionTitle{
-    font-size:10px;
-    text-transform:uppercase;
-    letter-spacing:1.5px;
-    color:#aaa;
     margin-bottom:8px;
+
+    color:#999;
+
+    font-size:9px;
+
+    font-weight:900;
+
+    letter-spacing:1.5px;
+}
+
+/* OPTIONS */
+
+.grid{
+    display:grid;
+
+    grid-template-columns:
+        repeat(2,1fr);
+
+    gap:8px;
+}
+
+.option{
+    min-height:48px;
+
+    border-radius:14px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.1);
+
+    background:#171719;
+
+    color:#fff;
+
+    font-size:10px;
+
     font-weight:800;
 }
 
-.modeGrid{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:7px;
-}
-
-.modeBtn{
-    min-height:48px;
-    border-radius:13px;
-    border:1px solid rgba(255,255,255,.09);
-    background:#161619;
-    color:#ddd;
-    padding:8px 5px;
-    font-size:10px;
-    font-weight:700;
-}
-
-.modeBtn.active{
-    color:white;
-    border-color:#fff;
+.option.active{
     background:#303035;
-    box-shadow:0 0 15px rgba(255,255,255,.08);
+
+    border-color:
+        rgba(255,255,255,.6);
 }
+
+/* SINGLE SELECT BUTTON */
+
+.mainSelect{
+    width:100%;
+
+    min-height:52px;
+
+    border-radius:15px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.14);
+
+    background:
+        linear-gradient(
+            135deg,
+            #202024,
+            #101012
+        );
+
+    color:#fff;
+
+    font-size:12px;
+
+    font-weight:900;
+
+    letter-spacing:.5px;
+}
+
+/* SELECT */
+
+select{
+    width:100%;
+
+    min-height:48px;
+
+    padding:10px;
+
+    border-radius:14px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.12);
+
+    background:#171719;
+
+    color:#fff;
+
+    outline:none;
+}
+
+/* CONTROLS */
 
 .control{
     display:grid;
-    grid-template-columns:85px 1fr 48px;
+
+    grid-template-columns:
+        80px
+        1fr
+        50px;
+
     align-items:center;
+
     gap:8px;
-    margin:9px 0;
+
+    margin:10px 0;
 }
 
 .control label{
-    font-size:11px;
+    font-size:10px;
+
     color:#ccc;
 }
 
-.control input[type=range]{
+.control input{
     width:100%;
+
     accent-color:#fff;
 }
 
 .value{
-    font-size:10px;
-    text-align:right;
     color:#999;
-}
 
-.select{
-    width:100%;
-    padding:11px;
-    border-radius:12px;
-    border:1px solid rgba(255,255,255,.1);
-    background:#161619;
-    color:#fff;
-    outline:none;
-}
+    text-align:right;
 
-.actionGrid{
-    display:grid;
-    grid-template-columns:repeat(2,1fr);
-    gap:8px;
-}
-
-.action{
-    min-height:44px;
-    border:1px solid rgba(255,255,255,.1);
-    background:#17171a;
-    color:#fff;
-    border-radius:13px;
-    font-weight:700;
-    font-size:11px;
-}
-
-.action:active{
-    transform:scale(.98);
-}
-
-.warning{
-    margin-top:12px;
-    padding:11px;
-    border-radius:12px;
-    background:rgba(255,170,0,.08);
-    border:1px solid rgba(255,170,0,.18);
-    color:#d9c79a;
     font-size:9px;
-    line-height:1.45;
 }
+
+/* GALLERY */
+
+#galleryPanel{
+    position:absolute;
+
+    inset:0;
+
+    z-index:300;
+
+    background:
+        #050505;
+
+    transform:translateX(100%);
+
+    transition:
+        transform .3s ease;
+
+    overflow:auto;
+
+    padding:
+        calc(
+            14px +
+            env(safe-area-inset-top,0px)
+        )
+        12px
+        calc(
+            20px +
+            env(safe-area-inset-bottom,0px)
+        );
+}
+
+#galleryPanel.open{
+    transform:translateX(0);
+}
+
+.galleryHeader{
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    margin-bottom:15px;
+}
+
+.galleryTitle{
+    font-size:20px;
+
+    font-weight:950;
+}
+
+.galleryClose{
+    width:44px;
+    height:44px;
+
+    border-radius:50%;
+
+    background:#18181b;
+
+    border:
+        1px solid
+        rgba(255,255,255,.14);
+
+    color:#fff;
+
+    font-size:25px;
+}
+
+.galleryGrid{
+    display:grid;
+
+    grid-template-columns:
+        repeat(3,1fr);
+
+    gap:5px;
+}
+
+.galleryItem{
+    position:relative;
+
+    aspect-ratio:1;
+
+    overflow:hidden;
+
+    border-radius:8px;
+
+    background:#111;
+
+    border:
+        1px solid
+        rgba(255,255,255,.06);
+}
+
+.galleryItem img,
+.galleryItem video{
+    width:100%;
+    height:100%;
+
+    object-fit:cover;
+}
+
+.mediaBadge{
+    position:absolute;
+
+    left:5px;
+    bottom:5px;
+
+    padding:3px 5px;
+
+    border-radius:6px;
+
+    background:
+        rgba(0,0,0,.7);
+
+    font-size:8px;
+
+    font-weight:900;
+}
+
+.deleteMedia{
+    position:absolute;
+
+    top:5px;
+    right:5px;
+
+    width:27px;
+    height:27px;
+
+    border-radius:50%;
+
+    border:0;
+
+    background:
+        rgba(0,0,0,.72);
+
+    color:#fff;
+}
+
+/* VIEWER */
+
+#viewer{
+    position:fixed;
+
+    inset:0;
+
+    z-index:500;
+
+    display:none;
+
+    align-items:center;
+    justify-content:center;
+
+    background:
+        rgba(0,0,0,.97);
+}
+
+#viewer.open{
+    display:flex;
+}
+
+#viewer img,
+#viewer video{
+    max-width:100%;
+    max-height:90%;
+
+    object-fit:contain;
+}
+
+.viewerClose{
+    position:absolute;
+
+    top:
+        calc(
+            15px +
+            env(safe-area-inset-top,0px)
+        );
+
+    right:15px;
+
+    width:44px;
+    height:44px;
+
+    border-radius:50%;
+
+    background:#202024;
+
+    border:
+        1px solid
+        rgba(255,255,255,.16);
+
+    color:#fff;
+
+    font-size:25px;
+}
+
+/* TOAST */
 
 #toast{
     position:absolute;
-    left:50%;
-    bottom:calc(115px + env(safe-area-inset-bottom));
-    transform:translateX(-50%) translateY(20px);
 
-    z-index:200;
+    left:50%;
+
+    bottom:
+        calc(
+            112px +
+            env(safe-area-inset-bottom,0px)
+        );
+
+    transform:
+        translate(-50%,20px);
+
+    z-index:600;
 
     padding:10px 14px;
+
     border-radius:14px;
 
-    background:rgba(0,0,0,.78);
-    backdrop-filter:blur(15px);
+    background:
+        rgba(0,0,0,.84);
 
-    border:1px solid rgba(255,255,255,.13);
+    border:
+        1px solid
+        rgba(255,255,255,.12);
 
-    font-size:11px;
-    white-space:nowrap;
+    color:#fff;
+
+    font-size:10px;
 
     opacity:0;
-    pointer-events:none;
+
     transition:.25s;
+
+    pointer-events:none;
+
+    white-space:nowrap;
 }
 
 #toast.show{
     opacity:1;
-    transform:translateX(-50%) translateY(0);
+
+    transform:
+        translate(-50%,0);
 }
+
+/* LOADING */
 
 #loading{
     position:absolute;
+
     inset:0;
-    z-index:300;
+
+    z-index:1000;
+
     display:flex;
-    justify-content:center;
-    align-items:center;
-    background:#000;
+
     flex-direction:column;
+
+    align-items:center;
+    justify-content:center;
+
     gap:12px;
+
+    background:#000;
 }
 
 .loader{
-    width:38px;
-    height:38px;
-    border:3px solid rgba(255,255,255,.12);
+    width:42px;
+    height:42px;
+
+    border:
+        3px solid
+        rgba(255,255,255,.12);
+
     border-top-color:#fff;
+
     border-radius:50%;
-    animation:spin .8s linear infinite;
+
+    animation:
+        spin .8s linear infinite;
 }
 
 @keyframes spin{
-    to{transform:rotate(360deg)}
+    to{
+        transform:rotate(360deg);
+    }
 }
 
 #loadingText{
-    font-size:11px;
+    font-size:10px;
+
+    color:#999;
+
+    font-weight:800;
+
     letter-spacing:1px;
-    color:#aaa;
-}
-
-/* filtros rápidos */
-
-.filter-normal{}
-
-.filter-night{
-    filter:
-      brightness(.65)
-      contrast(1.45)
-      saturate(.85);
-}
-
-.filter-green{
-    filter:
-      grayscale(.45)
-      sepia(.8)
-      hue-rotate(65deg)
-      saturate(2.4)
-      contrast(1.35)
-      brightness(.75);
-}
-
-.filter-red{
-    filter:
-      grayscale(.6)
-      sepia(1)
-      hue-rotate(325deg)
-      saturate(3)
-      contrast(1.35)
-      brightness(.8);
-}
-
-.filter-thermal{
-    filter:
-      saturate(4)
-      contrast(1.8)
-      hue-rotate(280deg)
-      brightness(1.05);
-}
-
-.filter-infra{
-    filter:
-      grayscale(.8)
-      sepia(1)
-      hue-rotate(335deg)
-      saturate(3)
-      contrast(1.4);
-}
-
-.filter-noir{
-    filter:
-      grayscale(1)
-      contrast(1.8)
-      brightness(.95);
-}
-
-.filter-cinema{
-    filter:
-      contrast(1.2)
-      saturate(.85)
-      brightness(.95);
-}
-
-.filter-vivid{
-    filter:
-      saturate(1.8)
-      contrast(1.15);
-}
-
-.filter-negative{
-    filter:invert(1);
-}
-
-.filter-ice{
-    filter:
-      saturate(.7)
-      hue-rotate(150deg)
-      contrast(1.15)
-      brightness(1.05);
 }
 
 @media(min-width:700px){
-    #menuPanel{
+
+    .panel{
         left:auto;
-        width:430px;
         right:20px;
+
+        width:450px;
     }
 
-    .modeGrid{
-        grid-template-columns:repeat(4,1fr);
+    .galleryGrid{
+        grid-template-columns:
+            repeat(5,1fr);
     }
+
 }
+
 </style>
 </head>
 
@@ -547,281 +910,564 @@ body{
 
 <div id="app">
 
-    <video id="camera"
-           autoplay
-           playsinline
-           webkit-playsinline
-           muted></video>
+<video
+    id="camera"
+    autoplay
+    muted
+    playsinline
+    webkit-playsinline>
+</video>
 
-    <canvas id="processingCanvas"></canvas>
+<div id="top">
 
-    <div id="cameraOverlay"></div>
-
-    <div id="topInfo">
-        <div class="brand">RENATO VISION</div>
-        <div id="modeName">NORMAL</div>
+    <div class="brand glass">
+        RENATO VISION AI
     </div>
 
-    <div id="recording">
-        <span class="recDot"></span>
-        REC
-        <span id="timer">00:00</span>
-    </div>
-
-    <div id="bottomBar">
-
-        <button class="roundBtn"
-                id="flipButton"
-                aria-label="Trocar câmera">
-            🔄
-        </button>
-
-        <button class="roundBtn"
-                id="capture"
-                aria-label="Capturar">
-            <span id="captureInner"></span>
-        </button>
-
-        <button class="roundBtn"
-                id="videoButton"
-                aria-label="Modo vídeo">
-            🎥
-        </button>
-
-    </div>
-
-    <button id="menuButton">☰ MENU</button>
-
-    <div id="menuPanel">
-
-        <div class="menuHeader">
-            <div class="menuTitle">RENATO VISION ULTRA</div>
-            <button class="closeMenu" id="closeMenu">×</button>
-        </div>
-
-        <div class="section">
-
-            <div class="sectionTitle">
-                Câmera / Filmes / Visão
-            </div>
-
-            <div class="modeGrid" id="modeGrid"></div>
-
-        </div>
-
-        <div class="section">
-
-            <div class="sectionTitle">
-                Qualidade de exportação
-            </div>
-
-            <select class="select" id="resolution">
-                <option value="native">NATIVA DA CÂMERA</option>
-                <option value="1920x1080">FULL HD 1080P</option>
-                <option value="3840x2160">4K UHD</option>
-                <option value="7680x4320">8K UPSCALE</option>
-                <option value="15360x8640">16K UPSCALE</option>
-            </select>
-
-        </div>
-
-        <div class="section">
-
-            <div class="sectionTitle">
-                Ajustes profissionais
-            </div>
-
-            <div class="control">
-                <label>Brilho</label>
-                <input id="brightness"
-                       type="range"
-                       min="0.3"
-                       max="2"
-                       step=".01"
-                       value="1">
-                <span class="value" id="brightnessValue">1.00</span>
-            </div>
-
-            <div class="control">
-                <label>Contraste</label>
-                <input id="contrast"
-                       type="range"
-                       min=".3"
-                       max="2.5"
-                       step=".01"
-                       value="1">
-                <span class="value" id="contrastValue">1.00</span>
-            </div>
-
-            <div class="control">
-                <label>Saturação</label>
-                <input id="saturation"
-                       type="range"
-                       min="0"
-                       max="3"
-                       step=".01"
-                       value="1">
-                <span class="value" id="saturationValue">1.00</span>
-            </div>
-
-            <div class="control">
-                <label>Exposição</label>
-                <input id="exposure"
-                       type="range"
-                       min="0.5"
-                       max="1.8"
-                       step=".01"
-                       value="1">
-                <span class="value" id="exposureValue">1.00</span>
-            </div>
-
-            <div class="control">
-                <label>Temperatura</label>
-                <input id="temperature"
-                       type="range"
-                       min="-100"
-                       max="100"
-                       step="1"
-                       value="0">
-                <span class="value" id="temperatureValue">0</span>
-            </div>
-
-            <div class="control">
-                <label>Grão</label>
-                <input id="grain"
-                       type="range"
-                       min="0"
-                       max="100"
-                       step="1"
-                       value="0">
-                <span class="value" id="grainValue">0</span>
-            </div>
-
-            <div class="control">
-                <label>Zoom</label>
-                <input id="zoom"
-                       type="range"
-                       min="1"
-                       max="8"
-                       step=".05"
-                       value="1">
-                <span class="value" id="zoomValue">1.00x</span>
-            </div>
-
-        </div>
-
-        <div class="section">
-
-            <div class="sectionTitle">
-                Funções automáticas
-            </div>
-
-            <div class="actionGrid">
-
-                <button class="action" id="autoNight">
-                    🌙 AUTO NIGHT
-                </button>
-
-                <button class="action" id="reset">
-                    ↺ RESET
-                </button>
-
-                <button class="action" id="maxLight">
-                    ☀️ MAX LIGHT
-                </button>
-
-                <button class="action" id="cinematic">
-                    🎬 CINEMA
-                </button>
-
-            </div>
-
-        </div>
-
-        <div class="warning">
-
-            ⚠️ <b>Informação técnica:</b><br><br>
-
-            O modo 16K aumenta a resolução do arquivo por
-            processamento (upscale). Ele não transforma o sensor
-            do iPhone em um sensor 16K real.<br><br>
-
-            Os modos IR, térmico e visão noturna colorida são
-            efeitos computacionais. Eles não substituem uma
-            câmera infravermelha ou térmica física.
-
-        </div>
-
-    </div>
-
-    <div id="toast"></div>
-
-    <div id="loading">
-        <div class="loader"></div>
-        <div id="loadingText">
-            INICIANDO CÂMERA...
-        </div>
+    <div id="modeLabel" class="glass">
+        NORMAL
     </div>
 
 </div>
+
+<div id="recording">
+    <span class="recDot"></span>
+    REC
+    <span id="recordTimer">
+        00:00
+    </span>
+</div>
+
+<div id="bottom">
+
+    <button
+        class="circle"
+        id="flip">
+        🔄
+    </button>
+
+    <button
+        id="photo"
+        class="circle">
+
+        <span></span>
+
+    </button>
+
+    <button
+        class="circle"
+        id="videoMode">
+        🎥
+    </button>
+
+</div>
+
+<button id="menuButton">
+    ☰ MENU
+</button>
+
+
+<!-- MENU PRINCIPAL -->
+
+<div
+    id="mainPanel"
+    class="panel">
+
+    <div class="panelHeader">
+
+        <div class="panelTitle">
+            RENATO VISION AI
+        </div>
+
+        <button
+            id="closeMenu"
+            class="close">
+            ×
+        </button>
+
+    </div>
+
+
+    <!-- TEMAS -->
+
+    <div class="section">
+
+        <div class="sectionTitle">
+            90 TEMAS PROFISSIONAIS
+        </div>
+
+        <button
+            id="themeSelector"
+            class="mainSelect">
+
+            🎞️ SELECIONAR TEMA
+
+        </button>
+
+    </div>
+
+
+    <!-- QUALIDADE -->
+
+    <div class="section">
+
+        <div class="sectionTitle">
+            FOTO / EXPORTAÇÃO
+        </div>
+
+        <select id="photoQuality">
+
+            <option value="native">
+                ORIGINAL / NATIVA
+            </option>
+
+            <option value="1920x1080">
+                HD — 1920 × 1080
+            </option>
+
+            <option value="3840x2160">
+                4K UHD — 3840 × 2160
+            </option>
+
+            <option value="7680x4320">
+                8K UPSCALE
+            </option>
+
+            <option value="15360x8640">
+                16K UPSCALE
+            </option>
+
+        </select>
+
+    </div>
+
+
+    <!-- VIDEO -->
+
+    <div class="section">
+
+        <div class="sectionTitle">
+            VÍDEO
+        </div>
+
+        <select id="videoResolution">
+
+            <option value="native">
+                RESOLUÇÃO DA CÂMERA
+            </option>
+
+            <option value="1920x1080">
+                HD / FULL HD
+            </option>
+
+            <option value="3840x2160">
+                4K UHD
+            </option>
+
+        </select>
+
+        <br><br>
+
+        <select id="fps">
+
+            <option value="24">
+                24 FPS — CINEMA
+            </option>
+
+            <option value="25">
+                25 FPS — PAL
+            </option>
+
+            <option value="30" selected>
+                30 FPS
+            </option>
+
+            <option value="50">
+                50 FPS
+            </option>
+
+            <option value="60">
+                60 FPS
+            </option>
+
+        </select>
+
+    </div>
+
+
+    <!-- AI -->
+
+    <div class="section">
+
+        <div class="sectionTitle">
+            PROCESSAMENTO INTELIGENTE
+        </div>
+
+        <div class="grid">
+
+            <button
+                class="option active"
+                id="aiButton">
+
+                🧠 AI PHOTO ENGINE
+                <br>
+                AUTOMÁTICO
+
+            </button>
+
+            <button
+                class="option"
+                id="nightButton">
+
+                🌙 MODO NOTURNO
+
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- CONTROLES -->
+
+    <div class="section">
+
+        <div class="sectionTitle">
+            CONTROLE DE IMAGEM
+        </div>
+
+
+        <div class="control">
+
+            <label>
+                Brilho
+            </label>
+
+            <input
+                id="brightness"
+                type="range"
+                min=".4"
+                max="2"
+                value="1"
+                step=".01">
+
+            <span
+                class="value"
+                id="brightnessValue">
+                1.00
+            </span>
+
+        </div>
+
+
+        <div class="control">
+
+            <label>
+                Contraste
+            </label>
+
+            <input
+                id="contrast"
+                type="range"
+                min=".4"
+                max="2.5"
+                value="1"
+                step=".01">
+
+            <span
+                class="value"
+                id="contrastValue">
+                1.00
+            </span>
+
+        </div>
+
+
+        <div class="control">
+
+            <label>
+                Saturação
+            </label>
+
+            <input
+                id="saturation"
+                type="range"
+                min="0"
+                max="3"
+                value="1"
+                step=".01">
+
+            <span
+                class="value"
+                id="saturationValue">
+                1.00
+            </span>
+
+        </div>
+
+
+        <div class="control">
+
+            <label>
+                Zoom
+            </label>
+
+            <input
+                id="zoom"
+                type="range"
+                min="1"
+                max="8"
+                value="1"
+                step=".05">
+
+            <span
+                class="value"
+                id="zoomValue">
+                1.00x
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <!-- GALERIA -->
+
+    <div class="section">
+
+        <div class="sectionTitle">
+            ARQUIVOS
+        </div>
+
+        <button
+            class="mainSelect"
+            id="openGallery">
+
+            🖼️ ABRIR GALERIA
+
+        </button>
+
+    </div>
+
+
+    <div class="section">
+
+        <button
+            class="mainSelect"
+            id="reset">
+
+            ↺ RESTAURAR CÂMERA
+
+        </button>
+
+    </div>
+
+
+    <div style="
+        margin-top:15px;
+        padding:12px;
+        border-radius:13px;
+        background:rgba(255,170,0,.06);
+        border:1px solid rgba(255,170,0,.14);
+        color:#cfc29d;
+        font-size:9px;
+        line-height:1.5;
+    ">
+
+        <b>INFORMAÇÃO:</b><br><br>
+
+        O AI PHOTO ENGINE realiza processamento
+        automático local da imagem para melhorar
+        exposição, contraste, saturação, nitidez
+        visual e aparência geral.
+
+        <br><br>
+
+        4K depende do hardware e navegador.
+        8K e 16K são upscale e não acrescentam
+        detalhes que não existam no sensor.
+
+        <br><br>
+
+        Os modos IR, térmico e night vision são
+        simulações digitais. O iPhone 14 não possui
+        câmera infravermelha/térmica disponível
+        para esse tipo de captura pelo navegador.
+
+    </div>
+
+</div>
+
+
+<!-- MENU DE TEMAS -->
+
+<div
+    id="themePanel"
+    class="panel">
+
+    <div class="panelHeader">
+
+        <div class="panelTitle">
+            🎞️ TEMAS
+        </div>
+
+        <button
+            id="closeThemes"
+            class="close">
+            ×
+        </button>
+
+    </div>
+
+    <div
+        id="themeGrid"
+        class="grid">
+    </div>
+
+</div>
+
+
+<!-- GALERIA -->
+
+<div id="galleryPanel">
+
+    <div class="galleryHeader">
+
+        <div class="galleryTitle">
+            GALERIA
+        </div>
+
+        <button
+            class="galleryClose"
+            id="closeGallery">
+            ×
+        </button>
+
+    </div>
+
+    <div
+        id="galleryGrid"
+        class="galleryGrid">
+    </div>
+
+</div>
+
+
+<!-- VIEWER -->
+
+<div id="viewer">
+
+    <button
+        class="viewerClose"
+        id="closeViewer">
+        ×
+    </button>
+
+    <div id="viewerContent"></div>
+
+</div>
+
+
+<div id="toast"></div>
+
+
+<div id="loading">
+
+    <div class="loader"></div>
+
+    <div id="loadingText">
+        INICIANDO RENATO VISION AI...
+    </div>
+
+</div>
+
 
 <script>
 
 "use strict";
 
-/* ============================================================
+
+/* =====================================================
    ELEMENTOS
-============================================================ */
+===================================================== */
 
 const video =
     document.getElementById("camera");
 
-const canvas =
-    document.getElementById("processingCanvas");
+const mainPanel =
+    document.getElementById("mainPanel");
 
-const ctx =
-    canvas.getContext("2d", {
-        willReadFrequently:true
-    });
+const themePanel =
+    document.getElementById("themePanel");
 
 const menuButton =
     document.getElementById("menuButton");
 
-const menuPanel =
-    document.getElementById("menuPanel");
-
 const closeMenu =
     document.getElementById("closeMenu");
 
-const modeGrid =
-    document.getElementById("modeGrid");
+const themeSelector =
+    document.getElementById("themeSelector");
 
-const modeName =
-    document.getElementById("modeName");
+const closeThemes =
+    document.getElementById("closeThemes");
 
-const capture =
-    document.getElementById("capture");
+const themeGrid =
+    document.getElementById("themeGrid");
 
-const videoButton =
-    document.getElementById("videoButton");
+const photo =
+    document.getElementById("photo");
 
-const flipButton =
-    document.getElementById("flipButton");
+const videoMode =
+    document.getElementById("videoMode");
+
+const flip =
+    document.getElementById("flip");
 
 const recording =
     document.getElementById("recording");
 
-const timer =
-    document.getElementById("timer");
+const recordTimer =
+    document.getElementById("recordTimer");
 
-const toast =
-    document.getElementById("toast");
+const modeLabel =
+    document.getElementById("modeLabel");
 
 const loading =
     document.getElementById("loading");
 
-const resolution =
-    document.getElementById("resolution");
+const loadingText =
+    document.getElementById("loadingText");
+
+const toast =
+    document.getElementById("toast");
+
+const galleryPanel =
+    document.getElementById("galleryPanel");
+
+const galleryGrid =
+    document.getElementById("galleryGrid");
+
+const openGallery =
+    document.getElementById("openGallery");
+
+const closeGallery =
+    document.getElementById("closeGallery");
+
+const viewer =
+    document.getElementById("viewer");
+
+const viewerContent =
+    document.getElementById("viewerContent");
+
+const closeViewer =
+    document.getElementById("closeViewer");
+
+const aiButton =
+    document.getElementById("aiButton");
+
+const nightButton =
+    document.getElementById("nightButton");
 
 const brightness =
     document.getElementById("brightness");
@@ -832,1046 +1478,1036 @@ const contrast =
 const saturation =
     document.getElementById("saturation");
 
-const exposure =
-    document.getElementById("exposure");
-
-const temperature =
-    document.getElementById("temperature");
-
-const grain =
-    document.getElementById("grain");
-
 const zoom =
     document.getElementById("zoom");
 
+
+/* =====================================================
+   ESTADO
+===================================================== */
+
 let stream = null;
-let facingMode = "environment";
-let mediaRecorder = null;
-let recordedChunks = [];
-let recordingStart = 0;
-let timerInterval = null;
-let currentMode = "normal";
-let isRecording = false;
-let renderLoop = null;
-let toastTimeout = null;
+
+let facing =
+    "environment";
+
+let currentTheme =
+    "normal";
+
+let aiEnabled =
+    true;
+
+let nightEnabled =
+    false;
+
+let recorder =
+    null;
+
+let chunks = [];
+
+let recordingNow =
+    false;
+
+let recordingStarted =
+    0;
+
+let timerInterval =
+    null;
+
+let canvas =
+    document.createElement(
+        "canvas"
+    );
+
+let ctx =
+    canvas.getContext(
+        "2d",
+        {
+            willReadFrequently:true
+        }
+    );
 
 
-/* ============================================================
-   FILMES / MODOS
-============================================================ */
+/* =====================================================
+   90 TEMAS
+===================================================== */
 
-const modes = [
+const themes = [
 
-    ["normal","NORMAL","normal"],
-    ["night","🌙 NOTURNO","night"],
-    ["nightgreen","🟢 NIGHT VISION","green"],
-    ["nightred","🔴 RED NIGHT","red"],
-    ["infrared","🔴 IR SIMULADO","infra"],
-    ["thermal","🌡️ TÉRMICO","thermal"],
-    ["noir","⬛ NOIR","noir"],
-    ["cinema","🎬 CINEMA","cinema"],
-    ["vivid","✨ VIVID","vivid"],
-    ["negative","☯ NEGATIVO","negative"],
-    ["ice","❄️ ICE BLUE","ice"],
+["normal","NORMAL"],
+["night","NOTURNO"],
+["nightgreen","NIGHT VISION"],
+["nightred","RED NIGHT"],
+["infrared","IR SIMULADO"],
+["thermal","TÉRMICO"],
+["noir","NOIR"],
+["cinema","CINEMA"],
+["vivid","VIVID"],
+["negative","NEGATIVO"],
 
-    ["kodak","KODAK FILM","film"],
-    ["kodakgold","KODAK GOLD","film"],
-    ["kodakportra","PORTRA","film"],
-    ["kodak2383","KODAK 2383","film"],
-    ["kodak2393","KODAK 2393","film"],
+["kodak","KODAK FILM"],
+["kodakgold","KODAK GOLD"],
+["portra","PORTRA STYLE"],
+["kodak2383","KODAK 2383"],
+["kodak2393","KODAK 2393"],
+["fuji","FUJI ETERNA"],
+["velvia","FUJI VELVIA"],
+["pro400","FUJI PRO"],
+["cinestill","CINESTILL"],
+["teal","TEAL ORANGE"],
 
-    ["fuji","FUJI ETERNA","film"],
-    ["velvia","FUJI VELVIA","film"],
-    ["pro400","FUJI PRO 400H","film"],
+["bleach","BLEACH BYPASS"],
+["cross","CROSS PROCESS"],
+["vintage","VINTAGE"],
+["retro70","RETRO 70"],
+["retro80","RETRO 80"],
+["retro90","RETRO 90"],
+["retro2000","RETRO 2000"],
+["hollywood","HOLLYWOOD"],
+["blockbuster","BLOCKBUSTER"],
+["dramatic","DRAMATIC"],
 
-    ["cinestill","CINESTILL","film"],
-    ["tealorange","TEAL & ORANGE","film"],
-    ["bleach","BLEACH BYPASS","film"],
-    ["cross","CROSS PROCESS","film"],
-    ["vintage","VINTAGE","film"],
-    ["retro70","70s RETRO","film"],
-    ["retro80","80s RETRO","film"],
-    ["retro90","90s RETRO","film"],
-    ["2000","2000s FILM","film"],
+["soft","SOFT FILM"],
+["dream","DREAM"],
+["matte","MATTE"],
+["faded","FADED"],
+["warm","WARM"],
+["cold","COLD STEEL"],
+["sunset","SUNSET"],
+["golden","GOLDEN HOUR"],
+["moon","MOONLIGHT"],
+["neon","NEON"],
 
-    ["hollywood","HOLLYWOOD","film"],
-    ["blockbuster","BLOCKBUSTER","film"],
-    ["dramatic","DRAMATIC","film"],
-    ["soft","SOFT FILM","film"],
-    ["dream","DREAM","film"],
-    ["matte","MATTE","film"],
-    ["faded","FADED","film"],
-    ["warm","WARM VINTAGE","film"],
-    ["cold","COLD STEEL","film"],
-    ["sunset","SUNSET","film"],
-    ["golden","GOLDEN HOUR","film"],
-    ["moon","MOONLIGHT","film"],
-    ["neon","NEON","film"],
-    ["cyber","CYBERPUNK","film"],
-    ["matrix","MATRIX","film"],
-    ["documentary","DOCUMENTARY","film"],
-    ["street","STREET","film"],
-    ["fashion","FASHION","film"],
-    ["portrait","PORTRAIT","film"],
-    ["skin","SOFT SKIN","film"],
-    ["vhs","VHS","film"],
-    ["analog","ANALOG","film"],
-    ["monochrome","MONOCHROME","film"],
-    ["sepia","SEPIA","film"],
-    ["arctic","ARCTIC","film"],
-    ["desert","DESERT","film"],
-    ["fire","FIRE","film"],
-    ["ocean","OCEAN","film"]
+["cyber","CYBERPUNK"],
+["matrix","MATRIX"],
+["documentary","DOCUMENTARY"],
+["street","STREET"],
+["fashion","FASHION"],
+["portrait","PORTRAIT"],
+["skin","SOFT SKIN"],
+["vhs","VHS"],
+["analog","ANALOG"],
+["monochrome","MONOCHROME"],
+
+["sepia","SEPIA"],
+["arctic","ARCTIC"],
+["desert","DESERT"],
+["fire","FIRE"],
+["ocean","OCEAN"],
+["emerald","EMERALD"],
+["ruby","RUBY"],
+["sapphire","SAPPHIRE"],
+["purple","PURPLE"],
+["amber","AMBER"],
+
+["silver","SILVER"],
+["platinum","PLATINUM"],
+["copper","COPPER"],
+["gold","GOLD"],
+["rose","ROSE"],
+["lavender","LAVENDER"],
+["mint","MINT"],
+["crystal","CRYSTAL"],
+["storm","STORM"],
+["rain","RAIN"],
+
+["fog","FOG"],
+["mist","MIST"],
+["shadow","SHADOW"],
+["highkey","HIGH KEY"],
+["lowkey","LOW KEY"],
+["urban","URBAN"],
+["grunge","GRUNGE"],
+["luxury","LUXURY"],
+["classic","CLASSIC"],
+["editorial","EDITORIAL"],
+
+["sports","SPORTS"],
+["action","ACTION"],
+["travel","TRAVEL"],
+["food","FOOD"],
+["nature","NATURE"],
+["architecture","ARCHITECTURE"],
+["sunrise","SUNRISE"],
+["twilight","TWILIGHT"],
+["deepblue","DEEP BLUE"],
+["finalcut","FINAL CUT"]
+
 ];
 
 
-/* ============================================================
-   CRIA BOTÕES
-============================================================ */
+/* =====================================================
+   BANCO
+===================================================== */
 
-function createModeButtons(){
+const DB_NAME =
+    "RenatoVisionGallery";
 
-    modeGrid.innerHTML = "";
+const DB_VERSION =
+    1;
 
-    modes.forEach(mode => {
+const STORE =
+    "media";
 
-        const button =
-            document.createElement("button");
+let db = null;
 
-        button.className = "modeBtn";
 
-        button.dataset.mode = mode[0];
+/* =====================================================
+   ABRIR BANCO
+===================================================== */
 
-        button.textContent = mode[1];
+function openDB(){
 
-        button.addEventListener("click", () => {
+    return new Promise(
+        (resolve,reject)=>{
 
-            setMode(mode[0]);
+            const request =
+                indexedDB.open(
+                    DB_NAME,
+                    DB_VERSION
+                );
 
-            closeMenuPanel();
+            request.onupgradeneeded =
+                event => {
 
-        });
+                    const database =
+                        event.target.result;
 
-        modeGrid.appendChild(button);
+                    if(
+                        !database.objectStoreNames
+                            .contains(STORE)
+                    ){
 
-    });
+                        database.createObjectStore(
+                            STORE,
+                            {
+                                keyPath:"id"
+                            }
+                        );
 
-}
-
-createModeButtons();
-
-
-/* ============================================================
-   TOAST
-============================================================ */
-
-function showToast(message){
-
-    clearTimeout(toastTimeout);
-
-    toast.textContent = message;
-
-    toast.classList.add("show");
-
-    toastTimeout =
-        setTimeout(() => {
-            toast.classList.remove("show");
-        }, 2200);
-}
-
-
-/* ============================================================
-   MENU
-============================================================ */
-
-function openMenuPanel(){
-
-    if(isRecording) return;
-
-    menuPanel.classList.add("open");
-
-}
-
-function closeMenuPanel(){
-
-    menuPanel.classList.remove("open");
-
-}
-
-menuButton.addEventListener(
-    "click",
-    openMenuPanel
-);
-
-closeMenu.addEventListener(
-    "click",
-    closeMenuPanel
-);
-
-
-/* ============================================================
-   ESCONDER INTERFACE
-============================================================ */
-
-function hideInterface(){
-
-    menuButton.classList.add("hidden");
-
-    flipButton.classList.add("hidden");
-
-    videoButton.classList.add("hidden");
-
-    capture.classList.add("hidden");
-
-    closeMenuPanel();
-
-}
-
-function showInterface(){
-
-    if(isRecording) return;
-
-    menuButton.classList.remove("hidden");
-
-    flipButton.classList.remove("hidden");
-
-    videoButton.classList.remove("hidden");
-
-    capture.classList.remove("hidden");
-
-}
-
-
-/* ============================================================
-   TOQUE NA TELA
-============================================================ */
-
-document.getElementById("app")
-    .addEventListener("click", event => {
-
-        if(
-            event.target.closest("#menuPanel") ||
-            event.target.closest("#bottomBar") ||
-            event.target.closest("#menuButton")
-        ){
-            return;
-        }
-
-        if(!isRecording){
-
-            showInterface();
-
-        }
-
-    });
-
-
-/* ============================================================
-   CÂMERA
-============================================================ */
-
-async function startCamera(){
-
-    try{
-
-        if(stream){
-
-            stream.getTracks()
-                .forEach(track => track.stop());
-
-        }
-
-        stream =
-            await navigator.mediaDevices.getUserMedia({
-
-                video:{
-                    facingMode:facingMode,
-
-                    width:{
-                        ideal:3840
-                    },
-
-                    height:{
-                        ideal:2160
-                    },
-
-                    frameRate:{
-                        ideal:60,
-                        max:60
                     }
-                },
 
-                audio:true
+                };
 
-            });
+            request.onsuccess =
+                event => {
 
-        video.srcObject = stream;
+                    db =
+                        event.target.result;
 
-        await video.play();
+                    resolve(db);
 
-        loading.style.display = "none";
+                };
 
-        startRender();
+            request.onerror =
+                () =>
+                    reject(
+                        request.error
+                    );
 
-        showToast("Câmera pronta");
-
-    }catch(error){
-
-        console.error(error);
-
-        loading.style.display = "flex";
-
-        document.getElementById(
-            "loadingText"
-        ).innerHTML =
-            "PERMISSÃO DA CÂMERA NECESSÁRIA";
-
-        showToast(
-            "Permita o acesso à câmera"
-        );
-
-    }
-
-}
-
-
-/* ============================================================
-   TROCAR CÂMERA
-============================================================ */
-
-flipButton.addEventListener(
-    "click",
-    async () => {
-
-        if(isRecording) return;
-
-        facingMode =
-            facingMode === "environment"
-            ? "user"
-            : "environment";
-
-        await startCamera();
-
-    }
-);
-
-
-/* ============================================================
-   MODOS
-============================================================ */
-
-function setMode(mode){
-
-    currentMode = mode;
-
-    const found =
-        modes.find(x => x[0] === mode);
-
-    if(found){
-
-        modeName.textContent =
-            found[1];
-
-    }
-
-    document
-        .querySelectorAll(".modeBtn")
-        .forEach(button => {
-
-            button.classList.toggle(
-                "active",
-                button.dataset.mode === mode
-            );
-
-        });
-
-    showToast(
-        found ? found[1] : mode
+        }
     );
 
 }
 
 
-/* ============================================================
-   FILTRO BASE
-============================================================ */
-
-function getFilter(){
-
-    const b =
-        brightness.value;
-
-    const c =
-        contrast.value;
-
-    const s =
-        saturation.value;
-
-    const e =
-        exposure.value;
-
-    let filter =
-        `brightness(${b})
-         contrast(${c})
-         saturate(${s})
-         brightness(${e})`;
-
-    switch(currentMode){
-
-        case "night":
-
-            filter +=
-                " brightness(0.8) contrast(1.5) saturate(.9)";
-            break;
-
-        case "nightgreen":
-
-            filter +=
-                " grayscale(.5) sepia(1) hue-rotate(65deg) saturate(2.5) contrast(1.5)";
-            break;
-
-        case "nightred":
-
-            filter +=
-                " grayscale(.5) sepia(1) hue-rotate(325deg) saturate(3) contrast(1.5)";
-            break;
-
-        case "infrared":
-
-            filter +=
-                " grayscale(.8) sepia(1) hue-rotate(330deg) saturate(3.5) contrast(1.5)";
-            break;
-
-        case "thermal":
-
-            filter +=
-                " saturate(4) contrast(1.8) hue-rotate(280deg)";
-            break;
-
-        case "noir":
-
-            filter +=
-                " grayscale(1) contrast(1.8)";
-            break;
-
-        case "cinema":
-
-            filter +=
-                " contrast(1.18) saturate(.85) brightness(.96)";
-            break;
-
-        case "vivid":
-
-            filter +=
-                " saturate(1.8) contrast(1.15)";
-            break;
-
-        case "negative":
-
-            filter +=
-                " invert(1)";
-            break;
-
-        case "ice":
-
-            filter +=
-                " saturate(.7) hue-rotate(150deg) contrast(1.2)";
-            break;
-
-        case "kodak":
-
-            filter +=
-                " contrast(1.12) saturate(1.12) sepia(.08) brightness(1.02)";
-            break;
-
-        case "kodakgold":
-
-            filter +=
-                " saturate(1.25) sepia(.12) contrast(1.08) brightness(1.04)";
-            break;
-
-        case "kodakportra":
-
-            filter +=
-                " contrast(.96) saturate(.88) sepia(.05) brightness(1.05)";
-            break;
-
-        case "kodak2383":
-
-            filter +=
-                " contrast(1.28) saturate(1.12) brightness(.98)";
-            break;
-
-        case "kodak2393":
-
-            filter +=
-                " contrast(1.18) saturate(1.05) brightness(1.01)";
-            break;
-
-        case "fuji":
-
-            filter +=
-                " contrast(1.05) saturate(.92) hue-rotate(4deg)";
-            break;
-
-        case "velvia":
-
-            filter +=
-                " saturate(1.65) contrast(1.2)";
-            break;
-
-        case "pro400":
-
-            filter +=
-                " saturate(.82) contrast(.95) brightness(1.05)";
-            break;
-
-        case "cinestill":
-
-            filter +=
-                " contrast(1.2) saturate(1.15) sepia(.05)";
-            break;
-
-        case "tealorange":
-
-            filter +=
-                " saturate(1.35) contrast(1.15) hue-rotate(-8deg)";
-            break;
-
-        case "bleach":
-
-            filter +=
-                " grayscale(.35) contrast(1.55) saturate(.55)";
-            break;
-
-        case "cross":
-
-            filter +=
-                " contrast(1.35) saturate(1.5) hue-rotate(10deg)";
-            break;
-
-        case "vintage":
-
-            filter +=
-                " sepia(.3) saturate(.8) contrast(1.05)";
-            break;
-
-        case "retro70":
-
-            filter +=
-                " sepia(.35) saturate(1.2) contrast(1.08)";
-            break;
-
-        case "retro80":
-
-            filter +=
-                " saturate(1.25) contrast(1.12) hue-rotate(-4deg)";
-            break;
-
-        case "retro90":
-
-            filter +=
-                " contrast(1.08) saturate(1.12) sepia(.08)";
-            break;
-
-        case "2000":
-
-            filter +=
-                " contrast(1.1) saturate(1.2) brightness(1.02)";
-            break;
-
-        case "hollywood":
-
-            filter +=
-                " contrast(1.15) saturate(.95) sepia(.08)";
-            break;
-
-        case "blockbuster":
-
-            filter +=
-                " contrast(1.3) saturate(1.15) hue-rotate(-5deg)";
-            break;
-
-        case "dramatic":
-
-            filter +=
-                " contrast(1.55) saturate(.85) brightness(.92)";
-            break;
-
-        case "soft":
-
-            filter +=
-                " contrast(.9) saturate(.9) brightness(1.06)";
-            break;
-
-        case "dream":
-
-            filter +=
-                " brightness(1.08) contrast(.88) saturate(1.1)";
-            break;
-
-        case "matte":
-
-            filter +=
-                " contrast(.88) brightness(1.05) saturate(.85)";
-            break;
-
-        case "faded":
-
-            filter +=
-                " contrast(.82) saturate(.7) brightness(1.08)";
-            break;
-
-        case "warm":
-
-            filter +=
-                " sepia(.18) saturate(1.18) hue-rotate(-8deg)";
-            break;
-
-        case "cold":
-
-            filter +=
-                " saturate(.8) hue-rotate(170deg) contrast(1.1)";
-            break;
-
-        case "sunset":
-
-            filter +=
-                " sepia(.2) saturate(1.45) hue-rotate(-8deg)";
-            break;
-
-        case "golden":
-
-            filter +=
-                " sepia(.16) saturate(1.3) brightness(1.05)";
-            break;
-
-        case "moon":
-
-            filter +=
-                " saturate(.55) hue-rotate(170deg) brightness(.85)";
-            break;
-
-        case "neon":
-
-            filter +=
-                " saturate(2.2) contrast(1.4) brightness(1.05)";
-            break;
-
-        case "cyber":
-
-            filter +=
-                " saturate(1.9) contrast(1.35) hue-rotate(160deg)";
-            break;
-
-        case "matrix":
-
-            filter +=
-                " grayscale(.5) sepia(1) hue-rotate(60deg) saturate(3) contrast(1.5)";
-            break;
-
-        case "documentary":
-
-            filter +=
-                " contrast(1.18) saturate(.85)";
-            break;
-
-        case "street":
-
-            filter +=
-                " contrast(1.3) saturate(.9) brightness(.98)";
-            break;
-
-        case "fashion":
-
-            filter +=
-                " contrast(1.2) saturate(1.15) brightness(1.02)";
-            break;
-
-        case "portrait":
-
-            filter +=
-                " contrast(.95) saturate(.92) brightness(1.04)";
-            break;
-
-        case "skin":
-
-            filter +=
-                " contrast(.9) saturate(.85) brightness(1.06)";
-            break;
-
-        case "vhs":
-
-            filter +=
-                " contrast(1.15) saturate(.8) sepia(.12)";
-            break;
-
-        case "analog":
-
-            filter +=
-                " contrast(1.05) saturate(.9) sepia(.12)";
-            break;
-
-        case "monochrome":
-
-            filter +=
-                " grayscale(1) contrast(1.15)";
-            break;
-
-        case "sepia":
-
-            filter +=
-                " sepia(.9) saturate(.85)";
-            break;
-
-        case "arctic":
-
-            filter +=
-                " saturate(.65) hue-rotate(155deg) brightness(1.05)";
-            break;
-
-        case "desert":
-
-            filter +=
-                " sepia(.32) saturate(1.25) hue-rotate(-10deg)";
-            break;
-
-        case "fire":
-
-            filter +=
-                " saturate(1.8) sepia(.3) hue-rotate(-20deg)";
-            break;
-
-        case "ocean":
-
-            filter +=
-                " saturate(1.15) hue-rotate(145deg) contrast(1.08)";
-            break;
-
-    }
-
-    return filter;
-}
-
-
-/* ============================================================
-   RENDER
-============================================================ */
-
-function startRender(){
-
-    cancelAnimationFrame(renderLoop);
-
-    function render(){
-
-        if(
-            video.readyState >= 2 &&
-            video.videoWidth &&
-            video.videoHeight
-        ){
-
-            const w =
-                video.videoWidth;
-
-            const h =
-                video.videoHeight;
-
-            if(
-                canvas.width !== w ||
-                canvas.height !== h
-            ){
-
-                canvas.width = w;
-                canvas.height = h;
+/* =====================================================
+   SALVAR NA GALERIA
+===================================================== */
+
+function saveMedia(
+    blob,
+    type,
+    theme
+){
+
+    return new Promise(
+        (resolve,reject)=>{
+
+            if(!db){
+
+                reject(
+                    new Error(
+                        "Banco não disponível"
+                    )
+                );
+
+                return;
 
             }
 
-            const filter =
-                getFilter();
 
-            video.style.filter =
-                filter;
+            const transaction =
+                db.transaction(
+                    STORE,
+                    "readwrite"
+                );
 
-            video.style.transform =
-                `scale(${zoom.value})`;
+
+            transaction.objectStore(
+                STORE
+            ).put({
+
+                id:
+                    Date.now()
+                    +
+                    Math.random(),
+
+                blob:blob,
+
+                type:type,
+
+                theme:theme,
+
+                date:
+                    new Date()
+                        .toISOString()
+
+            });
+
+
+            transaction.oncomplete =
+                () => {
+
+                    resolve();
+
+                };
+
+
+            transaction.onerror =
+                () => {
+
+                    reject(
+                        transaction.error
+                    );
+
+                };
+
+        }
+    );
+
+}
+
+
+/* =====================================================
+   LISTAR GALERIA
+===================================================== */
+
+function getMedia(){
+
+    return new Promise(
+        (resolve,reject)=>{
+
+            const transaction =
+                db.transaction(
+                    STORE,
+                    "readonly"
+                );
+
+            const request =
+                transaction
+                    .objectStore(STORE)
+                    .getAll();
+
+
+            request.onsuccess =
+                () => {
+
+                    const result =
+                        request.result
+                        || [];
+
+                    result.sort(
+                        (
+                            a,
+                            b
+                        ) =>
+                            b.id -
+                            a.id
+                    );
+
+                    resolve(
+                        result
+                    );
+
+                };
+
+
+            request.onerror =
+                () =>
+                    reject(
+                        request.error
+                    );
+
+        }
+    );
+
+}
+
+
+/* =====================================================
+   EXCLUIR
+===================================================== */
+
+function deleteMedia(id){
+
+    return new Promise(
+        (resolve,reject)=>{
+
+            const transaction =
+                db.transaction(
+                    STORE,
+                    "readwrite"
+                );
+
+            transaction
+                .objectStore(STORE)
+                .delete(id);
+
+            transaction.oncomplete =
+                () =>
+                    resolve();
+
+            transaction.onerror =
+                () =>
+                    reject(
+                        transaction.error
+                    );
+
+        }
+    );
+
+}
+
+
+/* =====================================================
+   TOAST
+===================================================== */
+
+let toastTimer;
+
+function showToast(text){
+
+    clearTimeout(
+        toastTimer
+    );
+
+    toast.textContent =
+        text;
+
+    toast.classList.add(
+        "show"
+    );
+
+    toastTimer =
+        setTimeout(
+            () =>
+                toast.classList.remove(
+                    "show"
+                ),
+            2300
+        );
+
+}
+
+
+/* =====================================================
+   MENU
+===================================================== */
+
+menuButton.onclick =
+    () => {
+
+        mainPanel.classList.add(
+            "open"
+        );
+
+    };
+
+
+closeMenu.onclick =
+    () => {
+
+        mainPanel.classList.remove(
+            "open"
+        );
+
+    };
+
+
+themeSelector.onclick =
+    () => {
+
+        mainPanel.classList.remove(
+            "open"
+        );
+
+        themePanel.classList.add(
+            "open"
+        );
+
+    };
+
+
+closeThemes.onclick =
+    () => {
+
+        themePanel.classList.remove(
+            "open"
+        );
+
+    };
+
+
+/* =====================================================
+   CRIAR 90 BOTÕES
+===================================================== */
+
+themes.forEach(
+    theme => {
+
+        const button =
+            document.createElement(
+                "button"
+            );
+
+        button.className =
+            "option";
+
+        button.textContent =
+            theme[1];
+
+        button.dataset.theme =
+            theme[0];
+
+        button.onclick =
+            () => {
+
+                setTheme(
+                    theme[0]
+                );
+
+                themePanel.classList.remove(
+                    "open"
+                );
+
+            };
+
+        themeGrid.appendChild(
+            button
+        );
+
+    }
+);
+
+
+/* =====================================================
+   TEMA
+===================================================== */
+
+function setTheme(name){
+
+    currentTheme =
+        name;
+
+    const found =
+        themes.find(
+            item =>
+                item[0] === name
+        );
+
+    modeLabel.textContent =
+        found
+        ? found[1]
+        : name;
+
+
+    document
+        .querySelectorAll(
+            ".option"
+        )
+        .forEach(
+            button => {
+
+                if(
+                    button.dataset.theme
+                ){
+
+                    button.classList.toggle(
+                        "active",
+                        button.dataset.theme
+                        ===
+                        name
+                    );
+
+                }
+
+            }
+        );
+
+}
+
+
+/* =====================================================
+   FILTRO
+===================================================== */
+
+function filterForTheme(){
+
+    let filter =
+        `
+        brightness(${brightness.value})
+        contrast(${contrast.value})
+        saturate(${saturation.value})
+        `;
+
+
+    const map = {
+
+        night:
+        "brightness(.72) contrast(1.45) saturate(.75)",
+
+        nightgreen:
+        "brightness(.65) contrast(1.6) grayscale(.35) sepia(1) hue-rotate(55deg) saturate(2.5)",
+
+        nightred:
+        "brightness(.7) contrast(1.5) grayscale(.45) sepia(1) hue-rotate(325deg) saturate(3)",
+
+        infrared:
+        "grayscale(.8) sepia(1) hue-rotate(330deg) saturate(3.5) contrast(1.5)",
+
+        thermal:
+        "saturate(4) contrast(1.8) hue-rotate(275deg)",
+
+        noir:
+        "grayscale(1) contrast(1.75)",
+
+        cinema:
+        "contrast(1.2) saturate(.85) brightness(.97)",
+
+        vivid:
+        "saturate(1.8) contrast(1.18)",
+
+        negative:
+        "invert(1)",
+
+        kodak:
+        "contrast(1.12) saturate(1.12) sepia(.08)",
+
+        kodakgold:
+        "contrast(1.08) saturate(1.3) sepia(.14)",
+
+        portra:
+        "contrast(.95) saturate(.85) brightness(1.05)",
+
+        kodak2383:
+        "contrast(1.3) saturate(1.12)",
+
+        kodak2393:
+        "contrast(1.18) saturate(1.05)",
+
+        fuji:
+        "contrast(1.05) saturate(.92)",
+
+        velvia:
+        "contrast(1.2) saturate(1.7)",
+
+        pro400:
+        "contrast(.96) saturate(.82) brightness(1.04)",
+
+        cinestill:
+        "contrast(1.22) saturate(1.18)",
+
+        teal:
+        "contrast(1.18) saturate(1.4) hue-rotate(-8deg)",
+
+        bleach:
+        "grayscale(.35) contrast(1.5) saturate(.55)",
+
+        cross:
+        "contrast(1.4) saturate(1.55) hue-rotate(8deg)",
+
+        vintage:
+        "sepia(.3) saturate(.8) contrast(1.05)",
+
+        retro70:
+        "sepia(.35) saturate(1.2) contrast(1.08)",
+
+        retro80:
+        "saturate(1.25) contrast(1.12)",
+
+        retro90:
+        "contrast(1.08) saturate(1.1) sepia(.08)",
+
+        retro2000:
+        "contrast(1.1) saturate(1.2)",
+
+        hollywood:
+        "contrast(1.15) saturate(.95) sepia(.08)",
+
+        blockbuster:
+        "contrast(1.3) saturate(1.15)",
+
+        dramatic:
+        "contrast(1.55) saturate(.82) brightness(.9)",
+
+        soft:
+        "contrast(.9) saturate(.9) brightness(1.05)",
+
+        dream:
+        "brightness(1.08) contrast(.86) saturate(1.08)",
+
+        matte:
+        "contrast(.88) brightness(1.05) saturate(.85)",
+
+        faded:
+        "contrast(.8) saturate(.7) brightness(1.08)",
+
+        warm:
+        "sepia(.18) saturate(1.18)",
+
+        cold:
+        "saturate(.8) hue-rotate(165deg) contrast(1.1)",
+
+        sunset:
+        "sepia(.2) saturate(1.45) hue-rotate(-8deg)",
+
+        golden:
+        "sepia(.16) saturate(1.3) brightness(1.05)",
+
+        moon:
+        "saturate(.55) hue-rotate(170deg) brightness(.84)",
+
+        neon:
+        "saturate(2.2) contrast(1.4)",
+
+        cyber:
+        "saturate(1.9) contrast(1.35) hue-rotate(160deg)",
+
+        matrix:
+        "grayscale(.5) sepia(1) hue-rotate(60deg) saturate(3)",
+
+        documentary:
+        "contrast(1.18) saturate(.85)",
+
+        street:
+        "contrast(1.3) saturate(.9)",
+
+        fashion:
+        "contrast(1.2) saturate(1.15)",
+
+        portrait:
+        "contrast(.95) saturate(.92) brightness(1.04)",
+
+        skin:
+        "contrast(.9) saturate(.85) brightness(1.06)",
+
+        vhs:
+        "contrast(1.15) saturate(.8) sepia(.12)",
+
+        analog:
+        "contrast(1.05) saturate(.9) sepia(.12)",
+
+        monochrome:
+        "grayscale(1) contrast(1.15)",
+
+        sepia:
+        "sepia(.9) saturate(.85)",
+
+        arctic:
+        "saturate(.65) hue-rotate(155deg)",
+
+        desert:
+        "sepia(.32) saturate(1.25)",
+
+        fire:
+        "saturate(1.8) sepia(.3)",
+
+        ocean:
+        "saturate(1.15) hue-rotate(145deg)",
+
+        emerald:
+        "saturate(1.6) hue-rotate(75deg)",
+
+        ruby:
+        "saturate(1.8) hue-rotate(325deg)",
+
+        sapphire:
+        "saturate(1.5) hue-rotate(185deg)",
+
+        purple:
+        "saturate(1.5) hue-rotate(280deg)",
+
+        amber:
+        "sepia(.25) saturate(1.5)",
+
+        silver:
+        "grayscale(.7) contrast(1.2)",
+
+        platinum:
+        "grayscale(.5) contrast(1.3)",
+
+        copper:
+        "sepia(.3) saturate(1.35)",
+
+        gold:
+        "sepia(.25) saturate(1.5)",
+
+        rose:
+        "saturate(1.2) hue-rotate(320deg)",
+
+        lavender:
+        "saturate(.9) hue-rotate(270deg)",
+
+        mint:
+        "saturate(1.2) hue-rotate(100deg)",
+
+        crystal:
+        "contrast(1.25) saturate(.9) brightness(1.05)",
+
+        storm:
+        "grayscale(.3) contrast(1.5) saturate(.7)",
+
+        rain:
+        "saturate(.7) contrast(1.25)",
+
+        fog:
+        "contrast(.8) brightness(1.1) saturate(.7)",
+
+        mist:
+        "contrast(.85) brightness(1.08)",
+
+        shadow:
+        "contrast(1.6) brightness(.85)",
+
+        highkey:
+        "brightness(1.25) contrast(.9)",
+
+        lowkey:
+        "brightness(.75) contrast(1.4)",
+
+        urban:
+        "contrast(1.3) saturate(.85)",
+
+        grunge:
+        "contrast(1.45) saturate(.7)",
+
+        luxury:
+        "contrast(1.18) saturate(1.12) brightness(1.03)",
+
+        classic:
+        "contrast(1.08) saturate(.95)",
+
+        editorial:
+        "contrast(1.22) saturate(.9)",
+
+        sports:
+        "contrast(1.35) saturate(1.3)",
+
+        action:
+        "contrast(1.4) saturate(1.15)",
+
+        travel:
+        "saturate(1.25) contrast(1.08)",
+
+        food:
+        "saturate(1.45) contrast(1.08)",
+
+        nature:
+        "saturate(1.4) contrast(1.1)",
+
+        architecture:
+        "contrast(1.4) saturate(.8)",
+
+        sunrise:
+        "sepia(.15) saturate(1.3) brightness(1.05)",
+
+        twilight:
+        "saturate(.75) hue-rotate(185deg) brightness(.9)",
+
+        deepblue:
+        "saturate(1.2) hue-rotate(180deg) contrast(1.2)",
+
+        finalcut:
+        "contrast(1.2) saturate(1.08)"
+
+    };
+
+
+    if(map[currentTheme]){
+
+        filter +=
+            map[currentTheme];
+
+    }
+
+
+    if(nightEnabled){
+
+        filter +=
+            " brightness(.9) contrast(1.35)";
+
+    }
+
+
+    return filter;
+
+}
+
+
+/* =====================================================
+   AI PHOTO ENGINE
+===================================================== */
+
+function applyAI(){
+
+    if(!aiEnabled){
+
+        return;
+
+    }
+
+
+    /*
+       Processamento local:
+       - contraste adaptativo
+       - ganho de sombras
+       - redução de saturação exagerada
+       - nitidez visual
+    */
+
+    let image;
+
+    try{
+
+        image =
+            ctx.getImageData(
+                0,
+                0,
+                canvas.width,
+                canvas.height
+            );
+
+    }catch(error){
+
+        return;
+
+    }
+
+
+    const data =
+        image.data;
+
+
+    const length =
+        data.length;
+
+
+    for(
+        let i=0;
+        i<length;
+        i+=4
+    ){
+
+        let r =
+            data[i];
+
+        let g =
+            data[i+1];
+
+        let b =
+            data[i+2];
+
+
+        const luminance =
+            (
+                .2126*r
+                +
+                .7152*g
+                +
+                .0722*b
+            );
+
+
+        /*
+           Levanta sombras
+        */
+
+        if(
+            luminance < 70
+        ){
+
+            const boost =
+                (
+                    70 -
+                    luminance
+                )
+                *
+                .12;
+
+
+            r += boost;
+            g += boost;
+            b += boost;
 
         }
 
-        renderLoop =
-            requestAnimationFrame(render);
 
-    }
+        /*
+           Limita realces
+        */
+
+        if(
+            luminance > 225
+        ){
+
+            r *= .97;
+            g *= .97;
+            b *= .97;
+
+        }
+
+
+        /*
+           Contraste suave
+        */
+
+        r =
+            (
+                r-128
+            )
+            *
+            1.025
+            +
+            128;
+
+
+        g =
+            (
+                g-128
+            )
+            *
+            1.025
+            +
+            128;
+
+
+        b =
+            (
+                b-128
+            )
+            *
+            1.025
+            +
+            128;
 
-    render();
-
-}
-
-
-/* ============================================================
-   CONTROLES
-============================================================ */
-
-function updateValues(){
-
-    document.getElementById(
-        "brightnessValue"
-    ).textContent =
-        Number(brightness.value).toFixed(2);
-
-    document.getElementById(
-        "contrastValue"
-    ).textContent =
-        Number(contrast.value).toFixed(2);
-
-    document.getElementById(
-        "saturationValue"
-    ).textContent =
-        Number(saturation.value).toFixed(2);
-
-    document.getElementById(
-        "exposureValue"
-    ).textContent =
-        Number(exposure.value).toFixed(2);
-
-    document.getElementById(
-        "temperatureValue"
-    ).textContent =
-        temperature.value;
-
-    document.getElementById(
-        "grainValue"
-    ).textContent =
-        grain.value;
-
-    document.getElementById(
-        "zoomValue"
-    ).textContent =
-        Number(zoom.value).toFixed(2) + "x";
-
-}
-
-[
-    brightness,
-    contrast,
-    saturation,
-    exposure,
-    temperature,
-    grain,
-    zoom
-].forEach(element => {
-
-    element.addEventListener(
-        "input",
-        updateValues
-    );
-
-});
-
-updateValues();
-
-
-/* ============================================================
-   RESET
-============================================================ */
-
-document.getElementById(
-    "reset"
-).addEventListener(
-    "click",
-    () => {
-
-        brightness.value = 1;
-        contrast.value = 1;
-        saturation.value = 1;
-        exposure.value = 1;
-        temperature.value = 0;
-        grain.value = 0;
-        zoom.value = 1;
-
-        setMode("normal");
-
-        updateValues();
-
-        showToast("Configuração restaurada");
-
-    }
-);
-
-
-/* ============================================================
-   AUTO NIGHT
-============================================================ */
-
-document.getElementById(
-    "autoNight"
-).addEventListener(
-    "click",
-    () => {
-
-        brightness.value = 1.25;
-        contrast.value = 1.55;
-        saturation.value = .85;
-        exposure.value = 1.35;
-        grain.value = 8;
-
-        setMode("night");
-
-        updateValues();
-
-        showToast(
-            "Modo noturno automático"
-        );
-
-    }
-);
-
-
-/* ============================================================
-   MAX LIGHT
-============================================================ */
-
-document.getElementById(
-    "maxLight"
-).addEventListener(
-    "click",
-    () => {
-
-        brightness.value = 1.6;
-        contrast.value = 1.15;
-        saturation.value = 1.15;
-        exposure.value = 1.5;
-
-        updateValues();
-
-        showToast(
-            "Máxima luminosidade"
-        );
-
-    }
-);
-
-
-/* ============================================================
-   CINEMA
-============================================================ */
-
-document.getElementById(
-    "cinematic"
-).addEventListener(
-    "click",
-    () => {
-
-        setMode("cinema");
-
-        brightness.value = .95;
-        contrast.value = 1.2;
-        saturation.value = .85;
-
-        updateValues();
-
-    }
-);
-
-
-/* ============================================================
-   CANVAS PROCESSADO
-============================================================ */
-
-function drawProcessedFrame(){
-
-    if(
-        !video.videoWidth ||
-        !video.videoHeight
-    ){
-        return;
-    }
-
-    canvas.width =
-        video.videoWidth;
-
-    canvas.height =
-        video.videoHeight;
-
-    ctx.clearRect(
-        0,
-        0,
-        canvas.width,
-        canvas.height
-    );
-
-    ctx.save();
-
-    ctx.filter =
-        getFilter();
-
-    const z =
-        Number(zoom.value);
-
-    const drawWidth =
-        canvas.width * z;
-
-    const drawHeight =
-        canvas.height * z;
-
-    const x =
-        (canvas.width - drawWidth) / 2;
-
-    const y =
-        (canvas.height - drawHeight) / 2;
-
-    ctx.drawImage(
-        video,
-        x,
-        y,
-        drawWidth,
-        drawHeight
-    );
-
-    ctx.restore();
-
-}
-
-
-/* ============================================================
-   GRÃO
-============================================================ */
-
-function applyGrain(){
-
-    const amount =
-        Number(grain.value);
-
-    if(amount <= 0){
-        return;
-    }
-
-    let image =
-        ctx.getImageData(
-            0,
-            0,
-            canvas.width,
-            canvas.height
-        );
-
-    let data =
-        image.data;
-
-    for(
-        let i = 0;
-        i < data.length;
-        i += 4
-    ){
-
-        const noise =
-            (Math.random() - .5)
-            * amount;
 
         data[i] =
             Math.max(
                 0,
                 Math.min(
                     255,
-                    data[i] + noise
+                    r
                 )
             );
 
@@ -1880,7 +2516,7 @@ function applyGrain(){
                 0,
                 Math.min(
                     255,
-                    data[i+1] + noise
+                    g
                 )
             );
 
@@ -1889,11 +2525,12 @@ function applyGrain(){
                 0,
                 Math.min(
                     255,
-                    data[i+2] + noise
+                    b
                 )
             );
 
     }
+
 
     ctx.putImageData(
         image,
@@ -1904,74 +2541,382 @@ function applyGrain(){
 }
 
 
-/* ============================================================
-   TEMPERATURA
-============================================================ */
+/* =====================================================
+   DESENHAR FOTO
+===================================================== */
 
-function applyTemperature(){
+function renderFrame(){
 
-    const amount =
-        Number(temperature.value);
-
-    if(amount === 0){
-        return;
-    }
-
-    let image =
-        ctx.getImageData(
-            0,
-            0,
-            canvas.width,
-            canvas.height
-        );
-
-    let data =
-        image.data;
-
-    for(
-        let i = 0;
-        i < data.length;
-        i += 4
+    if(
+        !video.videoWidth ||
+        !video.videoHeight
     ){
 
-        data[i] =
-            Math.max(
-                0,
-                Math.min(
-                    255,
-                    data[i] + amount
-                )
-            );
-
-        data[i+2] =
-            Math.max(
-                0,
-                Math.min(
-                    255,
-                    data[i+2] - amount
-                )
-            );
+        return false;
 
     }
 
-    ctx.putImageData(
-        image,
-        0,
-        0
+
+    canvas.width =
+        video.videoWidth;
+
+    canvas.height =
+        video.videoHeight;
+
+
+    ctx.save();
+
+    ctx.filter =
+        filterForTheme();
+
+
+    const z =
+        Number(
+            zoom.value
+        );
+
+
+    const w =
+        canvas.width * z;
+
+    const h =
+        canvas.height * z;
+
+
+    const x =
+        (
+            canvas.width-w
+        )/2;
+
+
+    const y =
+        (
+            canvas.height-h
+        )/2;
+
+
+    ctx.drawImage(
+        video,
+        x,
+        y,
+        w,
+        h
     );
+
+
+    ctx.restore();
+
+
+    applyAI();
+
+
+    return true;
 
 }
 
 
-/* ============================================================
-   FOTO
-============================================================ */
+/* =====================================================
+   CAMERA CSS AO VIVO
+===================================================== */
 
-capture.addEventListener(
-    "click",
+function updateLive(){
+
+    video.style.filter =
+        filterForTheme();
+
+    video.style.transform =
+        `scale(${zoom.value})`;
+
+}
+
+
+/* =====================================================
+   CONTROLES
+===================================================== */
+
+function updateValues(){
+
+    document.getElementById(
+        "brightnessValue"
+    ).textContent =
+        Number(
+            brightness.value
+        ).toFixed(2);
+
+
+    document.getElementById(
+        "contrastValue"
+    ).textContent =
+        Number(
+            contrast.value
+        ).toFixed(2);
+
+
+    document.getElementById(
+        "saturationValue"
+    ).textContent =
+        Number(
+            saturation.value
+        ).toFixed(2);
+
+
+    document.getElementById(
+        "zoomValue"
+    ).textContent =
+        Number(
+            zoom.value
+        ).toFixed(2)
+        +
+        "x";
+
+
+    updateLive();
+
+}
+
+
+[
+    brightness,
+    contrast,
+    saturation,
+    zoom
+]
+.forEach(
+    el =>
+        el.addEventListener(
+            "input",
+            updateValues
+        )
+);
+
+
+/* =====================================================
+   AI BUTTON
+===================================================== */
+
+aiButton.onclick =
+    () => {
+
+        aiEnabled =
+            !aiEnabled;
+
+        aiButton.classList.toggle(
+            "active",
+            aiEnabled
+        );
+
+        showToast(
+            aiEnabled
+            ?
+            "AI PHOTO ENGINE ativado"
+            :
+            "AI PHOTO ENGINE desativado"
+        );
+
+    };
+
+
+/* =====================================================
+   NIGHT
+===================================================== */
+
+nightButton.onclick =
+    () => {
+
+        nightEnabled =
+            !nightEnabled;
+
+        nightButton.classList.toggle(
+            "active",
+            nightEnabled
+        );
+
+        if(
+            nightEnabled
+        ){
+
+            setTheme(
+                "night"
+            );
+
+        }
+
+        updateLive();
+
+    };
+
+
+/* =====================================================
+   CAMERA
+===================================================== */
+
+async function startCamera(){
+
+    try{
+
+        if(stream){
+
+            stream
+                .getTracks()
+                .forEach(
+                    track =>
+                        track.stop()
+                );
+
+        }
+
+
+        const selectedFPS =
+            Number(
+                document.getElementById(
+                    "fps"
+                ).value
+            );
+
+
+        stream =
+            await navigator
+                .mediaDevices
+                .getUserMedia({
+
+                    video:{
+
+                        facingMode:
+                            facing,
+
+                        width:{
+                            ideal:3840
+                        },
+
+                        height:{
+                            ideal:2160
+                        },
+
+                        frameRate:{
+                            ideal:selectedFPS,
+                            max:selectedFPS
+                        }
+
+                    },
+
+                    audio:true
+
+                });
+
+
+        video.srcObject =
+            stream;
+
+
+        await video.play();
+
+
+        loading.style.display =
+            "none";
+
+
+        updateLive();
+
+
+        showToast(
+            "Câmera pronta"
+        );
+
+
+    }catch(error){
+
+        console.error(
+            error
+        );
+
+
+        loadingText.textContent =
+            "PERMITA O ACESSO À CÂMERA";
+
+    }
+
+}
+
+
+/* =====================================================
+   TROCAR CÂMERA
+===================================================== */
+
+flip.onclick =
     async () => {
 
-        if(isRecording){
+        if(recordingNow){
+
+            return;
+
+        }
+
+        facing =
+            facing ===
+            "environment"
+            ?
+            "user"
+            :
+            "environment";
+
+
+        await startCamera();
+
+    };
+
+
+/* =====================================================
+   RESOLUÇÃO
+===================================================== */
+
+document
+.getElementById("videoResolution")
+.addEventListener(
+    "change",
+    async () => {
+
+        if(
+            !recordingNow
+        ){
+
+            await startCamera();
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   FPS
+===================================================== */
+
+document
+.getElementById("fps")
+.addEventListener(
+    "change",
+    async () => {
+
+        if(
+            !recordingNow
+        ){
+
+            await startCamera();
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   FOTO
+===================================================== */
+
+photo.onclick =
+    async () => {
+
+        if(recordingNow){
 
             stopRecording();
 
@@ -1979,41 +2924,79 @@ capture.addEventListener(
 
         }
 
-        hideInterface();
+
+        mainPanel.classList.remove(
+            "open"
+        );
+
+        themePanel.classList.remove(
+            "open"
+        );
+
+
+        menuButton.classList.add(
+            "hidden"
+        );
+
 
         showToast(
-            "Processando imagem..."
+            "Processando foto..."
         );
+
 
         await new Promise(
             resolve =>
-                requestAnimationFrame(resolve)
+                requestAnimationFrame(
+                    resolve
+                )
         );
+
 
         try{
 
-            drawProcessedFrame();
+            if(
+                !renderFrame()
+            ){
 
-            applyTemperature();
+                throw new Error(
+                    "camera"
+                );
 
-            applyGrain();
+            }
+
 
             const selected =
-                resolution.value;
+                document.getElementById(
+                    "photoQuality"
+                ).value;
 
-            let outputCanvas =
+
+            let output =
                 canvas;
 
-            if(selected !== "native"){
+
+            if(
+                selected !==
+                "native"
+            ){
 
                 const parts =
-                    selected.split("x");
+                    selected.split(
+                        "x"
+                    );
 
-                const targetWidth =
-                    Number(parts[0]);
 
-                const targetHeight =
-                    Number(parts[1]);
+                const width =
+                    Number(
+                        parts[0]
+                    );
+
+
+                const height =
+                    Number(
+                        parts[1]
+                    );
+
 
                 try{
 
@@ -2022,46 +3005,55 @@ capture.addEventListener(
                             "canvas"
                         );
 
+
                     big.width =
-                        targetWidth;
+                        width;
+
 
                     big.height =
-                        targetHeight;
+                        height;
+
 
                     const bigCtx =
-                        big.getContext("2d");
+                        big.getContext(
+                            "2d"
+                        );
+
 
                     bigCtx.imageSmoothingEnabled =
                         true;
 
+
                     bigCtx.imageSmoothingQuality =
                         "high";
+
 
                     bigCtx.drawImage(
                         canvas,
                         0,
                         0,
-                        targetWidth,
-                        targetHeight
+                        width,
+                        height
                     );
 
-                    outputCanvas =
+
+                    output =
                         big;
+
 
                 }catch(error){
 
                     showToast(
-                        "Memória insuficiente para " +
-                        selected +
-                        ". Usando resolução nativa."
+                        "Memória insuficiente para essa resolução"
                     );
 
                 }
 
             }
 
-            outputCanvas.toBlob(
-                blob => {
+
+            output.toBlob(
+                async blob => {
 
                     if(!blob){
 
@@ -2069,67 +3061,77 @@ capture.addEventListener(
                             "Não foi possível salvar"
                         );
 
+                        menuButton.classList.remove(
+                            "hidden"
+                        );
+
                         return;
 
                     }
 
-                    const url =
-                        URL.createObjectURL(blob);
 
-                    const link =
-                        document.createElement("a");
-
-                    link.href = url;
-
-                    link.download =
-                        "renato-vision-" +
-                        Date.now() +
-                        ".jpg";
-
-                    document.body.appendChild(link);
-
-                    link.click();
-
-                    link.remove();
-
-                    setTimeout(
-                        () =>
-                            URL.revokeObjectURL(url),
-                        3000
+                    await saveMedia(
+                        blob,
+                        "photo",
+                        currentTheme
                     );
+
 
                     showToast(
-                        "Imagem salva"
+                        "📸 Foto salva na Galeria"
                     );
+
+
+                    /*
+                       NÃO abre download.
+                       NÃO pergunta nada.
+                    */
+
+                    setTimeout(
+                        () => {
+
+                            menuButton.classList.remove(
+                                "hidden"
+                            );
+
+                        },
+                        1200
+                    );
+
 
                 },
                 "image/jpeg",
-                .96
+                .97
             );
+
 
         }catch(error){
 
-            console.error(error);
+            console.error(
+                error
+            );
 
             showToast(
-                "Erro ao processar imagem"
+                "Erro ao capturar foto"
+            );
+
+            menuButton.classList.remove(
+                "hidden"
             );
 
         }
 
-    }
-);
+    };
 
 
-/* ============================================================
-   VIDEO
-============================================================ */
+/* =====================================================
+   VÍDEO
+===================================================== */
 
-videoButton.addEventListener(
-    "click",
+videoMode.onclick =
     () => {
 
-        if(isRecording){
+        if(recordingNow){
 
             stopRecording();
 
@@ -2139,67 +3141,91 @@ videoButton.addEventListener(
 
         }
 
-    }
-);
+    };
 
+
+/* =====================================================
+   INICIAR VÍDEO
+===================================================== */
 
 async function startRecording(){
 
-    if(!stream){
+    if(
+        !stream
+        ||
+        typeof MediaRecorder ===
+        "undefined"
+    ){
 
         showToast(
-            "Câmera não disponível"
+            "Gravação não suportada"
         );
 
         return;
 
     }
 
-    recordedChunks = [];
 
     try{
 
-        /*
-         * Criamos um canvas com o vídeo processado.
-         * Assim a gravação pode usar o filtro selecionado.
-         */
+        const fps =
+            Number(
+                document.getElementById(
+                    "fps"
+                ).value
+            );
 
-        drawProcessedFrame();
 
-        const processedStream =
-            canvas.captureStream(30);
+        const processed =
+            canvas.captureStream(
+                fps
+            );
 
-        const tracks =
-            stream.getAudioTracks();
 
-        tracks.forEach(
-            track =>
-                processedStream.addTrack(track)
-        );
+        stream
+            .getAudioTracks()
+            .forEach(
+                track =>
+                    processed.addTrack(
+                        track
+                    )
+            );
 
-        let mimeType = "";
 
-        const options = [
+        let mime =
+            "";
+
+
+        const candidates = [
 
             "video/mp4;codecs=avc1",
+
             "video/mp4",
+
             "video/webm;codecs=h264",
+
             "video/webm"
 
         ];
 
+
         for(
-            const type of options
+            const candidate
+            of candidates
         ){
 
             if(
-                typeof MediaRecorder !==
-                "undefined" &&
-                MediaRecorder.isTypeSupported &&
-                MediaRecorder.isTypeSupported(type)
+                MediaRecorder
+                    .isTypeSupported
+                    &&
+                MediaRecorder
+                    .isTypeSupported(
+                        candidate
+                    )
             ){
 
-                mimeType = type;
+                mime =
+                    candidate;
 
                 break;
 
@@ -2207,26 +3233,31 @@ async function startRecording(){
 
         }
 
-        const recorderOptions =
-            mimeType
-            ? {mimeType}
-            : {};
 
-        mediaRecorder =
+        recorder =
             new MediaRecorder(
-                processedStream,
-                recorderOptions
+                processed,
+                mime
+                ?
+                {
+                    mimeType:mime
+                }
+                :
+                undefined
             );
 
-        mediaRecorder.ondataavailable =
+
+        chunks = [];
+
+
+        recorder.ondataavailable =
             event => {
 
                 if(
-                    event.data &&
-                    event.data.size > 0
+                    event.data.size
                 ){
 
-                    recordedChunks.push(
+                    chunks.push(
                         event.data
                     );
 
@@ -2234,29 +3265,51 @@ async function startRecording(){
 
             };
 
-        mediaRecorder.onstop =
-            saveRecordedVideo;
 
-        mediaRecorder.start(
+        recorder.onstop =
+            saveVideo;
+
+
+        recorder.start(
             1000
         );
 
-        isRecording = true;
 
-        recording.style.display =
-            "flex";
+        recordingNow =
+            true;
 
-        capture.classList.add(
-            "recordMode"
+
+        photo.classList.add(
+            "recording"
         );
 
-        hideInterface();
 
-        recordingStart =
+        recording.style.display =
+            "block";
+
+
+        menuButton.classList.add(
+            "hidden"
+        );
+
+
+        flip.classList.add(
+            "hidden"
+        );
+
+
+        videoMode.classList.add(
+            "hidden"
+        );
+
+
+        recordingStarted =
             Date.now();
 
-        timer.textContent =
+
+        recordTimer.textContent =
             "00:00";
+
 
         timerInterval =
             setInterval(
@@ -2264,16 +3317,20 @@ async function startRecording(){
                 500
             );
 
+
         showToast(
-            "Gravação iniciada"
+            "🎥 Gravação iniciada"
         );
+
 
     }catch(error){
 
-        console.error(error);
+        console.error(
+            error
+        );
 
         showToast(
-            "Seu navegador não suporta esta gravação"
+            "Erro ao iniciar vídeo"
         );
 
     }
@@ -2281,59 +3338,112 @@ async function startRecording(){
 }
 
 
-/* ============================================================
+/* =====================================================
+   RENDER PARA VÍDEO
+===================================================== */
+
+function videoRender(){
+
+    if(
+        !recordingNow
+    ){
+
+        return;
+
+    }
+
+
+    renderFrame();
+
+
+    requestAnimationFrame(
+        videoRender
+    );
+
+}
+
+
+/* =====================================================
    TIMER
-============================================================ */
+===================================================== */
 
 function updateTimer(){
 
     const seconds =
         Math.floor(
-            (Date.now() - recordingStart)
-            / 1000
+            (
+                Date.now()
+                -
+                recordingStarted
+            )
+            /
+            1000
         );
 
-    const minutes =
-        Math.floor(seconds / 60);
+
+    const min =
+        Math.floor(
+            seconds/60
+        );
+
 
     const sec =
-        seconds % 60;
+        seconds%60;
 
-    timer.textContent =
-        String(minutes).padStart(2,"0")
-        + ":" +
-        String(sec).padStart(2,"0");
+
+    recordTimer.textContent =
+        String(min)
+            .padStart(
+                2,
+                "0"
+            )
+        +
+        ":"
+        +
+        String(sec)
+            .padStart(
+                2,
+                "0"
+            );
 
 }
 
 
-/* ============================================================
+/* =====================================================
    PARAR VÍDEO
-============================================================ */
+===================================================== */
 
 function stopRecording(){
 
     if(
-        mediaRecorder &&
-        mediaRecorder.state !== "inactive"
+        recorder
+        &&
+        recorder.state !==
+        "inactive"
     ){
 
-        mediaRecorder.stop();
+        recorder.stop();
 
     }
 
-    isRecording = false;
+
+    recordingNow =
+        false;
+
 
     clearInterval(
         timerInterval
     );
 
+
     recording.style.display =
         "none";
 
-    capture.classList.remove(
-        "recordMode"
+
+    photo.classList.remove(
+        "recording"
     );
+
 
     showToast(
         "Finalizando vídeo..."
@@ -2342,115 +3452,524 @@ function stopRecording(){
 }
 
 
-/* ============================================================
+/* =====================================================
    SALVAR VÍDEO
-============================================================ */
+===================================================== */
 
-function saveRecordedVideo(){
+async function saveVideo(){
 
     if(
-        recordedChunks.length === 0
+        chunks.length === 0
     ){
 
         showToast(
-            "Nenhum vídeo gravado"
+            "Nenhum vídeo capturado"
         );
 
         return;
 
     }
 
+
     const type =
-        mediaRecorder &&
-        mediaRecorder.mimeType
-        ? mediaRecorder.mimeType
-        : "video/mp4";
+        recorder &&
+        recorder.mimeType
+        ?
+        recorder.mimeType
+        :
+        "video/mp4";
+
 
     const blob =
         new Blob(
-            recordedChunks,
+            chunks,
             {
                 type:type
             }
         );
 
-    const url =
-        URL.createObjectURL(blob);
 
-    const link =
-        document.createElement("a");
+    try{
 
-    link.href = url;
+        await saveMedia(
+            blob,
+            "video",
+            currentTheme
+        );
 
-    link.download =
-        "renato-vision-video-" +
-        Date.now() +
-        ".mp4";
 
-    document.body.appendChild(link);
+        showToast(
+            "🎥 Vídeo salvo na Galeria"
+        );
 
-    link.click();
 
-    link.remove();
+    }catch(error){
+
+        console.error(
+            error
+        );
+
+        showToast(
+            "Erro ao salvar vídeo"
+        );
+
+    }
+
+
+    /*
+       NÃO abre download.
+       NÃO pergunta nada.
+    */
+
 
     setTimeout(
-        () =>
-            URL.revokeObjectURL(url),
-        5000
-    );
+        () => {
 
-    showToast(
-        "Vídeo salvo"
+            menuButton.classList.remove(
+                "hidden"
+            );
+
+            flip.classList.remove(
+                "hidden"
+            );
+
+            videoMode.classList.remove(
+                "hidden"
+            );
+
+        },
+        1200
     );
 
 }
 
 
-/* ============================================================
-   DOUBLE TAP PARA ZOOM
-============================================================ */
+/* =====================================================
+   GALERIA
+===================================================== */
 
-let lastTap = 0;
+openGallery.onclick =
+    async () => {
 
-document.getElementById(
-    "app"
-).addEventListener(
-    "touchend",
-    event => {
+        mainPanel.classList.remove(
+            "open"
+        );
 
-        const now =
-            Date.now();
+        galleryPanel.classList.add(
+            "open"
+        );
 
-        if(now - lastTap < 300){
+        await loadGallery();
 
-            const current =
-                Number(zoom.value);
+    };
 
-            if(current <= 1.05){
 
-                zoom.value = 2;
+closeGallery.onclick =
+    () => {
 
-            }else if(current < 4){
+        galleryPanel.classList.remove(
+            "open"
+        );
 
-                zoom.value = 1;
+    };
+
+
+/* =====================================================
+   CARREGAR GALERIA
+===================================================== */
+
+async function loadGallery(){
+
+    galleryGrid.innerHTML = "";
+
+
+    const items =
+        await getMedia();
+
+
+    if(
+        items.length === 0
+    ){
+
+        galleryGrid.innerHTML =
+            `
+            <div style="
+                grid-column:1/-1;
+                text-align:center;
+                padding:60px 20px;
+                color:#777;
+                font-size:12px;
+            ">
+                GALERIA VAZIA<br><br>
+                Suas fotos e vídeos aparecerão aqui.
+            </div>
+            `;
+
+        return;
+
+    }
+
+
+    items.forEach(
+        item => {
+
+            const element =
+                document.createElement(
+                    "div"
+                );
+
+            element.className =
+                "galleryItem";
+
+
+            const url =
+                URL.createObjectURL(
+                    item.blob
+                );
+
+
+            let media;
+
+
+            if(
+                item.type ===
+                "photo"
+            ){
+
+                media =
+                    document.createElement(
+                        "img"
+                    );
 
             }else{
 
-                zoom.value = 1;
+                media =
+                    document.createElement(
+                        "video"
+                    );
+
+                media.muted =
+                    true;
+
+                media.playsInline =
+                    true;
 
             }
 
-            updateValues();
 
-            showToast(
-                "Zoom " +
-                Number(zoom.value).toFixed(2) +
-                "x"
+            media.src =
+                url;
+
+
+            element.appendChild(
+                media
+            );
+
+
+            const badge =
+                document.createElement(
+                    "div"
+                );
+
+            badge.className =
+                "mediaBadge";
+
+
+            badge.textContent =
+                item.type ===
+                "photo"
+                ?
+                "FOTO"
+                :
+                "VÍDEO";
+
+
+            element.appendChild(
+                badge
+            );
+
+
+            const del =
+                document.createElement(
+                    "button"
+                );
+
+
+            del.className =
+                "deleteMedia";
+
+
+            del.textContent =
+                "×";
+
+
+            del.onclick =
+                async event => {
+
+                    event.stopPropagation();
+
+
+                    await deleteMedia(
+                        item.id
+                    );
+
+
+                    URL.revokeObjectURL(
+                        url
+                    );
+
+
+                    loadGallery();
+
+                };
+
+
+            element.appendChild(
+                del
+            );
+
+
+            element.onclick =
+                () => {
+
+                    openViewer(
+                        item,
+                        url
+                    );
+
+                };
+
+
+            galleryGrid.appendChild(
+                element
+            );
+
+        }
+    );
+
+}
+
+
+/* =====================================================
+   VISUALIZADOR
+===================================================== */
+
+function openViewer(
+    item,
+    url
+){
+
+    viewerContent.innerHTML =
+        "";
+
+
+    let media;
+
+
+    if(
+        item.type ===
+        "photo"
+    ){
+
+        media =
+            document.createElement(
+                "img"
+            );
+
+    }else{
+
+        media =
+            document.createElement(
+                "video"
+            );
+
+        media.controls =
+            true;
+
+        media.autoplay =
+            true;
+
+        media.playsInline =
+            true;
+
+    }
+
+
+    media.src =
+        url;
+
+
+    viewerContent.appendChild(
+        media
+    );
+
+
+    viewer.classList.add(
+        "open"
+    );
+
+}
+
+
+closeViewer.onclick =
+    () => {
+
+        viewer.classList.remove(
+            "open"
+        );
+
+        viewerContent.innerHTML =
+            "";
+
+    };
+
+
+/* =====================================================
+   RESET
+===================================================== */
+
+document
+.getElementById("reset")
+.onclick =
+    () => {
+
+        brightness.value =
+            1;
+
+        contrast.value =
+            1;
+
+        saturation.value =
+            1;
+
+        zoom.value =
+            1;
+
+        aiEnabled =
+            true;
+
+        nightEnabled =
+            false;
+
+
+        aiButton.classList.add(
+            "active"
+        );
+
+
+        nightButton.classList.remove(
+            "active"
+        );
+
+
+        setTheme(
+            "normal"
+        );
+
+
+        updateValues();
+
+
+        showToast(
+            "Câmera restaurada"
+        );
+
+    };
+
+
+/* =====================================================
+   TOQUE NA CÂMERA
+===================================================== */
+
+document
+.getElementById("app")
+.addEventListener(
+    "click",
+    event => {
+
+        if(
+            event.target.closest(
+                "#mainPanel"
+            )
+            ||
+            event.target.closest(
+                "#themePanel"
+            )
+            ||
+            event.target.closest(
+                "#bottom"
+            )
+            ||
+            event.target.closest(
+                "#menuButton"
+            )
+        ){
+
+            return;
+
+        }
+
+
+        if(
+            !recordingNow
+        ){
+
+            menuButton.classList.remove(
+                "hidden"
             );
 
         }
 
-        lastTap = now;
+    }
+);
+
+
+/* =====================================================
+   ZOOM POR PINÇA / GESTOS
+===================================================== */
+
+let startDistance =
+    0;
+
+let startZoom =
+    1;
+
+
+document
+.getElementById("app")
+.addEventListener(
+    "touchstart",
+    event => {
+
+        if(
+            event.touches.length === 2
+        ){
+
+            const dx =
+                event.touches[0].clientX
+                -
+                event.touches[1].clientX;
+
+
+            const dy =
+                event.touches[0].clientY
+                -
+                event.touches[1].clientY;
+
+
+            startDistance =
+                Math.sqrt(
+                    dx*dx +
+                    dy*dy
+                );
+
+
+            startZoom =
+                Number(
+                    zoom.value
+                );
+
+        }
 
     },
     {
@@ -2459,65 +3978,170 @@ document.getElementById(
 );
 
 
-/* ============================================================
-   PREVENIR ZOOM DO NAVEGADOR
-============================================================ */
+document
+.getElementById("app")
+.addEventListener(
+    "touchmove",
+    event => {
 
-document.addEventListener(
+        if(
+            event.touches.length !== 2
+        ){
+
+            return;
+
+        }
+
+
+        const dx =
+            event.touches[0].clientX
+            -
+            event.touches[1].clientX;
+
+
+        const dy =
+            event.touches[0].clientY
+            -
+            event.touches[1].clientY;
+
+
+        const distance =
+            Math.sqrt(
+                dx*dx +
+                dy*dy
+            );
+
+
+        if(
+            startDistance <= 0
+        ){
+
+            return;
+
+        }
+
+
+        const scale =
+            distance /
+            startDistance;
+
+
+        let newZoom =
+            startZoom *
+            scale;
+
+
+        newZoom =
+            Math.max(
+                1,
+                Math.min(
+                    8,
+                    newZoom
+                )
+            );
+
+
+        zoom.value =
+            newZoom;
+
+
+        updateValues();
+
+    },
+    {
+        passive:true
+    }
+);
+
+
+/* =====================================================
+   DESATIVAR ZOOM DO SAFARI
+===================================================== */
+
+[
     "gesturestart",
-    event => {
-        event.preventDefault();
-    },
-    {
-        passive:false
-    }
-);
-
-document.addEventListener(
     "gesturechange",
-    event => {
-        event.preventDefault();
-    },
-    {
-        passive:false
+    "gestureend"
+]
+.forEach(
+    eventName => {
+
+        document.addEventListener(
+            eventName,
+            event => {
+
+                event.preventDefault();
+
+            },
+            {
+                passive:false
+            }
+        );
+
     }
 );
 
-document.addEventListener(
-    "gestureend",
-    event => {
-        event.preventDefault();
-    },
-    {
-        passive:false
+
+/* =====================================================
+   INICIAR
+===================================================== */
+
+async function init(){
+
+    try{
+
+        await openDB();
+
+    }catch(error){
+
+        console.error(
+            error
+        );
+
+        showToast(
+            "Galeria local indisponível"
+        );
+
     }
-);
 
 
-/* ============================================================
-   INICIALIZAÇÃO
-============================================================ */
+    /*
+       NÃO existe download automático.
+       NÃO existe pergunta para abrir/baixar.
+       Tudo vai para a Galeria interna.
+    */
 
-if(
-    !navigator.mediaDevices ||
-    !navigator.mediaDevices.getUserMedia
-){
 
-    loading.style.display =
-        "flex";
+    setTheme(
+        "normal"
+    );
 
-    document.getElementById(
-        "loadingText"
-    ).textContent =
-        "NAVEGADOR SEM SUPORTE À CÂMERA";
 
-}else{
+    updateValues();
 
-    startCamera();
+
+    if(
+        !navigator.mediaDevices
+        ||
+        !navigator
+            .mediaDevices
+            .getUserMedia
+    ){
+
+        loadingText.textContent =
+            "ESTE NAVEGADOR NÃO SUPORTA CÂMERA";
+
+        return;
+
+    }
+
+
+    await startCamera();
 
 }
 
-setMode("normal");
+
+init();
 
 </script>
 
