@@ -76,7 +76,7 @@ button{border:0;color:white;cursor:pointer;background:none;}
 .featureText{margin-top:4px;color:#8491a6;font-size:8px;}
 
 /* =====================================================
-   GLOBO 3D — ESFERA PERFEITA E REDONDA
+   GLOBO 3D — ESFERA REDONDA PERFEITA
 ===================================================== */
 .galleryHome{margin-top:22px;}
 .galleryHomeHeader{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
@@ -92,49 +92,51 @@ button{border:0;color:white;cursor:pointer;background:none;}
         linear-gradient(180deg,#06101c 0%,#02060c 100%);
     border:1px solid var(--border);
     box-shadow:0 20px 60px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.06);
-    padding:22px 8px 14px;
+    padding:24px 8px 14px;
     display:flex;
     flex-direction:column;
     align-items:center;
     overflow:hidden;
 }
 
+/* Container do globo — quadrado perfeito, perspectiva baixa = esfera real */
 .globeViewport{
     position:relative;
-    width:330px;
-    height:330px;
-    max-width:100%;
+    width:290px;
+    height:290px;
     display:flex;
     align-items:center;
     justify-content:center;
-    perspective:1400px;
+    perspective:800px;
     perspective-origin:50% 50%;
     touch-action:none;
     cursor:grab;
     user-select:none;
     margin:0 auto;
+    transform-style:preserve-3d;
 }
 
 .globeViewport:active{cursor:grabbing;}
 
 .globeFloorShadow{
     position:absolute;
-    bottom:6px;
+    bottom:-14px;
     left:50%;
-    transform:translateX(-50%) rotateX(78deg);
-    width:230px;
-    height:44px;
+    transform:translateX(-50%);
+    width:180px;
+    height:22px;
     border-radius:50%;
-    background:radial-gradient(ellipse at center,rgba(0,0,0,.9) 0%,rgba(0,0,0,.4) 45%,transparent 75%);
+    background:radial-gradient(ellipse at center,rgba(0,0,0,.85) 0%,rgba(0,0,0,.35) 50%,transparent 80%);
     pointer-events:none;
-    filter:blur(7px);
-    z-index:1;
+    filter:blur(10px);
+    z-index:0;
 }
 
+/* Stage — quadrado perfeito 250x250 (mesmo tamanho do núcleo) */
 .globeStage{
     position:relative;
-    width:270px;
-    height:270px;
+    width:250px;
+    height:250px;
     transform-style:preserve-3d;
     will-change:transform;
     z-index:2;
@@ -144,14 +146,18 @@ button{border:0;color:white;cursor:pointer;background:none;}
     position:absolute;
     left:50%;
     top:50%;
-    width:256px;
-    height:256px;
-    margin-left:-128px;
-    margin-top:-128px;
+    width:250px;
+    height:250px;
+    margin-left:-125px;
+    margin-top:-125px;
     border-radius:50%;
-    background:radial-gradient(circle at 35% 30%,#13294a 0%,#081424 55%,#02060e 95%);
-    box-shadow:inset 0 0 50px rgba(0,0,0,.95),0 0 45px rgba(22,140,255,.25);
+    background:radial-gradient(circle at 35% 30%,#0d2340 0%,#050d1a 55%,#01030a 95%);
+    box-shadow:
+        inset 0 0 60px rgba(0,0,0,.95),
+        inset 0 0 20px rgba(22,140,255,.15),
+        0 0 50px rgba(22,140,255,.3);
     pointer-events:none;
+    z-index:0;
 }
 
 .globeSphere{
@@ -160,7 +166,7 @@ button{border:0;color:white;cursor:pointer;background:none;}
     transform-style:preserve-3d;
 }
 
-/* TILES — QUADRADOS PERFEITOS, NUNCA ESTICAM */
+/* Tiles — sempre quadrados */
 .globeTile{
     position:absolute;
     left:50%;
@@ -169,26 +175,14 @@ button{border:0;color:white;cursor:pointer;background:none;}
     transform-style:preserve-3d;
     backface-visibility:hidden;
     -webkit-backface-visibility:hidden;
-    border-radius:5px;
+    border-radius:3px;
     overflow:hidden;
     background:#071220;
     border:1px solid rgba(255,255,255,.55);
-    box-shadow:0 1px 4px rgba(0,0,0,.65),inset 0 0 4px rgba(0,0,0,.4);
+    box-shadow:0 0 3px rgba(0,0,0,.8);
     cursor:pointer;
-    transition:filter .12s;
 }
 
-.globeTile::after{
-    content:"";
-    position:absolute;
-    inset:0;
-    border-radius:5px;
-    background:linear-gradient(135deg,rgba(255,255,255,.22) 0%,transparent 45%,transparent 55%,rgba(0,0,0,.28) 100%);
-    pointer-events:none;
-    z-index:3;
-}
-
-/* FOTOS — COVER, NUNCA ESTICADAS */
 .globeTile img,
 .globeTile video{
     position:absolute;
@@ -202,11 +196,10 @@ button{border:0;color:white;cursor:pointer;background:none;}
 }
 
 .globeTile.isUserPhoto{
-    border:1.5px solid #ffd060;
-    box-shadow:0 0 10px rgba(255,200,50,.7);
+    border:1px solid #ffd060;
+    box-shadow:0 0 6px rgba(255,200,50,.6);
 }
 
-/* SEM GLOSS — não distorce as fotos */
 .globeGloss{display:none;}
 
 .globeFooter{
@@ -396,7 +389,6 @@ button{border:0;color:white;cursor:pointer;background:none;}
                     <div class="globeCore"></div>
                     <div class="globeSphere" id="globeSphere"></div>
                 </div>
-                <div class="globeGloss"></div>
             </div>
             <div class="globeCount" id="globeCount">🌐 0 fotos no globo</div>
             <div class="globeFooter">
@@ -541,7 +533,7 @@ let activeObjectUrls = new Set();
 
 /* GLOBO 3D — estado */
 let globeRotX = -10, globeRotY = 0;
-let globeVelX = 0.45, globeVelY = 0;
+let globeVelX = 0.4, globeVelY = 0;
 let isDraggingGlobe = false;
 let globeLastX = 0, globeLastY = 0;
 let globeDragDistance = 0;
@@ -862,26 +854,32 @@ function closeViewer(){
 }
 
 /* =====================================================
-   GLOBO 3D — ESFERA PERFEITA (REDONDA DE VERDADE)
+   GLOBO 3D — ESFERA REDONDA PERFEITA (formato planeta)
+   Cada tile é posicionado com coordenadas esféricas reais:
+     - longitude (rotateY): 0° a 360°
+     - latitude (rotateX): -90° a +90°
+     - raio fixo (translateZ): 125px
+   Isso produz uma esfera preenchida por completo,
+   sem "ovos" ou "achatamentos", girando como um planeta.
 ===================================================== */
 
-/* Raio = metade do tamanho da esfera (256/2 = 128) */
-const GLOBE_RADIUS = 128;
+const GLOBE_RADIUS = 125;
 
-/* Anéis de latitude distribuídos como uma esfera real.
-   count = quantas fotos naquele anel,
-   size = tamanho do quadrado em px (sempre quadrado 1:1) */
+/* Anéis de latitude — distribuídos do polo norte ao polo sul.
+   Count cresce perto do equador, diminui nos polos.
+   Size também cresce perto do equador (tiles maiores). */
 const globeRings = [
-    { lat: 78,  count: 4,  size: 30 },
-    { lat: 65,  count: 8,  size: 34 },
-    { lat: 50,  count: 11, size: 40 },
-    { lat: 33,  count: 14, size: 44 },
-    { lat: 15,  count: 16, size: 48 },
-    { lat: -5,  count: 16, size: 48 },
-    { lat: -24, count: 14, size: 44 },
-    { lat: -42, count: 11, size: 40 },
-    { lat: -58, count: 8,  size: 34 },
-    { lat: -73, count: 4,  size: 30 }
+    { lat: 75,  count: 5,  size: 30 },
+    { lat: 60,  count: 8,  size: 36 },
+    { lat: 45,  count: 11, size: 42 },
+    { lat: 30,  count: 13, size: 46 },
+    { lat: 15,  count: 15, size: 48 },
+    { lat: 0,   count: 16, size: 50 },
+    { lat: -15, count: 15, size: 48 },
+    { lat: -30, count: 13, size: 46 },
+    { lat: -45, count: 11, size: 42 },
+    { lat: -60, count: 8,  size: 36 },
+    { lat: -75, count: 5,  size: 30 }
 ];
 
 const GLOBE_TOTAL_SLOTS = globeRings.reduce((s, r) => s + r.count, 0);
@@ -905,28 +903,28 @@ function makePlaceholderDataURL(i){
     return "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg);
 }
 
-/* Gera anéis extras quando há MUITAS fotos (> total padrão). */
+/* Gera anéis extras quando há MUITAS fotos. A distribuição continua
+   esférica (proporcional ao cosseno da latitude). */
 function buildExtraRings(totalPhotos){
     const rings = [];
-    let ringCount = Math.ceil(totalPhotos / 12);
-    ringCount = Math.max(10, Math.min(18, ringCount));
+    let ringCount = Math.ceil(totalPhotos / 14);
+    ringCount = Math.max(11, Math.min(19, ringCount));
 
-    const topLat = 80;
-    const bottomLat = -80;
+    const topLat = 82;
+    const bottomLat = -82;
     const step = (topLat - bottomLat) / (ringCount - 1);
 
     for(let i = 0; i < ringCount; i++){
         const lat = topLat - (i * step);
         const cosLat = Math.cos((Math.abs(lat) * Math.PI) / 180);
         const count = Math.max(4, Math.round(18 * cosLat) + 2);
-        const size = Math.max(24, Math.round(38 * cosLat + 12));
+        const size = Math.max(26, Math.round(42 * cosLat + 14));
         rings.push({ lat, count, size });
     }
     return rings;
 }
 
 function buildGlobeTiles(userItems){
-    /* limpa URLs antigas */
     globeTileUrls.forEach(u => revokeObjectURL(u));
     globeTileUrls = [];
     globeSphere.innerHTML = "";
@@ -938,11 +936,11 @@ function buildGlobeTiles(userItems){
         globeCountEl.textContent = "🌐 " + label;
     }
 
-    /* escolhe anéis: padrão ou expandido */
+    /* Se tiver mais fotos que o globo padrão, gera anéis extras */
     const rings = photos.length > GLOBE_TOTAL_SLOTS ? buildExtraRings(photos.length) : globeRings;
     const totalSlots = rings.reduce((s, r) => s + r.count, 0);
 
-    /* mapa de slot → foto (sem repetir até esgotar) */
+    /* Distribui fotos nos slots — sem repetir até esgotar */
     const slotMap = new Array(totalSlots).fill(null);
 
     if(photos.length > 0){
@@ -959,17 +957,21 @@ function buildGlobeTiles(userItems){
     let idx = 0;
     rings.forEach(ring => {
         const stepDeg = 360 / ring.count;
+
         for(let i = 0; i < ring.count; i++){
             const lon = i * stepDeg;
 
             const tile = document.createElement("div");
             tile.className = "globeTile";
-
-            /* CRÍTICO: passa só a largura; aspect-ratio 1:1 do CSS
-               garante que é quadrado perfeito → sem esticar as fotos */
             tile.style.width = ring.size + "px";
 
-            /* Posiciona no ponto da esfera */
+            /* ===== POSICIONAMENTO ESFÉRICO CORRETO =====
+               transform:
+                 1. centraliza no stage (translate -50%, -50%)
+                 2. gira no eixo Y (longitude)
+                 3. gira no eixo X (latitude) — NEGATIVO pra face externa
+                 4. empurra pro raio da esfera (translateZ)
+               → resultado: esfera preenchida, giro tipo planeta */
             tile.style.transform =
                 "translate(-50%, -50%) " +
                 "rotateY(" + lon + "deg) " +
@@ -977,7 +979,6 @@ function buildGlobeTiles(userItems){
                 "translateZ(" + GLOBE_RADIUS + "px)";
 
             const userItem = slotMap[idx];
-
             const media = document.createElement("img");
             media.draggable = false;
             media.alt = "";
@@ -1014,27 +1015,29 @@ async function refreshGlobe(){
 /* ============ ANIMAÇÃO DO GLOBO ============ */
 function animateGlobe(){
     if(!isDraggingGlobe && globeAutoSpin){
-        /* gira Y continuamente */
+        /* giro contínuo no eixo Y = planeta girando */
         globeRotY += globeVelX * globeSpinSpeed;
 
         /* inércia no eixo X */
         globeRotX += globeVelY;
         globeVelY *= 0.94;
 
-        /* volta suavemente à inclinação padrão */
+        /* volta suavemente à inclinação padrão (-10°) */
         const targetTilt = -10;
         if(Math.abs(globeVelY) < 0.02){
             globeRotX += (targetTilt - globeRotX) * 0.01;
         }
 
-        /* limites seguros */
-        globeRotX = Math.max(-90, Math.min(90, globeRotX));
+        /* limites de inclinação */
+        globeRotX = Math.max(-85, Math.min(85, globeRotX));
+
+        /* mantém rotação Y sempre 0-360 */
         if(globeRotY > 360) globeRotY -= 360;
         if(globeRotY < 0) globeRotY += 360;
 
-        /* suaviza velocidade de volta ao normal */
-        if(Math.abs(globeVelX - 0.45) > 0.02){
-            globeVelX += (0.45 - globeVelX) * 0.04;
+        /* retorna velocidade ao normal */
+        if(Math.abs(globeVelX - 0.4) > 0.02){
+            globeVelX += (0.4 - globeVelX) * 0.04;
         }
     }
 
@@ -1069,7 +1072,7 @@ function attachGlobeListeners(){
 
         globeRotY += dx * 0.5;
         globeRotX -= dy * 0.5;
-        globeRotX = Math.max(-90, Math.min(90, globeRotX));
+        globeRotX = Math.max(-85, Math.min(85, globeRotX));
         if(globeRotY > 360) globeRotY -= 360;
         if(globeRotY < 0) globeRotY += 360;
 
@@ -1088,7 +1091,7 @@ function attachGlobeListeners(){
         isDraggingGlobe = false;
         globeVelX = Math.max(-5, Math.min(5, globeVelX));
         globeVelY = Math.max(-3, Math.min(3, globeVelY));
-        if(Math.abs(globeVelX) < 0.1 && globeAutoSpin) globeVelX = 0.45;
+        if(Math.abs(globeVelX) < 0.1 && globeAutoSpin) globeVelX = 0.4;
     };
 
     globeViewport.addEventListener("pointerup", endDrag);
@@ -1100,7 +1103,7 @@ function attachGlobeListeners(){
             globeAutoSpin = !globeAutoSpin;
             globeSpinToggle.textContent = globeAutoSpin ? "⏸ Pausar" : "▶ Girar";
             globeSpinToggle.classList.toggle("active", globeAutoSpin);
-            if(globeAutoSpin) globeVelX = 0.45;
+            if(globeAutoSpin) globeVelX = 0.4;
         };
     }
 
