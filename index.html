@@ -880,22 +880,6 @@ button{
     box-shadow:0 0 8px rgba(255,200,50,.65);
 }
 
-.globeTile .tilePlaceholder{
-    width:100%;
-    height:100%;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:15px;
-    background:
-        linear-gradient(
-            135deg,
-            #0d2c4d,
-            #0a1524
-        );
-    color:rgba(255,255,255,.5);
-}
-
 .globeGloss{
     position:absolute;
     left:50%;
@@ -2070,6 +2054,7 @@ let currentFilter = "normal";
 let threeDEnabled = true;
 let aiEnabled = true;
 let nightEnabled = false;
+let filterIndex = 0;
 let activeObjectUrls = new Set();
 
 
@@ -2177,7 +2162,7 @@ let memoryStore = [];
 let memoryNextId = 1;
 
 function memoryAdd(item){
-    const record = { ...item, id: memoryNextId++ };
+    const record = Object.assign({}, item, { id: memoryNextId++ });
     memoryStore.push(record);
     return record;
 }
@@ -2187,9 +2172,11 @@ function memoryAdd(item){
    SALVAR ARQUIVO
 ===================================================== */
 
-function saveImportedFile(file, opts = {}){
+function saveImportedFile(file, opts){
 
-    const type = file.type.startsWith("video") ? "video" : "photo";
+    opts = opts || {};
+
+    const type = file.type.indexOf("video") === 0 ? "video" : "photo";
 
     const record = {
         blob: file,
@@ -2225,7 +2212,7 @@ function getAllMedia(){
 
     if(!dbAvailable){
         return Promise.resolve(
-            [...memoryStore].sort((a,b) => b.importedAt - a.importedAt)
+            memoryStore.slice().sort((a,b) => b.importedAt - a.importedAt)
         );
     }
 
@@ -2332,7 +2319,7 @@ fileInput.onchange = async () => {
     let count = 0;
 
     for(const file of files){
-        if(file.type.startsWith("image/") || file.type.startsWith("video/")){
+        if(file.type.indexOf("image/") === 0 || file.type.indexOf("video/") === 0){
             try {
                 await saveImportedFile(file, { source:"import" });
                 count++;
@@ -2342,7 +2329,7 @@ fileInput.onchange = async () => {
         }
     }
 
-    showToast(`✓ ${count} arquivo(s) importado(s)`);
+    showToast("✓ " + count + " arquivo(s) importado(s)");
     await loadGallery();
     await refreshGlobe();
 };
@@ -2366,16 +2353,15 @@ async function loadGallery(){
     galleryGrid.innerHTML = "";
 
     if(!filtered.length){
-        galleryGrid.innerHTML = `
-            <div class="emptyGallery">
-                <div class="emptyIcon">📥</div>
-                <div class="emptyTitle">GALERIA VAZIA</div>
-                <div class="emptyText">
-                    Nenhuma imagem ou vídeo está nesta categoria.
-                    Importe do seu iPhone ou tire fotos com a câmera.
-                </div>
-            </div>
-        `;
+        galleryGrid.innerHTML =
+            '<div class="emptyGallery">' +
+                '<div class="emptyIcon">📥</div>' +
+                '<div class="emptyTitle">GALERIA VAZIA</div>' +
+                '<div class="emptyText">' +
+                    'Nenhuma imagem ou vídeo está nesta categoria. ' +
+                    'Importe do seu iPhone ou tire fotos com a câmera.' +
+                '</div>' +
+            '</div>';
         return;
     }
 
@@ -2394,6 +2380,7 @@ async function loadGallery(){
         } else {
             media = document.createElement("img");
             media.loading = "lazy";
+            media.alt = "";
         }
 
         media.src = url;
@@ -2434,9 +2421,6 @@ async function loadGallery(){
 
 const GLOBE_RADIUS = 132;
 
-// Cada quadrado terá uma imagem. Vamos preencher com placeholders
-// gerados localmente (SVG), que depois serão substituídos pelas
-// fotos reais do usuário automaticamente.
 const PLACEHOLDER_COLORS = [
     ["#168cff", "#0a1a2e"],
     ["#6d5cff", "#1a0f38"],
@@ -2451,24 +2435,26 @@ const PLACEHOLDER_COLORS = [
 ];
 
 function makePlaceholderDataURL(index){
-    const [c1, c2] = PLACEHOLDER_COLORS[index % PLACEHOLDER_COLORS.length];
+    const colors = PLACEHOLDER_COLORS[index % PLACEHOLDER_COLORS.length];
+    const c1 = colors[0];
+    const c2 = colors[1];
 
-    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 80 80">
-        <defs>
-            <linearGradient id="g${index}" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0" stop-color="${c1}" stop-opacity="0.85"/>
-                <stop offset="1" stop-color="${c2}"/>
-            </linearGradient>
-        </defs>
-        <rect width="80" height="80" fill="url(#g${index})"/>
-        <circle cx="40" cy="34" r="10" fill="rgba(255,255,255,0.35)"/>
-        <path d="M14 60 L30 44 L44 56 L58 42 L70 60 Z" fill="rgba(255,255,255,0.28)"/>
-    </svg>`;
+    const svg =
+        '<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 80 80">' +
+            '<defs>' +
+                '<linearGradient id="g' + index + '" x1="0" y1="0" x2="1" y2="1">' +
+                    '<stop offset="0" stop-color="' + c1 + '" stop-opacity="0.85"/>' +
+                    '<stop offset="1" stop-color="' + c2 + '"/>' +
+                '</linearGradient>' +
+            '</defs>' +
+            '<rect width="80" height="80" fill="url(#g' + index + ')"/>' +
+            '<circle cx="40" cy="34" r="10" fill="rgba(255,255,255,0.35)"/>' +
+            '<path d="M14 60 L30 44 L44 56 L58 42 L70 60 Z" fill="rgba(255,255,255,0.28)"/>' +
+        '</svg>';
 
     return "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg);
 }
 
-// Anéis de latitude do globo
 const globeRings = [
     { lat: 72,  count: 6,  w: 36, h: 32 },
     { lat: 52,  count: 10, w: 46, h: 42 },
@@ -2500,7 +2486,6 @@ let globeTileUrls = [];
 
 function buildGlobeTiles(userItems){
 
-    // Limpar URLs antigas
     globeTileUrls.forEach(url => revokeObjectURL(url));
     globeTileUrls = [];
 
@@ -2519,15 +2504,14 @@ function buildGlobeTiles(userItems){
 
             const tile = document.createElement("div");
             tile.className = "globeTile";
-            tile.style.width = `${ring.w}px`;
-            tile.style.height = `${ring.h}px`;
+            tile.style.width = ring.w + "px";
+            tile.style.height = ring.h + "px";
 
-            // Face do quadrado voltada para fora da esfera
             tile.style.transform =
-                `translate(-50%, -50%) ` +
-                `rotateY(${lon}deg) ` +
-                `rotateX(${-ring.lat}deg) ` +
-                `translateZ(${GLOBE_RADIUS}px)`;
+                "translate(-50%, -50%) " +
+                "rotateY(" + lon + "deg) " +
+                "rotateX(" + (-ring.lat) + "deg) " +
+                "translateZ(" + GLOBE_RADIUS + "px)";
 
             let userItem = null;
 
@@ -2540,13 +2524,11 @@ function buildGlobeTiles(userItems){
             media.alt = "";
 
             if(userItem){
-                // Foto real do usuário
                 const url = createObjectURL(userItem.blob);
                 globeTileUrls.push(url);
                 media.src = url;
                 tile.classList.add("isUserPhoto");
             } else {
-                // Placeholder gerado localmente (não depende de internet)
                 media.src = makePlaceholderDataURL(tileGlobalIndex);
             }
 
@@ -2581,7 +2563,7 @@ async function refreshGlobe(){
 
 
 /* =====================================================
-   ANIMAÇÃO DO GLOBO (executada uma única vez)
+   ANIMAÇÃO DO GLOBO
 ===================================================== */
 
 function animateGlobe(){
@@ -2600,7 +2582,7 @@ function animateGlobe(){
 
     if(globeStage){
         globeStage.style.transform =
-            `rotateX(${globeRotX}deg) rotateY(${globeRotY}deg)`;
+            "rotateX(" + globeRotX + "deg) rotateY(" + globeRotY + "deg)";
     }
 
     globeAnimationId = requestAnimationFrame(animateGlobe);
@@ -2608,7 +2590,7 @@ function animateGlobe(){
 
 
 /* =====================================================
-   LISTENERS DO GLOBO (adicionados apenas UMA vez)
+   LISTENERS DO GLOBO
 ===================================================== */
 
 function attachGlobeListeners(){
@@ -2634,7 +2616,7 @@ function attachGlobeListeners(){
 
         const dx = e.clientX - globeLastX;
         const dy = e.clientY - globeLastY;
-        globeDragDistance += Math.hypot(dx, dy);
+        globeDragDistance += Math.sqrt(dx*dx + dy*dy);
 
         globeRotY += dx * 0.42;
         globeRotX -= dy * 0.42;
@@ -2834,7 +2816,6 @@ async function startCamera(){
             return;
         }
 
-        // Tenta com áudio; se falhar, tenta sem áudio
         let localStream = null;
 
         try {
@@ -2904,7 +2885,7 @@ safeOn($("cameraFlip"), "click", async () => {
 
 safeOn($("superZoom"), "input", event => {
     const value = Number(event.target.value);
-    camera.style.transform = `scale(${value})`;
+    camera.style.transform = "scale(" + value + ")";
 });
 
 
@@ -2958,10 +2939,9 @@ function buildFilterList(){
         button.type = "button";
         button.className = "themeButton";
 
-        button.innerHTML = `
-            <div class="themeName">${filter[1]}</div>
-            <div style="margin-top:7px;height:22px;border-radius:7px;background:linear-gradient(135deg,#168cff,#6d5cff);filter:${filter[2]};"></div>
-        `;
+        button.innerHTML =
+            '<div class="themeName">' + filter[1] + '</div>' +
+            '<div style="margin-top:7px;height:22px;border-radius:7px;background:linear-gradient(135deg,#168cff,#6d5cff);filter:' + filter[2] + ';"></div>';
 
         button.onclick = () => {
             currentFilter = filter[0];
@@ -3015,7 +2995,6 @@ cameraScreen.addEventListener("touchend", event => {
     const dx = endX - touchStartX;
     const dy = endY - touchStartY;
 
-    // Só considera swipe horizontal se for maior que vertical
     if(Math.abs(dx) < 60 || Math.abs(dx) < Math.abs(dy)) return;
 
     if(dx < 0){
@@ -3035,8 +3014,6 @@ cameraScreen.addEventListener("touchend", event => {
 /* =====================================================
    MENU DA CAMERA
 ===================================================== */
-
-let filterIndex = 0;
 
 safeOn($("cameraMenu"), "click", () => {
     $("cameraTools").classList.toggle("open");
@@ -3065,7 +3042,6 @@ safeOn($("shutter"), "click", async () => {
 
     const context = canvas.getContext("2d");
 
-    // Aplicar filtro via canvas
     context.filter = getFilterCSS() || "none";
     context.drawImage(camera, 0, 0, canvas.width, canvas.height);
     context.filter = "none";
@@ -3078,7 +3054,7 @@ safeOn($("shutter"), "click", async () => {
         if(!blob) return;
 
         try {
-            const file = new File([blob], `camera-${Date.now()}.jpg`, { type:"image/jpeg" });
+            const file = new File([blob], "camera-" + Date.now() + ".jpg", { type:"image/jpeg" });
             await saveImportedFile(file, { source:"camera" });
             showToast("📸 Foto salva na Galeria Premium");
             await loadGallery();
@@ -3190,15 +3166,12 @@ async function startRecording(){
 
         const context = canvas.getContext("2d");
 
-        // Stream do canvas (30fps)
         const canvasStream = canvas.captureStream(30);
 
-        // Adiciona áudio se existir
         stream.getAudioTracks().forEach(track => {
             canvasStream.addTrack(track);
         });
 
-        // MIME suportado
         const types = [
             "video/mp4",
             "video/webm;codecs=vp9,opus",
@@ -3238,12 +3211,12 @@ async function startRecording(){
                 type: mediaRecorder.mimeType || "video/webm"
             });
 
-            const ext = (mediaRecorder.mimeType || "").includes("mp4") ? "mp4" : "webm";
+            const ext = (mediaRecorder.mimeType || "").indexOf("mp4") !== -1 ? "mp4" : "webm";
 
             try {
                 const file = new File(
                     [blob],
-                    `video-${Date.now()}.${ext}`,
+                    "video-" + Date.now() + "." + ext,
                     { type: blob.type }
                 );
                 await saveImportedFile(file, { source:"camera" });
@@ -3252,7 +3225,7 @@ async function startRecording(){
                 await refreshGlobe();
             } catch(e){
                 console.warn("Falha ao salvar vídeo:", e);
-                downloadBlob(blob, `renato-vision-video.${ext}`);
+                downloadBlob(blob, "renato-vision-video." + ext);
                 showToast("🎥 Vídeo finalizado (baixado)");
             }
         };
@@ -3264,7 +3237,6 @@ async function startRecording(){
         $("cameraMode").textContent = "GRAVANDO";
         showToast("🎥 Gravação iniciada");
 
-        // Loop de renderização
         const draw = () => {
             if(!videoRecording){
                 return;
@@ -3380,9 +3352,9 @@ const themes = [
 ["ROYAL NIGHT","536cff","a45cff","05040c"],
 ["LUXURY","e2b75e","8f6aff","08060a"],
 ["PRESTIGE","c89a52","5d77ff","06070d"],
-["EXECUTIVE","537 =cff","5a6 documentc86","05080d"],
-[".querySelectorARCTIC","6fe7('ff","6b8dff","020meta90e"],
-["POLAR","a[name3efff","8aa7ff","030a10"],
+["EXECUTIVE","537cff","5a6c86","05080d"],
+["ARCTIC","6fe7ff","6b8dff","02090e"],
+["POLAR","a3efff","8aa7ff","030a10"],
 ["GLACIER","68d9ff","5470ff","02070d"],
 ["FROST","c8f8ff","7faaff","05090e"],
 ["STORM","65758d","4e61a0","05070d"],
@@ -3414,14 +3386,13 @@ function buildThemes(){
         button.type = "button";
         button.className = "themeButton";
 
-        button.innerHTML = `
-            <div class="themeName">${index+1}. ${theme[0]}</div>
-            <div class="themeColor">
-                <span class="themeDot" style="background:#${theme[1]}"></span>
-                <span class="themeDot" style="background:#${theme[2]}"></span>
-                <span class="themeDot" style="background:#${theme[3]}"></span>
-            </div>
-        `;
+        button.innerHTML =
+            '<div class="themeName">' + (index+1) + '. ' + theme[0] + '</div>' +
+            '<div class="themeColor">' +
+                '<span class="themeDot" style="background:#' + theme[1] + '"></span>' +
+                '<span class="themeDot" style="background:#' + theme[2] + '"></span>' +
+                '<span class="themeDot" style="background:#' + theme[3] + '"></span>' +
+            '</div>';
 
         button.onclick = () => {
             applyTheme(theme);
@@ -3447,7 +3418,7 @@ function applyTheme(theme){
         }));
     } catch(e){}
 
-    const metaTheme="theme-color"]');
+    const metaTheme = document.querySelector('meta[name="theme-color"]');
     if(metaTheme) metaTheme.setAttribute("content", "#" + theme[3]);
 }
 
@@ -3617,7 +3588,6 @@ window.addEventListener("beforeunload", () => {
 
 document.addEventListener("visibilitychange", () => {
     if(document.hidden){
-        // Se a aba ficar oculta, pausa gravação para evitar problemas
         if(videoRecording){
             stopRecording();
         }
