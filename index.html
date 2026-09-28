@@ -666,7 +666,7 @@ button{
 }
 
 /* =====================================================
-   PREMIUM GALLERY HOME
+   PREMIUM GALLERY 3D GLOBE (HOME)
 ===================================================== */
 
 .galleryHome{
@@ -677,11 +677,15 @@ button{
     display:flex;
     justify-content:space-between;
     align-items:center;
+    margin-bottom:12px;
 }
 
 .galleryHomeTitle{
     font-size:18px;
     font-weight:950;
+    display:flex;
+    align-items:center;
+    gap:6px;
 }
 
 .galleryHomeTitle span{
@@ -692,28 +696,197 @@ button{
     background:none;
     color:#b8c5d9;
     font-size:10px;
+    cursor:pointer;
 }
 
-.previewGrid{
-    margin-top:10px;
-    display:grid;
-    grid-template-columns:repeat(6,1fr);
-    gap:6px;
-}
-
-.previewItem{
-    aspect-ratio:1;
-    border-radius:10px;
+.globeCard{
+    position:relative;
+    border-radius:24px;
+    background:
+        radial-gradient(
+            circle at 50% 20%,
+            rgba(22,140,255,.14),
+            transparent 65%
+        ),
+        linear-gradient(
+            180deg,
+            #06101c 0%,
+            #02060c 100%
+        );
+    border:1px solid var(--border);
+    box-shadow:
+        0 20px 60px rgba(0,0,0,.55),
+        inset 0 1px 0 rgba(255,255,255,.06);
+    padding:16px 8px 12px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
     overflow:hidden;
-    background:#08111d;
-    border:1px solid rgba(255,255,255,.07);
 }
 
-.previewItem img,
-.previewItem video{
+.globeViewport{
+    position:relative;
+    width:100%;
+    max-width:340px;
+    height:300px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    perspective:850px;
+    perspective-origin:50% 48%;
+    touch-action:none;
+    cursor:grab;
+    user-select:none;
+}
+
+.globeViewport:active{
+    cursor:grabbing;
+}
+
+.globeFloorShadow{
+    position:absolute;
+    bottom:14px;
+    left:50%;
+    transform:translateX(-50%) rotateX(76deg);
+    width:210px;
+    height:36px;
+    border-radius:50%;
+    background:radial-gradient(ellipse at center, rgba(0,0,0,.88) 0%, rgba(0,0,0,.45) 45%, transparent 75%);
+    pointer-events:none;
+    filter:blur(5px);
+    z-index:1;
+}
+
+.globeStage{
+    position:relative;
+    width:264px;
+    height:264px;
+    transform-style:preserve-3d;
+    will-change:transform;
+    z-index:2;
+}
+
+.globeCore{
+    position:absolute;
+    left:50%;
+    top:50%;
+    width:250px;
+    height:250px;
+    margin-left:-125px;
+    margin-top:-125px;
+    border-radius:50%;
+    background:
+        radial-gradient(
+            circle at 35% 30%,
+            #152e4d 0%,
+            #081424 55%,
+            #02060e 95%
+        );
+    box-shadow:
+        inset 0 0 45px rgba(0,0,0,.92),
+        0 0 35px rgba(22,140,255,.2);
+    pointer-events:none;
+}
+
+.globeSphere{
+    position:absolute;
+    inset:0;
+    transform-style:preserve-3d;
+}
+
+.globeTile{
+    position:absolute;
+    left:50%;
+    top:50%;
+    transform-style:preserve-3d;
+    backface-visibility:hidden;
+    -webkit-backface-visibility:hidden;
+    border-radius:3px;
+    overflow:hidden;
+    background:#071220;
+    border:0.8px solid rgba(255,255,255,.45);
+    box-shadow:
+        0 1px 3px rgba(0,0,0,.6),
+        inset 0 0 2px rgba(255,255,255,.3);
+    cursor:pointer;
+    transition:filter .12s;
+}
+
+.globeTile:active{
+    filter:brightness(1.35);
+}
+
+.globeTile img,
+.globeTile video{
     width:100%;
     height:100%;
     object-fit:cover;
+    display:block;
+    pointer-events:none;
+}
+
+.globeTile.isUserPhoto{
+    border:1px solid #ffd060;
+    box-shadow:0 0 6px rgba(255,200,50,.5);
+}
+
+.globeGloss{
+    position:absolute;
+    left:50%;
+    top:50%;
+    width:256px;
+    height:256px;
+    margin-left:-128px;
+    margin-top:-128px;
+    border-radius:50%;
+    background:
+        radial-gradient(
+            circle at 32% 24%,
+            rgba(255,255,255,.48) 0%,
+            rgba(255,255,255,.14) 28%,
+            transparent 58%
+        );
+    box-shadow:
+        inset -12px -16px 40px rgba(0,0,0,.7),
+        inset 2px 3px 12px rgba(255,255,255,.25);
+    pointer-events:none;
+    z-index:10;
+}
+
+.globeFooter{
+    width:100%;
+    margin-top:10px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 8px;
+    z-index:12;
+}
+
+.globeHint{
+    color:#8796ac;
+    font-size:9px;
+    font-weight:800;
+    letter-spacing:.3px;
+    display:flex;
+    align-items:center;
+    gap:4px;
+}
+
+.globeSpinBtn{
+    padding:6px 11px;
+    border-radius:10px;
+    background:rgba(12,25,44,.85);
+    border:1px solid var(--border);
+    font-size:9px;
+    font-weight:900;
+    color:#d0ddec;
+    transition:.2s;
+}
+
+.globeSpinBtn:active{
+    transform:scale(.95);
+    background:rgba(22,140,255,.25);
 }
 
 /* =====================================================
@@ -1218,6 +1391,11 @@ button{
         margin:auto;
     }
 
+    .globeCard{
+        max-width:560px;
+        margin:auto;
+    }
+
 }
 
 </style>
@@ -1496,12 +1674,15 @@ button{
     </section>
 
 
+    <!-- =====================================================
+         GALERIA PREMIUM - GLOBO FOTOGRÁFICO 3D
+    ===================================================== -->
     <section class="galleryHome">
 
         <div class="galleryHomeHeader">
 
             <div class="galleryHomeTitle">
-                👑 <span>Galeria Premium</span>
+                👑 <span>Galeria Premium 3D</span>
             </div>
 
             <button
@@ -1514,10 +1695,31 @@ button{
 
         </div>
 
+        <div class="globeCard" id="globeCard">
 
-        <div
-            id="previewGrid"
-            class="previewGrid">
+            <div class="globeViewport" id="globeViewport">
+
+                <div class="globeFloorShadow"></div>
+
+                <div class="globeStage" id="globeStage">
+                    <div class="globeCore"></div>
+                    <div class="globeSphere" id="globeSphere"></div>
+                </div>
+
+                <div class="globeGloss"></div>
+
+            </div>
+
+            <div class="globeFooter">
+                <span class="globeHint">
+                    🌐 Gire o globo ou toque na foto
+                </span>
+                <button
+                    class="globeSpinBtn"
+                    id="globeSpinToggle">
+                    ⏸ Pausar
+                </button>
+            </div>
 
         </div>
 
@@ -1564,7 +1766,7 @@ button{
 
 <!-- =====================================================
      CAMERA
-===================================================== -->
+===================================================== */
 
 <section id="cameraScreen">
 
@@ -1721,7 +1923,7 @@ button{
 
 <!-- =====================================================
      GALERIA
-===================================================== -->
+===================================================== */
 
 <section
     id="galleryPanel"
@@ -1809,7 +2011,7 @@ button{
 
 <!-- =====================================================
      TEMAS
-===================================================== -->
+===================================================== */
 
 <section
     id="themePanel"
@@ -1856,7 +2058,7 @@ button{
 
 <!-- =====================================================
      FILTROS
-===================================================== -->
+===================================================== */
 
 <section
     id="filterPanel"
@@ -1901,7 +2103,7 @@ button{
 
 <!-- =====================================================
      CONFIGURAÇÕES
-===================================================== -->
+===================================================== */
 
 <section
     id="settingsPanel"
@@ -2028,7 +2230,7 @@ button{
 
 <!-- =====================================================
      VISUALIZADOR
-===================================================== -->
+===================================================== */
 
 <div id="viewer">
 
@@ -2067,7 +2269,7 @@ button{
 
 <!-- =====================================================
      NAVEGAÇÃO
-===================================================== -->
+===================================================== */
 
 <nav class="bottomNav">
 
@@ -2207,8 +2409,17 @@ const fileInput =
 const galleryGrid =
     $("galleryGrid");
 
-const previewGrid =
-    $("previewGrid");
+const globeSphere =
+    $("globeSphere");
+
+const globeViewport =
+    $("globeViewport");
+
+const globeStage =
+    $("globeStage");
+
+const globeSpinToggle =
+    $("globeSpinToggle");
 
 const viewer =
     $("viewer");
@@ -2602,7 +2813,7 @@ fileInput.onchange =
 
 
 /* =====================================================
-   GALERIA
+   GALERIA COMPLETA (PAINEL)
 ===================================================== */
 
 async function loadGallery(){
@@ -2828,122 +3039,251 @@ async function loadGallery(){
 
 
 /* =====================================================
-   PRÉVIA DA HOME
+   GLOBO FOTOGRÁFICO 3D (GALERIA PREMIUM NA HOME)
 ===================================================== */
+
+const GLOBE_RADIUS = 132;
+
+// Fotos representativas de monumentos, paisagens e viagens (idênticas ao modelo da imagem)
+const showcasePhotos = [
+    // Taj Mahal
+    "https://images.unsplash.com/photo-1564507592333-c60657eea523?auto=format&fit=crop&w=300&q=80",
+    // Pirâmide Maia Chichén Itzá
+    "https://images.unsplash.com/photo-1518638150340-f706e86654de?auto=format&fit=crop&w=300&q=80",
+    // Barco tropical Tailândia / Phi Phi
+    "https://images.unsplash.com/photo-1552465011-b4e21bf6e79a?auto=format&fit=crop&w=300&q=80",
+    // Camelos no deserto ao pôr do sol
+    "https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=300&q=80",
+    // Canais e casas históricas de Amsterdã
+    "https://images.unsplash.com/photo-1512470876302-972faa2aa9a4?auto=format&fit=crop&w=300&q=80",
+    // Plantações verdes de chá
+    "https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=300&q=80",
+    // Falésias e ondas do oceano
+    "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=300&q=80",
+    // Castelo de Praga / Cidade iluminada
+    "https://images.unsplash.com/photo-1541849546-216549ae216d?auto=format&fit=crop&w=300&q=80",
+    // Pôr do sol no mar com redes de pesca
+    "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=300&q=80",
+    // Reflexo de skyline da cidade
+    "https://images.unsplash.com/photo-1477959858617-67f30bc75b82?auto=format&fit=crop&w=300&q=80",
+    // Cadeiras na praia tropical
+    "https://images.unsplash.com/photo-1510414842594-a61c69b5ae57?auto=format&fit=crop&w=300&q=80",
+    // Campo verde com montanhas
+    "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=300&q=80",
+    // Campo de girassóis
+    "https://images.unsplash.com/photo-1597848212624-a19eb35e2651?auto=format&fit=crop&w=300&q=80",
+    // Templo antigo Angkor Wat
+    "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=300&q=80",
+    // Santorini Grécia
+    "https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?auto=format&fit=crop&w=300&q=80",
+    // Canais de Veneza
+    "https://images.unsplash.com/photo-1523906834658-6e24ef2386f9?auto=format&fit=crop&w=300&q=80",
+    // Pagode em Kyoto no Japão
+    "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=300&q=80",
+    // Aurora boreal no céu estrelado
+    "https://images.unsplash.com/photo-1531366936337-7c912a4589a7?auto=format&fit=crop&w=300&q=80",
+    // Terraços de arroz em Bali
+    "https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=300&q=80",
+    // Bangalôs nas Maldivas
+    "https://images.unsplash.com/photo-1514282401047-d79a71a590e8?auto=format&fit=crop&w=300&q=80"
+];
+
+// Configuração dos anéis de latitude do globo
+const globeRings = [
+    { lat: 72,  count: 6,  w: 36, h: 32 },
+    { lat: 52,  count: 10, w: 46, h: 42 },
+    { lat: 26,  count: 13, w: 52, h: 48 },
+    { lat: 0,   count: 15, w: 52, h: 50 },
+    { lat: -26, count: 13, w: 52, h: 48 },
+    { lat: -52, count: 10, w: 46, h: 42 },
+    { lat: -72, count: 6,  w: 36, h: 32 }
+];
+
+let globeRotX = -12;
+let globeRotY = 0;
+let globeVelX = 0.42;
+let globeVelY = 0;
+let isDraggingGlobe = false;
+let globeLastX = 0;
+let globeLastY = 0;
+let globeDragDistance = 0;
+let globeAutoSpin = true;
+let globeLastMoveTime = 0;
+let globeAnimationId = null;
 
 async function loadPreview(){
 
-    const items =
+    if(!globeSphere) return;
+
+    const userItems =
         await getAllMedia();
 
+    globeSphere.innerHTML = "";
 
-    previewGrid.innerHTML =
-        "";
+    let tileGlobalIndex = 0;
+
+    globeRings.forEach(ring => {
+
+        const step = 360 / ring.count;
+
+        for(let i = 0; i < ring.count; i++){
+
+            const lon = i * step;
+
+            const tile = document.createElement("div");
+            tile.className = "globeTile";
+            tile.style.width = `${ring.w}px`;
+            tile.style.height = `${ring.h}px`;
+
+            // Posicionamento esférico 3D
+            tile.style.transform = `translate(-50%, -50%) rotateY(${lon}deg) rotateX(${-ring.lat}deg) translateZ(${GLOBE_RADIUS}px)`;
+
+            let itemForTile = null;
+
+            // Prioriza os arquivos importados pelo usuário
+            if(userItems.length > 0 && tileGlobalIndex < userItems.length){
+                itemForTile = userItems[tileGlobalIndex];
+                tile.classList.add("isUserPhoto");
+            } else if(userItems.length > 0 && (tileGlobalIndex % 3 === 0)){
+                itemForTile = userItems[tileGlobalIndex % userItems.length];
+                tile.classList.add("isUserPhoto");
+            } else {
+                // Modelo padrão do globo com marcos mundiais da imagem
+                const photoUrl = showcasePhotos[tileGlobalIndex % showcasePhotos.length];
+                itemForTile = {
+                    id: null,
+                    src: photoUrl,
+                    type: "photo",
+                    name: "Galeria Vision 3D"
+                };
+            }
+
+            let mediaElem;
+            if(itemForTile.blob){
+                const url = URL.createObjectURL(itemForTile.blob);
+                if(itemForTile.type === "video"){
+                    mediaElem = document.createElement("video");
+                    mediaElem.src = url;
+                    mediaElem.muted = true;
+                    mediaElem.playsInline = true;
+                } else {
+                    mediaElem = document.createElement("img");
+                    mediaElem.src = url;
+                }
+            } else {
+                mediaElem = document.createElement("img");
+                mediaElem.src = itemForTile.src;
+                mediaElem.loading = "lazy";
+            }
+
+            tile.appendChild(mediaElem);
+
+            // Clique para abrir no visualizador 3D
+            const currentItem = itemForTile;
+            tile.onclick = (e) => {
+                if(globeDragDistance > 7){
+                    return; // Estava arrastando para girar
+                }
+                openViewer(currentItem);
+            };
+
+            globeSphere.appendChild(tile);
+            tileGlobalIndex++;
+
+        }
+
+    });
+
+    initGlobeMotion();
+
+}
 
 
-    const photos =
-        items.slice(
-            0,
-            6
-        );
+/* =====================================================
+   CONTROLE E INTERAÇÃO 3D DO GLOBO
+===================================================== */
 
+function initGlobeMotion(){
 
-    if(!photos.length){
+    if(globeAnimationId) return;
 
-        previewGrid.innerHTML = `
+    function animateGlobe(){
 
-            <div style="
-                grid-column:1/-1;
-                min-height:90px;
-                border-radius:15px;
-                border:1px dashed rgba(255,255,255,.12);
-                display:flex;
-                align-items:center;
-                justify-content:center;
-                color:#68768a;
-                font-size:9px;
-            ">
+        if(!isDraggingGlobe && globeAutoSpin){
+            globeRotY += globeVelX;
+            globeRotX += globeVelY;
+            globeVelY *= 0.94;
 
-                Importe fotos ou vídeos do iPhone
-                para começar sua Galeria Premium.
+            if(Math.abs(globeVelX - 0.42) > 0.02){
+                globeVelX += (0.42 - globeVelX) * 0.04;
+            }
 
-            </div>
+            // Limite de inclinação para manter visual do globo
+            globeRotX = Math.max(-55, Math.min(55, globeRotX));
+        }
 
-        `;
+        if(globeStage){
+            globeStage.style.transform = `rotateX(${globeRotX}deg) rotateY(${globeRotY}deg)`;
+        }
 
-        return;
+        globeAnimationId = requestAnimationFrame(animateGlobe);
 
     }
 
+    globeAnimationId = requestAnimationFrame(animateGlobe);
 
-    photos.forEach(
-        item => {
+    if(!globeViewport) return;
 
-            const div =
-                document.createElement(
-                    "div"
-                );
+    globeViewport.addEventListener("pointerdown", (e) => {
+        isDraggingGlobe = true;
+        globeLastX = e.clientX;
+        globeLastY = e.clientY;
+        globeVelX = 0;
+        globeVelY = 0;
+        globeDragDistance = 0;
+        globeLastMoveTime = performance.now();
+    });
 
-            div.className =
-                "previewItem";
+    window.addEventListener("pointermove", (e) => {
+        if(!isDraggingGlobe) return;
 
+        const dx = e.clientX - globeLastX;
+        const dy = e.clientY - globeLastY;
+        globeDragDistance += Math.hypot(dx, dy);
 
-            const url =
-                URL.createObjectURL(
-                    item.blob
-                );
+        globeRotY += dx * 0.42;
+        globeRotX -= dy * 0.42;
+        globeRotX = Math.max(-65, Math.min(65, globeRotX));
 
+        const now = performance.now();
+        const dt = Math.max(1, now - globeLastMoveTime);
+        globeVelX = (dx / dt) * 6;
+        globeVelY = (-dy / dt) * 6;
 
-            let media;
+        globeLastX = e.clientX;
+        globeLastY = e.clientY;
+        globeLastMoveTime = now;
+    });
 
-            if(
-                item.type ===
-                "video"
-            ){
-
-                media =
-                    document.createElement(
-                        "video"
-                    );
-
-                media.muted =
-                    true;
-
-                media.playsInline =
-                    true;
-
-            }else{
-
-                media =
-                    document.createElement(
-                        "img"
-                    );
-
+    window.addEventListener("pointerup", () => {
+        if(isDraggingGlobe){
+            isDraggingGlobe = false;
+            globeVelX = Math.max(-3, Math.min(3, globeVelX));
+            globeVelY = Math.max(-2, Math.min(2, globeVelY));
+            if(Math.abs(globeVelX) < 0.1 && globeAutoSpin){
+                globeVelX = 0.42;
             }
-
-
-            media.src =
-                url;
-
-
-            div.appendChild(
-                media
-            );
-
-
-            div.onclick =
-                () =>
-                    openViewer(
-                        item
-                    );
-
-
-            previewGrid.appendChild(
-                div
-            );
-
         }
-    );
+    });
+
+    if(globeSpinToggle){
+        globeSpinToggle.onclick = (e) => {
+            e.stopPropagation();
+            globeAutoSpin = !globeAutoSpin;
+            globeSpinToggle.textContent = globeAutoSpin ? "⏸ Pausar" : "▶ Girar";
+            if(globeAutoSpin) globeVelX = 0.42;
+        };
+    }
 
 }
 
@@ -3026,17 +3366,28 @@ document
 
 function openViewer(item){
 
+    if(!item) return;
+
     currentViewerId =
-        item.id;
+        item.id !== undefined
+        ?
+        item.id
+        :
+        null;
 
     viewerContent.innerHTML =
         "";
 
 
-    const url =
-        URL.createObjectURL(
-            item.blob
-        );
+    let url = "";
+
+    if(item.blob){
+        url = URL.createObjectURL(item.blob);
+    }else if(item.src){
+        url = item.src;
+    }else{
+        return;
+    }
 
 
     let media;
@@ -3123,8 +3474,15 @@ $("viewerDelete").onclick =
 
         if(
             currentViewerId ===
-            null
+            null || currentViewerId === undefined
         ){
+
+            viewer.classList.remove(
+                "open"
+            );
+
+            viewerContent.innerHTML =
+                "";
 
             return;
 
