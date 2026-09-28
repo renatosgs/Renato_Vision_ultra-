@@ -6,8 +6,6 @@
 <meta name="viewport"
 content="width=device-width,
 initial-scale=1,
-maximum-scale=1,
-user-scalable=no,
 viewport-fit=cover">
 
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -16,6 +14,7 @@ viewport-fit=cover">
 <meta name="mobile-web-app-capable" content="yes">
 
 <meta name="theme-color" content="#030711">
+<meta name="description" content="RENATO VISION 3D - Câmera, galeria e visualização 3D de fotos e vídeos">
 
 <title>RENATO VISION 3D</title>
 
@@ -57,6 +56,7 @@ body{
 
 body{
     user-select:none;
+    -webkit-user-select:none;
 }
 
 button,
@@ -69,6 +69,7 @@ button{
     border:0;
     color:white;
     cursor:pointer;
+    background:none;
 }
 
 #app{
@@ -106,6 +107,8 @@ button{
     height:100%;
     object-fit:cover;
     background:#000;
+    transition:transform .15s linear;
+    transform-origin:center center;
 }
 
 .cameraTop{
@@ -117,6 +120,7 @@ button{
     justify-content:space-between;
     align-items:center;
     z-index:20;
+    pointer-events:none;
 }
 
 .cameraBrand{
@@ -125,6 +129,7 @@ button{
     background:rgba(3,8,15,.68);
     border:1px solid rgba(255,255,255,.13);
     backdrop-filter:blur(20px);
+    -webkit-backdrop-filter:blur(20px);
     font-size:10px;
     font-weight:900;
     letter-spacing:1.5px;
@@ -136,6 +141,7 @@ button{
     background:rgba(3,8,15,.68);
     border:1px solid rgba(255,255,255,.13);
     backdrop-filter:blur(20px);
+    -webkit-backdrop-filter:blur(20px);
     font-size:10px;
     font-weight:900;
 }
@@ -175,6 +181,7 @@ button{
     background:rgba(10,16,25,.8);
     border:1px solid rgba(255,255,255,.2);
     backdrop-filter:blur(18px);
+    -webkit-backdrop-filter:blur(18px);
     font-size:21px;
 }
 
@@ -186,6 +193,10 @@ button{
     border:5px solid white;
     box-shadow:
         0 0 30px rgba(255,255,255,.12);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:0;
 }
 
 .shutter span{
@@ -194,6 +205,7 @@ button{
     height:64px;
     border-radius:50%;
     background:white;
+    transition:all .2s;
 }
 
 .shutter.recording span{
@@ -216,6 +228,7 @@ button{
     background:rgba(5,10,18,.8);
     border:1px solid rgba(255,255,255,.16);
     backdrop-filter:blur(20px);
+    -webkit-backdrop-filter:blur(20px);
 
     font-size:10px;
     font-weight:900;
@@ -238,6 +251,7 @@ button{
     background:rgba(3,7,13,.82);
     border:1px solid rgba(255,255,255,.13);
     backdrop-filter:blur(25px);
+    -webkit-backdrop-filter:blur(25px);
 
     display:none;
 }
@@ -251,6 +265,12 @@ button{
     gap:8px;
     overflow-x:auto;
     padding-bottom:5px;
+    -webkit-overflow-scrolling:touch;
+    scrollbar-width:none;
+}
+
+.toolRow::-webkit-scrollbar{
+    display:none;
 }
 
 .tool{
@@ -276,6 +296,7 @@ button{
 .cameraSlider{
     width:100%;
     accent-color:var(--accent);
+    margin-top:8px;
 }
 
 /* =====================================================
@@ -289,7 +310,7 @@ button{
     padding:
         calc(18px + env(safe-area-inset-top))
         18px
-        calc(30px + env(safe-area-inset-bottom));
+        calc(120px + env(safe-area-inset-bottom));
 
     background:
         radial-gradient(
@@ -303,6 +324,8 @@ button{
             transparent 30%
         ),
         var(--bg);
+
+    -webkit-overflow-scrolling:touch;
 }
 
 .header{
@@ -336,6 +359,8 @@ button{
 
     box-shadow:
         0 0 20px rgba(0,150,255,.6);
+
+    flex-shrink:0;
 }
 
 .logoText{
@@ -371,6 +396,14 @@ button{
 
     font-size:9px;
     font-weight:950;
+
+    text-align:center;
+    line-height:1.2;
+}
+
+.premium small{
+    font-size:8px;
+    opacity:.85;
 }
 
 .hero{
@@ -604,6 +637,10 @@ button{
             transparent 45%
         ),
         #07101c;
+
+    padding:0;
+    text-align:left;
+    color:white;
 }
 
 .featureVisual{
@@ -666,7 +703,7 @@ button{
 }
 
 /* =====================================================
-   PREMIUM GALLERY 3D GLOBE (HOME)
+   GLOBO 3D
 ===================================================== */
 
 .galleryHome{
@@ -728,7 +765,7 @@ button{
     position:relative;
     width:100%;
     max-width:340px;
-    height:300px;
+    height:320px;
     display:flex;
     align-items:center;
     justify-content:center;
@@ -801,19 +838,32 @@ button{
     transform-style:preserve-3d;
     backface-visibility:hidden;
     -webkit-backface-visibility:hidden;
-    border-radius:3px;
+    border-radius:4px;
     overflow:hidden;
     background:#071220;
-    border:0.8px solid rgba(255,255,255,.45);
+    border:1px solid rgba(255,255,255,.5);
     box-shadow:
         0 1px 3px rgba(0,0,0,.6),
-        inset 0 0 2px rgba(255,255,255,.3);
+        inset 0 0 4px rgba(0,0,0,.4);
     cursor:pointer;
     transition:filter .12s;
 }
 
-.globeTile:active{
-    filter:brightness(1.35);
+.globeTile::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    border-radius:4px;
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255,255,255,.28) 0%,
+            transparent 40%,
+            transparent 60%,
+            rgba(0,0,0,.25) 100%
+        );
+    pointer-events:none;
+    z-index:3;
 }
 
 .globeTile img,
@@ -826,8 +876,24 @@ button{
 }
 
 .globeTile.isUserPhoto{
-    border:1px solid #ffd060;
-    box-shadow:0 0 6px rgba(255,200,50,.5);
+    border:1.5px solid #ffd060;
+    box-shadow:0 0 8px rgba(255,200,50,.65);
+}
+
+.globeTile .tilePlaceholder{
+    width:100%;
+    height:100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:15px;
+    background:
+        linear-gradient(
+            135deg,
+            #0d2c4d,
+            #0a1524
+        );
+    color:rgba(255,255,255,.5);
 }
 
 .globeGloss{
@@ -937,6 +1003,7 @@ button{
 
     font-size:11px;
     font-weight:950;
+    color:white;
 }
 
 /* =====================================================
@@ -965,6 +1032,7 @@ button{
     border:1px solid rgba(255,255,255,.1);
 
     backdrop-filter:blur(25px);
+    -webkit-backdrop-filter:blur(25px);
 }
 
 .navButton{
@@ -1013,6 +1081,8 @@ button{
         calc(16px + env(safe-area-inset-top))
         14px
         calc(30px + env(safe-area-inset-bottom));
+
+    -webkit-overflow-scrolling:touch;
 }
 
 .panel.open{
@@ -1040,6 +1110,7 @@ button{
     border:1px solid rgba(255,255,255,.13);
 
     font-size:25px;
+    line-height:1;
 }
 
 /* =====================================================
@@ -1051,6 +1122,12 @@ button{
     gap:7px;
     overflow:auto;
     margin-bottom:12px;
+    -webkit-overflow-scrolling:touch;
+    scrollbar-width:none;
+}
+
+.galleryTabs::-webkit-scrollbar{
+    display:none;
 }
 
 .galleryTab{
@@ -1063,6 +1140,7 @@ button{
 
     font-size:9px;
     font-weight:950;
+    color:white;
 }
 
 .galleryTab.active{
@@ -1122,6 +1200,7 @@ button{
     background:rgba(0,0,0,.65);
 
     font-size:13px;
+    line-height:1;
 }
 
 .emptyGallery{
@@ -1177,10 +1256,19 @@ button{
     display:flex;
 }
 
+#viewerContent{
+    width:100%;
+    height:100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
 #viewerMedia{
     max-width:100%;
     max-height:100%;
     object-fit:contain;
+    transition:transform .35s ease, filter .35s ease;
 }
 
 .viewerTop{
@@ -1192,6 +1280,7 @@ button{
 
     display:flex;
     justify-content:space-between;
+    gap:10px;
 }
 
 .viewerButton{
@@ -1202,6 +1291,8 @@ button{
     background:rgba(20,20,25,.75);
     border:1px solid rgba(255,255,255,.15);
     backdrop-filter:blur(15px);
+    -webkit-backdrop-filter:blur(15px);
+    font-size:18px;
 }
 
 .viewer3D{
@@ -1234,6 +1325,7 @@ button{
     border:1px solid var(--border);
 
     text-align:left;
+    color:white;
 }
 
 .themeName{
@@ -1269,6 +1361,7 @@ button{
     display:flex;
     align-items:center;
     justify-content:space-between;
+    gap:10px;
 }
 
 .settingInfo strong{
@@ -1289,6 +1382,8 @@ button{
     background:#14243a;
     font-size:9px;
     font-weight:900;
+    color:white;
+    white-space:nowrap;
 }
 
 /* =====================================================
@@ -1320,6 +1415,9 @@ button{
     pointer-events:none;
 
     transition:.25s;
+
+    max-width:calc(100% - 40px);
+    text-align:center;
 }
 
 #toast.show{
@@ -1415,7 +1513,7 @@ button{
 
         <div class="logoArea">
 
-            <div class="eye"></div>
+            <div class="eye" aria-hidden="true"></div>
 
             <div>
 
@@ -1433,7 +1531,8 @@ button{
 
         <button
             class="premium"
-            id="premiumButton">
+            id="premiumButton"
+            type="button">
 
             👑 PREMIUM<br>
             <small>Versão Completa</small>
@@ -1467,7 +1566,8 @@ button{
 
             <button
                 class="heroButton"
-                id="heroImport">
+                id="heroImport"
+                type="button">
 
                 📥 IMPORTAR DO IPHONE
 
@@ -1475,7 +1575,7 @@ button{
 
         </div>
 
-        <div class="heroVisual"></div>
+        <div class="heroVisual" aria-hidden="true"></div>
 
     </section>
 
@@ -1486,117 +1586,40 @@ button{
 
     <section class="menuGrid">
 
-        <button
-            class="menuCard"
-            id="openCamera">
-
-            <div class="menuIcon">
-                📷
-            </div>
-
-            <div class="menuName">
-                Câmera
-            </div>
-
-            <div class="menuSub">
-                Foto / Vídeo
-            </div>
-
+        <button class="menuCard" id="openCamera" type="button">
+            <div class="menuIcon">📷</div>
+            <div class="menuName">Câmera</div>
+            <div class="menuSub">Foto / Vídeo</div>
         </button>
 
-
-        <button
-            class="menuCard"
-            id="openGallery">
-
-            <div class="menuIcon">
-                🖼️
-            </div>
-
-            <div class="menuName">
-                Galeria
-            </div>
-
-            <div class="menuSub">
-                Importados
-            </div>
-
+        <button class="menuCard" id="openGallery" type="button">
+            <div class="menuIcon">🖼️</div>
+            <div class="menuName">Galeria</div>
+            <div class="menuSub">Importados</div>
         </button>
 
-
-        <button
-            class="menuCard"
-            id="open3D">
-
-            <div class="menuIcon">
-                🧊
-            </div>
-
-            <div class="menuName">
-                Modo 3D
-            </div>
-
-            <div class="menuSub">
-                Realidade
-            </div>
-
+        <button class="menuCard" id="open3D" type="button">
+            <div class="menuIcon">🧊</div>
+            <div class="menuName">Modo 3D</div>
+            <div class="menuSub">Realidade</div>
         </button>
 
-
-        <button
-            class="menuCard"
-            id="nightMode">
-
-            <div class="menuIcon">
-                🌙
-            </div>
-
-            <div class="menuName">
-                Modo Noturno
-            </div>
-
-            <div class="menuSub">
-                Visão Digital
-            </div>
-
+        <button class="menuCard" id="nightMode" type="button">
+            <div class="menuIcon">🌙</div>
+            <div class="menuName">Modo Noturno</div>
+            <div class="menuSub">Visão Digital</div>
         </button>
 
-
-        <button
-            class="menuCard"
-            id="openFilters">
-
-            <div class="menuIcon">
-                🎨
-            </div>
-
-            <div class="menuName">
-                Filtros
-            </div>
-
-            <div class="menuSub">
-                Deslize e escolha
-            </div>
-
+        <button class="menuCard" id="openFilters" type="button">
+            <div class="menuIcon">🎨</div>
+            <div class="menuName">Filtros</div>
+            <div class="menuSub">Deslize e escolha</div>
         </button>
 
-
-        <button
-            class="menuCard"
-            id="openSettings">
-
-            <div class="menuIcon">
-                ⚙️
-            </div>
-
-            <div class="menuName">
-                Configurações
-            </div>
-
-            <div class="menuSub">
-                Personalize
-            </div>
-
+        <button class="menuCard" id="openSettings" type="button">
+            <div class="menuIcon">⚙️</div>
+            <div class="menuName">Configurações</div>
+            <div class="menuSub">Personalize</div>
         </button>
 
     </section>
@@ -1609,66 +1632,28 @@ button{
 
     <section class="features">
 
-        <button
-            class="feature"
-            id="feature3D">
-
+        <button class="feature" id="feature3D" type="button">
             <div class="featureVisual"></div>
-
             <div class="featureInfo">
-
-                <div class="featureTitle">
-                    Fotos em 3D
-                </div>
-
-                <div class="featureText">
-                    Transforme imagens em visual 3D
-                </div>
-
+                <div class="featureTitle">Fotos em 3D</div>
+                <div class="featureText">Transforme imagens em visual 3D</div>
             </div>
-
         </button>
 
-
-        <button
-            class="feature"
-            id="featureVideo">
-
+        <button class="feature" id="featureVideo" type="button">
             <div class="featureVisual"></div>
-
             <div class="featureInfo">
-
-                <div class="featureTitle">
-                    Vídeos em 3D
-                </div>
-
-                <div class="featureText">
-                    Grave e visualize em terceira dimensão
-                </div>
-
+                <div class="featureTitle">Vídeos em 3D</div>
+                <div class="featureText">Grave e visualize em terceira dimensão</div>
             </div>
-
         </button>
 
-
-        <button
-            class="feature"
-            id="featureNight">
-
+        <button class="feature" id="featureNight" type="button">
             <div class="featureVisual"></div>
-
             <div class="featureInfo">
-
-                <div class="featureTitle">
-                    Modo Noturno
-                </div>
-
-                <div class="featureText">
-                    Processamento visual para ambientes escuros
-                </div>
-
+                <div class="featureTitle">Modo Noturno</div>
+                <div class="featureText">Processamento visual para ambientes escuros</div>
             </div>
-
         </button>
 
     </section>
@@ -1685,12 +1670,8 @@ button{
                 👑 <span>Galeria Premium 3D</span>
             </div>
 
-            <button
-                class="seeAll"
-                id="seeAll">
-
+            <button class="seeAll" id="seeAll" type="button">
                 Ver todas ›
-                
             </button>
 
         </div>
@@ -1714,9 +1695,7 @@ button{
                 <span class="globeHint">
                     🌐 Gire o globo ou toque na foto
                 </span>
-                <button
-                    class="globeSpinBtn"
-                    id="globeSpinToggle">
+                <button class="globeSpinBtn" id="globeSpinToggle" type="button">
                     ⏸ Pausar
                 </button>
             </div>
@@ -1741,12 +1720,8 @@ button{
 
         </div>
 
-        <button
-            class="importButton"
-            id="importButton">
-
+        <button class="importButton" id="importButton" type="button">
             📥 IMPORTAR FOTOS E VÍDEOS
-
         </button>
 
     </section>
@@ -1766,7 +1741,7 @@ button{
 
 <!-- =====================================================
      CAMERA
-===================================================== */
+===================================================== -->
 
 <section id="cameraScreen">
 
@@ -1785,77 +1760,24 @@ button{
             RENATO VISION 3D
         </div>
 
-        <div
-            class="cameraMode"
-            id="cameraMode">
-
+        <div class="cameraMode" id="cameraMode">
             FOTO
-
         </div>
 
     </div>
 
 
-    <div
-        id="cameraTools">
+    <div id="cameraTools">
 
         <div class="toolRow">
 
-            <button
-                class="tool active"
-                data-filter="normal">
-
-                NORMAL
-
-            </button>
-
-            <button
-                class="tool"
-                data-filter="cinema">
-
-                CINEMA
-
-            </button>
-
-            <button
-                class="tool"
-                data-filter="vintage">
-
-                VINTAGE
-
-            </button>
-
-            <button
-                class="tool"
-                data-filter="noir">
-
-                NOIR
-
-            </button>
-
-            <button
-                class="tool"
-                data-filter="vivid">
-
-                VIVID
-
-            </button>
-
-            <button
-                class="tool"
-                data-filter="night">
-
-                NOTURNO
-
-            </button>
-
-            <button
-                class="tool"
-                data-filter="3d">
-
-                3D
-
-            </button>
+            <button class="tool active" data-filter="normal" type="button">NORMAL</button>
+            <button class="tool" data-filter="cinema" type="button">CINEMA</button>
+            <button class="tool" data-filter="vintage" type="button">VINTAGE</button>
+            <button class="tool" data-filter="noir" type="button">NOIR</button>
+            <button class="tool" data-filter="vivid" type="button">VIVID</button>
+            <button class="tool" data-filter="night" type="button">NOTURNO</button>
+            <button class="tool" data-filter="3d" type="button">3D</button>
 
         </div>
 
@@ -1864,57 +1786,25 @@ button{
             id="superZoom"
             type="range"
             min="1"
-            max="12"
+            max="4"
             step=".1"
-            value="1">
+            value="1"
+            aria-label="Zoom da câmera">
 
     </div>
 
 
-    <button
-        id="cameraMenu">
-
+    <button id="cameraMenu" type="button">
         ☰ CONTROLES
-
     </button>
 
 
     <div class="cameraBottom">
 
-        <button
-            class="camButton"
-            id="cameraClose">
-
-            ×
-
-        </button>
-
-
-        <button
-            class="camButton"
-            id="cameraFlip">
-
-            🔄
-
-        </button>
-
-
-        <button
-            class="shutter"
-            id="shutter">
-
-            <span></span>
-
-        </button>
-
-
-        <button
-            class="camButton"
-            id="cameraVideo">
-
-            🎥
-
-        </button>
+        <button class="camButton" id="cameraClose" type="button" aria-label="Fechar">×</button>
+        <button class="camButton" id="cameraFlip" type="button" aria-label="Trocar câmera">🔄</button>
+        <button class="shutter" id="shutter" type="button" aria-label="Tirar foto"><span></span></button>
+        <button class="camButton" id="cameraVideo" type="button" aria-label="Gravar vídeo">🎥</button>
 
     </div>
 
@@ -1923,11 +1813,9 @@ button{
 
 <!-- =====================================================
      GALERIA
-===================================================== */
+===================================================== -->
 
-<section
-    id="galleryPanel"
-    class="panel">
+<section id="galleryPanel" class="panel">
 
     <div class="panelHeader">
 
@@ -1935,75 +1823,27 @@ button{
             👑 Galeria Premium
         </div>
 
-        <button
-            class="close"
-            id="galleryClose">
-
-            ×
-
-        </button>
+        <button class="close" id="galleryClose" type="button">×</button>
 
     </div>
 
 
     <div class="galleryTabs">
 
-        <button
-            class="galleryTab active"
-            data-gallery-filter="all">
-
-            TODAS
-
-        </button>
-
-        <button
-            class="galleryTab"
-            data-gallery-filter="photo">
-
-            🖼️ FOTOS
-
-        </button>
-
-        <button
-            class="galleryTab"
-            data-gallery-filter="video">
-
-            🎥 VÍDEOS
-
-        </button>
-
-        <button
-            class="galleryTab"
-            data-gallery-filter="3d">
-
-            🧊 3D
-
-        </button>
-
-        <button
-            class="galleryTab"
-            data-gallery-filter="favorite">
-
-            ⭐ FAVORITOS
-
-        </button>
+        <button class="galleryTab active" data-gallery-filter="all" type="button">TODAS</button>
+        <button class="galleryTab" data-gallery-filter="photo" type="button">🖼️ FOTOS</button>
+        <button class="galleryTab" data-gallery-filter="video" type="button">🎥 VÍDEOS</button>
+        <button class="galleryTab" data-gallery-filter="3d" type="button">🧊 3D</button>
+        <button class="galleryTab" data-gallery-filter="favorite" type="button">⭐ FAVORITOS</button>
 
     </div>
 
 
-    <div
-        id="galleryGrid"
-        class="galleryGrid">
-
-    </div>
+    <div id="galleryGrid" class="galleryGrid"></div>
 
 
-    <button
-        class="importButton"
-        id="galleryImport">
-
+    <button class="importButton" id="galleryImport" type="button">
         📥 IMPORTAR DO IPHONE
-
     </button>
 
 </section>
@@ -2011,11 +1851,9 @@ button{
 
 <!-- =====================================================
      TEMAS
-===================================================== */
+===================================================== -->
 
-<section
-    id="themePanel"
-    class="panel">
+<section id="themePanel" class="panel">
 
     <div class="panelHeader">
 
@@ -2023,22 +1861,12 @@ button{
             🎨 Temas do Aplicativo
         </div>
 
-        <button
-            class="close"
-            id="themeClose">
-
-            ×
-
-        </button>
+        <button class="close" id="themeClose" type="button">×</button>
 
     </div>
 
 
-    <p style="
-        color:#8995a8;
-        font-size:10px;
-        line-height:1.5;
-    ">
+    <p style="color:#8995a8;font-size:10px;line-height:1.5;">
 
         Os temas abaixo alteram as cores e
         a aparência da interface do aplicativo.
@@ -2047,22 +1875,16 @@ button{
     </p>
 
 
-    <div
-        id="themeGrid"
-        class="themeGrid">
-
-    </div>
+    <div id="themeGrid" class="themeGrid"></div>
 
 </section>
 
 
 <!-- =====================================================
      FILTROS
-===================================================== */
+===================================================== -->
 
-<section
-    id="filterPanel"
-    class="panel">
+<section id="filterPanel" class="panel">
 
     <div class="panelHeader">
 
@@ -2070,21 +1892,12 @@ button{
             🎨 Filtros
         </div>
 
-        <button
-            class="close"
-            id="filterClose">
-
-            ×
-
-        </button>
+        <button class="close" id="filterClose" type="button">×</button>
 
     </div>
 
 
-    <p style="
-        color:#8995a8;
-        font-size:10px;
-    ">
+    <p style="color:#8995a8;font-size:10px;">
 
         Na câmera, deslize para esquerda ou
         direita para trocar o filtro.
@@ -2092,22 +1905,16 @@ button{
     </p>
 
 
-    <div
-        id="filterList"
-        class="themeGrid">
-
-    </div>
+    <div id="filterList" class="themeGrid"></div>
 
 </section>
 
 
 <!-- =====================================================
      CONFIGURAÇÕES
-===================================================== */
+===================================================== -->
 
-<section
-    id="settingsPanel"
-    class="panel">
+<section id="settingsPanel" class="panel">
 
     <div class="panelHeader">
 
@@ -2115,13 +1922,7 @@ button{
             ⚙️ Configurações
         </div>
 
-        <button
-            class="close"
-            id="settingsClose">
-
-            ×
-
-        </button>
+        <button class="close" id="settingsClose" type="button">×</button>
 
     </div>
 
@@ -2129,23 +1930,12 @@ button{
     <div class="setting">
 
         <div class="settingInfo">
-
-            <strong>
-                🧠 Aprimoramento
-            </strong>
-
-            <small>
-                Processamento local das imagens
-            </small>
-
+            <strong>🧠 Aprimoramento</strong>
+            <small>Processamento local das imagens</small>
         </div>
 
-        <button
-            class="settingButton"
-            id="aiToggle">
-
+        <button class="settingButton" id="aiToggle" type="button">
             ATIVADO
-
         </button>
 
     </div>
@@ -2154,23 +1944,12 @@ button{
     <div class="setting">
 
         <div class="settingInfo">
-
-            <strong>
-                🧊 Visual 3D
-            </strong>
-
-            <small>
-                Efeito 3D na visualização
-            </small>
-
+            <strong>🧊 Visual 3D</strong>
+            <small>Efeito 3D na visualização</small>
         </div>
 
-        <button
-            class="settingButton"
-            id="threeDToggle">
-
+        <button class="settingButton" id="threeDToggle" type="button">
             ATIVADO
-
         </button>
 
     </div>
@@ -2179,23 +1958,12 @@ button{
     <div class="setting">
 
         <div class="settingInfo">
-
-            <strong>
-                🌙 Modo noturno
-            </strong>
-
-            <small>
-                Ajuste visual para ambientes escuros
-            </small>
-
+            <strong>🌙 Modo noturno</strong>
+            <small>Ajuste visual para ambientes escuros</small>
         </div>
 
-        <button
-            class="settingButton"
-            id="nightToggle">
-
+        <button class="settingButton" id="nightToggle" type="button">
             DESATIVADO
-
         </button>
 
     </div>
@@ -2204,23 +1972,12 @@ button{
     <div class="setting">
 
         <div class="settingInfo">
-
-            <strong>
-                🎨 Tema
-            </strong>
-
-            <small>
-                Alterar aparência do aplicativo
-            </small>
-
+            <strong>🎨 Tema</strong>
+            <small>Alterar aparência do aplicativo</small>
         </div>
 
-        <button
-            class="settingButton"
-            id="settingsTheme">
-
+        <button class="settingButton" id="settingsTheme" type="button">
             ESCOLHER
-
         </button>
 
     </div>
@@ -2230,35 +1987,15 @@ button{
 
 <!-- =====================================================
      VISUALIZADOR
-===================================================== */
+===================================================== -->
 
 <div id="viewer">
 
     <div class="viewerTop">
 
-        <button
-            class="viewerButton"
-            id="viewerClose">
-
-            ×
-
-        </button>
-
-        <button
-            class="viewerButton"
-            id="viewer3DButton">
-
-            🧊
-
-        </button>
-
-        <button
-            class="viewerButton"
-            id="viewerDelete">
-
-            🗑️
-
-        </button>
+        <button class="viewerButton" id="viewerClose" type="button" aria-label="Fechar">×</button>
+        <button class="viewerButton" id="viewer3DButton" type="button" aria-label="Modo 3D">🧊</button>
+        <button class="viewerButton" id="viewerDelete" type="button" aria-label="Excluir">🗑️</button>
 
     </div>
 
@@ -2269,47 +2006,28 @@ button{
 
 <!-- =====================================================
      NAVEGAÇÃO
-===================================================== */
+===================================================== -->
 
 <nav class="bottomNav">
 
-    <button
-        class="navButton active"
-        id="navHome">
-
+    <button class="navButton active" id="navHome" type="button">
         <span>⌂</span>
         INÍCIO
-
     </button>
 
-
-    <button
-        class="navButton"
-        id="navCamera">
-
+    <button class="navButton" id="navCamera" type="button">
         <span>📷</span>
         CÂMERA
-
     </button>
 
-
-    <button
-        class="navButton"
-        id="navGallery">
-
+    <button class="navButton" id="navGallery" type="button">
         <span>🖼️</span>
         GALERIA
-
     </button>
 
-
-    <button
-        class="navButton"
-        id="navSettings">
-
+    <button class="navButton" id="navSettings" type="button">
         <span>⚙️</span>
         AJUSTES
-
     </button>
 
 </nav>
@@ -2322,15 +2040,8 @@ button{
 
     <div class="loader"></div>
 
-    <div style="
-        font-size:10px;
-        font-weight:900;
-        letter-spacing:1.5px;
-        color:#8996aa;
-    ">
-
+    <div style="font-size:10px;font-weight:900;letter-spacing:1.5px;color:#8996aa;">
         RENATO VISION 3D
-
     </div>
 
 </div>
@@ -2345,222 +2056,164 @@ button{
 ===================================================== */
 
 let db = null;
-
 let stream = null;
-
-let currentCamera =
-    "environment";
-
+let currentCamera = "environment";
 let cameraRunning = false;
-
-let videoRecording =
-    false;
-
-let mediaRecorder =
-    null;
-
+let videoRecording = false;
+let mediaRecorder = null;
 let recordingChunks = [];
-
-let currentGalleryFilter =
-    "all";
-
-let currentViewerId =
-    null;
-
-let currentFilter =
-    "normal";
-
-let threeDEnabled =
-    true;
-
-let aiEnabled =
-    true;
-
-let nightEnabled =
-    false;
-
-let filterIndex =
-    0;
+let recordingAnimationId = null;
+let currentGalleryFilter = "all";
+let currentViewerId = null;
+let currentViewerItem = null;
+let currentFilter = "normal";
+let threeDEnabled = true;
+let aiEnabled = true;
+let nightEnabled = false;
+let activeObjectUrls = new Set();
 
 
 /* =====================================================
-   ELEMENTOS
+   HELPERS
 ===================================================== */
 
-const $ =
-    id =>
-        document.getElementById(id);
+const $ = id => document.getElementById(id);
 
-const camera =
-    $("camera");
+function createObjectURL(blob){
+    const url = URL.createObjectURL(blob);
+    activeObjectUrls.add(url);
+    return url;
+}
 
-const cameraScreen =
-    $("cameraScreen");
+function revokeObjectURL(url){
+    if(!url) return;
+    if(activeObjectUrls.has(url)){
+        URL.revokeObjectURL(url);
+        activeObjectUrls.delete(url);
+    }
+}
 
-const home =
-    $("home");
+function revokeAllObjectURLs(){
+    activeObjectUrls.forEach(url => {
+        try { URL.revokeObjectURL(url); } catch(e){}
+    });
+    activeObjectUrls.clear();
+}
 
-const loading =
-    $("loading");
+function safeOn(el, event, handler){
+    if(el) el.addEventListener(event, handler);
+}
 
-const fileInput =
-    $("fileInput");
-
-const galleryGrid =
-    $("galleryGrid");
-
-const globeSphere =
-    $("globeSphere");
-
-const globeViewport =
-    $("globeViewport");
-
-const globeStage =
-    $("globeStage");
-
-const globeSpinToggle =
-    $("globeSpinToggle");
-
-const viewer =
-    $("viewer");
-
-const viewerContent =
-    $("viewerContent");
-
-const toast =
-    $("toast");
+const camera = $("camera");
+const cameraScreen = $("cameraScreen");
+const home = $("home");
+const loading = $("loading");
+const fileInput = $("fileInput");
+const galleryGrid = $("galleryGrid");
+const globeSphere = $("globeSphere");
+const globeViewport = $("globeViewport");
+const globeStage = $("globeStage");
+const globeSpinToggle = $("globeSpinToggle");
+const viewer = $("viewer");
+const viewerContent = $("viewerContent");
+const toast = $("toast");
 
 
 /* =====================================================
-   BANCO
+   BANCO (IndexedDB)
 ===================================================== */
 
-const DB_NAME =
-    "RenatoVision3DPremium";
+const DB_NAME = "RenatoVision3DPremium";
+const DB_VERSION = 2;
+const STORE = "importedMedia";
 
-const DB_VERSION =
-    2;
-
-const STORE =
-    "importedMedia";
-
+let dbAvailable = false;
 
 function openDatabase(){
-
-    return new Promise(
-        (resolve,reject)=>{
-
-            const request =
-                indexedDB.open(
-                    DB_NAME,
-                    DB_VERSION
-                );
-
-            request.onupgradeneeded =
-                event => {
-
-                    const database =
-                        event.target.result;
-
-                    if(
-                        !database.objectStoreNames
-                        .contains(STORE)
-                    ){
-
-                        database.createObjectStore(
-                            STORE,
-                            {
-                                keyPath:"id",
-                                autoIncrement:true
-                            }
-                        );
-
-                    }
-
-                };
-
-            request.onsuccess =
-                event => {
-
-                    db =
-                        event.target.result;
-
-                    resolve(db);
-
-                };
-
-            request.onerror =
-                () =>
-                    reject(
-                        request.error
-                    );
-
+    return new Promise((resolve) => {
+        let request;
+        try {
+            request = indexedDB.open(DB_NAME, DB_VERSION);
+        } catch(e){
+            console.warn("IndexedDB indisponível:", e);
+            resolve(false);
+            return;
         }
-    );
 
+        request.onupgradeneeded = event => {
+            const database = event.target.result;
+            if(!database.objectStoreNames.contains(STORE)){
+                database.createObjectStore(STORE, {
+                    keyPath:"id",
+                    autoIncrement:true
+                });
+            }
+        };
+
+        request.onsuccess = event => {
+            db = event.target.result;
+            dbAvailable = true;
+
+            db.onerror = ev => console.warn("DB error:", ev.target.error);
+
+            resolve(true);
+        };
+
+        request.onerror = () => {
+            console.warn("IndexedDB falhou, usando memória");
+            db = null;
+            dbAvailable = false;
+            resolve(false);
+        };
+    });
 }
 
 
 /* =====================================================
-   SALVAR IMPORTAÇÃO
+   FALLBACK EM MEMÓRIA
 ===================================================== */
 
-function saveImportedFile(
-    file
-){
+let memoryStore = [];
+let memoryNextId = 1;
 
-    return new Promise(
-        (resolve,reject)=>{
+function memoryAdd(item){
+    const record = { ...item, id: memoryNextId++ };
+    memoryStore.push(record);
+    return record;
+}
 
-            const transaction =
-                db.transaction(
-                    STORE,
-                    "readwrite"
-                );
 
-            const objectStore =
-                transaction.objectStore(
-                    STORE
-                );
+/* =====================================================
+   SALVAR ARQUIVO
+===================================================== */
 
-            const type =
-                file.type.startsWith("video")
-                ?
-                "video"
-                :
-                "photo";
+function saveImportedFile(file, opts = {}){
 
-            objectStore.add({
+    const type = file.type.startsWith("video") ? "video" : "photo";
 
-                blob:file,
+    const record = {
+        blob: file,
+        type: type,
+        name: file.name || ("arquivo-" + Date.now()),
+        size: file.size,
+        favorite: false,
+        is3D: !!opts.is3D,
+        source: opts.source || "import",
+        importedAt: Date.now()
+    };
 
-                type:type,
+    if(!dbAvailable){
+        return Promise.resolve(memoryAdd(record));
+    }
 
-                name:file.name,
+    return new Promise((resolve,reject) => {
+        const transaction = db.transaction(STORE, "readwrite");
+        const objectStore = transaction.objectStore(STORE);
+        const request = objectStore.add(record);
 
-                size:file.size,
-
-                favorite:false,
-
-                is3D:false,
-
-                importedAt:
-                    Date.now()
-
-            });
-
-            transaction.oncomplete =
-                resolve;
-
-            transaction.onerror =
-                () =>
-                    reject(
-                        transaction.error
-                    );
-
-        }
-    );
-
+        transaction.oncomplete = () => resolve(request.result);
+        transaction.onerror = () => reject(transaction.error);
+    });
 }
 
 
@@ -2570,45 +2223,28 @@ function saveImportedFile(
 
 function getAllMedia(){
 
-    return new Promise(
-        (resolve,reject)=>{
+    if(!dbAvailable){
+        return Promise.resolve(
+            [...memoryStore].sort((a,b) => b.importedAt - a.importedAt)
+        );
+    }
 
-            const transaction =
-                db.transaction(
-                    STORE,
-                    "readonly"
-                );
+    return new Promise((resolve) => {
+        try {
+            const transaction = db.transaction(STORE, "readonly");
+            const request = transaction.objectStore(STORE).getAll();
 
-            const request =
-                transaction
-                .objectStore(STORE)
-                .getAll();
+            request.onsuccess = () => {
+                const result = request.result || [];
+                result.sort((a,b) => b.importedAt - a.importedAt);
+                resolve(result);
+            };
 
-            request.onsuccess =
-                () => {
-
-                    const result =
-                        request.result || [];
-
-                    result.sort(
-                        (a,b) =>
-                            b.importedAt -
-                            a.importedAt
-                    );
-
-                    resolve(result);
-
-                };
-
-            request.onerror =
-                () =>
-                    reject(
-                        request.error
-                    );
-
+            request.onerror = () => resolve([]);
+        } catch(e){
+            resolve([]);
         }
-    );
-
+    });
 }
 
 
@@ -2616,63 +2252,29 @@ function getAllMedia(){
    ATUALIZAR
 ===================================================== */
 
-function updateMedia(
-    id,
-    changes
-){
+function updateMedia(id, changes){
 
-    return new Promise(
-        (resolve,reject)=>{
+    if(!dbAvailable){
+        const item = memoryStore.find(m => m.id === id);
+        if(item) Object.assign(item, changes);
+        return Promise.resolve();
+    }
 
-            const transaction =
-                db.transaction(
-                    STORE,
-                    "readwrite"
-                );
+    return new Promise((resolve,reject) => {
+        const transaction = db.transaction(STORE, "readwrite");
+        const store = transaction.objectStore(STORE);
+        const request = store.get(id);
 
-            const store =
-                transaction.objectStore(
-                    STORE
-                );
+        request.onsuccess = () => {
+            const item = request.result;
+            if(!item){ resolve(); return; }
+            Object.assign(item, changes);
+            store.put(item);
+        };
 
-            const request =
-                store.get(id);
-
-            request.onsuccess =
-                () => {
-
-                    const item =
-                        request.result;
-
-                    if(!item){
-
-                        resolve();
-
-                        return;
-
-                    }
-
-                    Object.assign(
-                        item,
-                        changes
-                    );
-
-                    store.put(item);
-
-                };
-
-            transaction.oncomplete =
-                resolve;
-
-            transaction.onerror =
-                () =>
-                    reject(
-                        transaction.error
-                    );
-
-        }
-    );
-
+        transaction.oncomplete = resolve;
+        transaction.onerror = () => reject(transaction.error);
+    });
 }
 
 
@@ -2682,31 +2284,17 @@ function updateMedia(
 
 function removeMedia(id){
 
-    return new Promise(
-        (resolve,reject)=>{
+    if(!dbAvailable){
+        memoryStore = memoryStore.filter(m => m.id !== id);
+        return Promise.resolve();
+    }
 
-            const transaction =
-                db.transaction(
-                    STORE,
-                    "readwrite"
-                );
-
-            transaction
-                .objectStore(STORE)
-                .delete(id);
-
-            transaction.oncomplete =
-                resolve;
-
-            transaction.onerror =
-                () =>
-                    reject(
-                        transaction.error
-                    );
-
-        }
-    );
-
+    return new Promise((resolve,reject) => {
+        const transaction = db.transaction(STORE, "readwrite");
+        transaction.objectStore(STORE).delete(id);
+        transaction.oncomplete = resolve;
+        transaction.onerror = () => reject(transaction.error);
+    });
 }
 
 
@@ -2717,378 +2305,170 @@ function removeMedia(id){
 let toastTimer;
 
 function showToast(message){
-
-    clearTimeout(
-        toastTimer
-    );
-
-    toast.textContent =
-        message;
-
-    toast.classList.add(
-        "show"
-    );
-
-    toastTimer =
-        setTimeout(
-            () =>
-                toast.classList.remove(
-                    "show"
-                ),
-            2300
-        );
-
+    clearTimeout(toastTimer);
+    toast.textContent = message;
+    toast.classList.add("show");
+    toastTimer = setTimeout(() => toast.classList.remove("show"), 2300);
 }
 
 
 /* =====================================================
-   IMPORTAR IPHONE
+   IMPORTAR
 ===================================================== */
 
 function startImport(){
-
-    fileInput.value =
-        "";
-
+    fileInput.value = "";
     fileInput.click();
-
 }
 
+safeOn($("importButton"), "click", startImport);
+safeOn($("galleryImport"), "click", startImport);
+safeOn($("heroImport"), "click", startImport);
 
-$("importButton").onclick =
-    startImport;
+fileInput.onchange = async () => {
+    const files = Array.from(fileInput.files || []);
+    if(!files.length) return;
 
-$("galleryImport").onclick =
-    startImport;
+    let count = 0;
 
-$("heroImport").onclick =
-    startImport;
-
-
-fileInput.onchange =
-    async () => {
-
-        const files =
-            Array.from(
-                fileInput.files || []
-            );
-
-        if(!files.length){
-
-            return;
-
-        }
-
-        let count = 0;
-
-        for(
-            const file of files
-        ){
-
-            if(
-                file.type.startsWith("image/")
-                ||
-                file.type.startsWith("video/")
-            ){
-
-                await saveImportedFile(
-                    file
-                );
-
+    for(const file of files){
+        if(file.type.startsWith("image/") || file.type.startsWith("video/")){
+            try {
+                await saveImportedFile(file, { source:"import" });
                 count++;
-
+            } catch(e){
+                console.warn("Falha ao importar:", e);
             }
-
         }
+    }
 
-        showToast(
-            `✓ ${count} arquivo(s) importado(s)`
-        );
-
-        await loadGallery();
-
-        await loadPreview();
-
-    };
+    showToast(`✓ ${count} arquivo(s) importado(s)`);
+    await loadGallery();
+    await refreshGlobe();
+};
 
 
 /* =====================================================
-   GALERIA COMPLETA (PAINEL)
+   GALERIA COMPLETA
 ===================================================== */
 
 async function loadGallery(){
 
-    const items =
-        await getAllMedia();
+    const items = await getAllMedia();
 
-    let filtered =
-        items.filter(
-            item => {
+    const filtered = items.filter(item => {
+        if(currentGalleryFilter === "all") return true;
+        if(currentGalleryFilter === "favorite") return item.favorite;
+        if(currentGalleryFilter === "3d") return item.is3D;
+        return item.type === currentGalleryFilter;
+    });
 
-                if(
-                    currentGalleryFilter
-                    ===
-                    "all"
-                ){
-
-                    return true;
-
-                }
-
-                if(
-                    currentGalleryFilter
-                    ===
-                    "favorite"
-                ){
-
-                    return item.favorite;
-
-                }
-
-                if(
-                    currentGalleryFilter
-                    ===
-                    "3d"
-                ){
-
-                    return item.is3D;
-
-                }
-
-                return (
-                    item.type
-                    ===
-                    currentGalleryFilter
-                );
-
-            }
-        );
-
-
-    galleryGrid.innerHTML =
-        "";
-
+    galleryGrid.innerHTML = "";
 
     if(!filtered.length){
-
         galleryGrid.innerHTML = `
-
             <div class="emptyGallery">
-
-                <div class="emptyIcon">
-                    📥
-                </div>
-
-                <div class="emptyTitle">
-                    GALERIA VAZIA
-                </div>
-
+                <div class="emptyIcon">📥</div>
+                <div class="emptyTitle">GALERIA VAZIA</div>
                 <div class="emptyText">
-                    Nenhuma imagem ou vídeo
-                    importado do seu iPhone
-                    está nesta categoria.
+                    Nenhuma imagem ou vídeo está nesta categoria.
+                    Importe do seu iPhone ou tire fotos com a câmera.
                 </div>
-
             </div>
-
         `;
-
         return;
-
     }
 
+    filtered.forEach(item => {
+        const card = document.createElement("div");
+        card.className = "galleryCard";
 
-    filtered.forEach(
-        item => {
+        const url = createObjectURL(item.blob);
 
-            const card =
-                document.createElement(
-                    "div"
-                );
-
-            card.className =
-                "galleryCard";
-
-
-            const url =
-                URL.createObjectURL(
-                    item.blob
-                );
-
-
-            let media;
-
-            if(
-                item.type ===
-                "video"
-            ){
-
-                media =
-                    document.createElement(
-                        "video"
-                    );
-
-                media.muted =
-                    true;
-
-                media.playsInline =
-                    true;
-
-            }else{
-
-                media =
-                    document.createElement(
-                        "img"
-                    );
-
-            }
-
-
-            media.src =
-                url;
-
-
-            card.appendChild(
-                media
-            );
-
-
-            const badge =
-                document.createElement(
-                    "div"
-                );
-
-            badge.className =
-                "galleryBadge";
-
-            badge.textContent =
-                item.type ===
-                "video"
-                ?
-                "VÍDEO"
-                :
-                item.is3D
-                ?
-                "3D"
-                :
-                "FOTO";
-
-
-            card.appendChild(
-                badge
-            );
-
-
-            const fav =
-                document.createElement(
-                    "button"
-                );
-
-            fav.className =
-                "favorite";
-
-            fav.textContent =
-                item.favorite
-                ?
-                "⭐"
-                :
-                "☆";
-
-
-            fav.onclick =
-                async event => {
-
-                    event.stopPropagation();
-
-                    await updateMedia(
-                        item.id,
-                        {
-                            favorite:
-                                !item.favorite
-                        }
-                    );
-
-                    loadGallery();
-
-                };
-
-
-            card.appendChild(
-                fav
-            );
-
-
-            card.onclick =
-                () => {
-
-                    openViewer(
-                        item
-                    );
-
-                };
-
-
-            galleryGrid.appendChild(
-                card
-            );
-
+        let media;
+        if(item.type === "video"){
+            media = document.createElement("video");
+            media.muted = true;
+            media.playsInline = true;
+            media.preload = "metadata";
+        } else {
+            media = document.createElement("img");
+            media.loading = "lazy";
         }
-    );
 
+        media.src = url;
+        card.appendChild(media);
+
+        const badge = document.createElement("div");
+        badge.className = "galleryBadge";
+
+        if(item.type === "video") badge.textContent = "VÍDEO";
+        else if(item.is3D) badge.textContent = "3D";
+        else if(item.source === "camera") badge.textContent = "CÂMERA";
+        else badge.textContent = "FOTO";
+
+        card.appendChild(badge);
+
+        const fav = document.createElement("button");
+        fav.type = "button";
+        fav.className = "favorite";
+        fav.textContent = item.favorite ? "⭐" : "☆";
+
+        fav.onclick = async event => {
+            event.stopPropagation();
+            await updateMedia(item.id, { favorite: !item.favorite });
+            await loadGallery();
+        };
+
+        card.appendChild(fav);
+
+        card.onclick = () => openViewer(item);
+        galleryGrid.appendChild(card);
+    });
 }
 
 
 /* =====================================================
-   GLOBO FOTOGRÁFICO 3D (GALERIA PREMIUM NA HOME)
+   GLOBO 3D - QUADRADOS COM IMAGENS
 ===================================================== */
 
 const GLOBE_RADIUS = 132;
 
-// Fotos representativas de monumentos, paisagens e viagens (idênticas ao modelo da imagem)
-const showcasePhotos = [
-    // Taj Mahal
-    "https://images.unsplash.com/photo-1564507592333-c60657eea523?auto=format&fit=crop&w=300&q=80",
-    // Pirâmide Maia Chichén Itzá
-    "https://images.unsplash.com/photo-1518638150340-f706e86654de?auto=format&fit=crop&w=300&q=80",
-    // Barco tropical Tailândia / Phi Phi
-    "https://images.unsplash.com/photo-1552465011-b4e21bf6e79a?auto=format&fit=crop&w=300&q=80",
-    // Camelos no deserto ao pôr do sol
-    "https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=300&q=80",
-    // Canais e casas históricas de Amsterdã
-    "https://images.unsplash.com/photo-1512470876302-972faa2aa9a4?auto=format&fit=crop&w=300&q=80",
-    // Plantações verdes de chá
-    "https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=300&q=80",
-    // Falésias e ondas do oceano
-    "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=300&q=80",
-    // Castelo de Praga / Cidade iluminada
-    "https://images.unsplash.com/photo-1541849546-216549ae216d?auto=format&fit=crop&w=300&q=80",
-    // Pôr do sol no mar com redes de pesca
-    "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=300&q=80",
-    // Reflexo de skyline da cidade
-    "https://images.unsplash.com/photo-1477959858617-67f30bc75b82?auto=format&fit=crop&w=300&q=80",
-    // Cadeiras na praia tropical
-    "https://images.unsplash.com/photo-1510414842594-a61c69b5ae57?auto=format&fit=crop&w=300&q=80",
-    // Campo verde com montanhas
-    "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=300&q=80",
-    // Campo de girassóis
-    "https://images.unsplash.com/photo-1597848212624-a19eb35e2651?auto=format&fit=crop&w=300&q=80",
-    // Templo antigo Angkor Wat
-    "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=300&q=80",
-    // Santorini Grécia
-    "https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?auto=format&fit=crop&w=300&q=80",
-    // Canais de Veneza
-    "https://images.unsplash.com/photo-1523906834658-6e24ef2386f9?auto=format&fit=crop&w=300&q=80",
-    // Pagode em Kyoto no Japão
-    "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=300&q=80",
-    // Aurora boreal no céu estrelado
-    "https://images.unsplash.com/photo-1531366936337-7c912a4589a7?auto=format&fit=crop&w=300&q=80",
-    // Terraços de arroz em Bali
-    "https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=300&q=80",
-    // Bangalôs nas Maldivas
-    "https://images.unsplash.com/photo-1514282401047-d79a71a590e8?auto=format&fit=crop&w=300&q=80"
+// Cada quadrado terá uma imagem. Vamos preencher com placeholders
+// gerados localmente (SVG), que depois serão substituídos pelas
+// fotos reais do usuário automaticamente.
+const PLACEHOLDER_COLORS = [
+    ["#168cff", "#0a1a2e"],
+    ["#6d5cff", "#1a0f38"],
+    ["#00c58b", "#042a1e"],
+    ["#ff5d9b", "#2e0a1a"],
+    ["#ffb52e", "#2e1e04"],
+    ["#00d9ff", "#042a30"],
+    ["#ff3b1f", "#2e0a04"],
+    ["#9b5cff", "#1a0a2e"],
+    ["#00e5cf", "#042e2a"],
+    ["#dca632", "#2e1e04"]
 ];
 
-// Configuração dos anéis de latitude do globo
+function makePlaceholderDataURL(index){
+    const [c1, c2] = PLACEHOLDER_COLORS[index % PLACEHOLDER_COLORS.length];
+
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 80 80">
+        <defs>
+            <linearGradient id="g${index}" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="${c1}" stop-opacity="0.85"/>
+                <stop offset="1" stop-color="${c2}"/>
+            </linearGradient>
+        </defs>
+        <rect width="80" height="80" fill="url(#g${index})"/>
+        <circle cx="40" cy="34" r="10" fill="rgba(255,255,255,0.35)"/>
+        <path d="M14 60 L30 44 L44 56 L58 42 L70 60 Z" fill="rgba(255,255,255,0.28)"/>
+    </svg>`;
+
+    return "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg);
+}
+
+// Anéis de latitude do globo
 const globeRings = [
     { lat: 72,  count: 6,  w: 36, h: 32 },
     { lat: 52,  count: 10, w: 46, h: 42 },
@@ -3110,20 +2490,27 @@ let globeDragDistance = 0;
 let globeAutoSpin = true;
 let globeLastMoveTime = 0;
 let globeAnimationId = null;
+let globeListenersAttached = false;
+let globeTileUrls = [];
 
-async function loadPreview(){
 
-    if(!globeSphere) return;
+/* =====================================================
+   CONSTRUIR TILES DO GLOBO
+===================================================== */
 
-    const userItems =
-        await getAllMedia();
+function buildGlobeTiles(userItems){
+
+    // Limpar URLs antigas
+    globeTileUrls.forEach(url => revokeObjectURL(url));
+    globeTileUrls = [];
 
     globeSphere.innerHTML = "";
+
+    const itemsToShow = userItems.filter(m => m.type === "photo");
 
     let tileGlobalIndex = 0;
 
     globeRings.forEach(ring => {
-
         const step = 360 / ring.count;
 
         for(let i = 0; i < ring.count; i++){
@@ -3135,102 +2522,99 @@ async function loadPreview(){
             tile.style.width = `${ring.w}px`;
             tile.style.height = `${ring.h}px`;
 
-            // Posicionamento esférico 3D
-            tile.style.transform = `translate(-50%, -50%) rotateY(${lon}deg) rotateX(${-ring.lat}deg) translateZ(${GLOBE_RADIUS}px)`;
+            // Face do quadrado voltada para fora da esfera
+            tile.style.transform =
+                `translate(-50%, -50%) ` +
+                `rotateY(${lon}deg) ` +
+                `rotateX(${-ring.lat}deg) ` +
+                `translateZ(${GLOBE_RADIUS}px)`;
 
-            let itemForTile = null;
+            let userItem = null;
 
-            // Prioriza os arquivos importados pelo usuário
-            if(userItems.length > 0 && tileGlobalIndex < userItems.length){
-                itemForTile = userItems[tileGlobalIndex];
-                tile.classList.add("isUserPhoto");
-            } else if(userItems.length > 0 && (tileGlobalIndex % 3 === 0)){
-                itemForTile = userItems[tileGlobalIndex % userItems.length];
-                tile.classList.add("isUserPhoto");
-            } else {
-                // Modelo padrão do globo com marcos mundiais da imagem
-                const photoUrl = showcasePhotos[tileGlobalIndex % showcasePhotos.length];
-                itemForTile = {
-                    id: null,
-                    src: photoUrl,
-                    type: "photo",
-                    name: "Galeria Vision 3D"
-                };
+            if(itemsToShow.length > 0){
+                userItem = itemsToShow[tileGlobalIndex % itemsToShow.length];
             }
 
-            let mediaElem;
-            if(itemForTile.blob){
-                const url = URL.createObjectURL(itemForTile.blob);
-                if(itemForTile.type === "video"){
-                    mediaElem = document.createElement("video");
-                    mediaElem.src = url;
-                    mediaElem.muted = true;
-                    mediaElem.playsInline = true;
-                } else {
-                    mediaElem = document.createElement("img");
-                    mediaElem.src = url;
-                }
+            const media = document.createElement("img");
+            media.draggable = false;
+            media.alt = "";
+
+            if(userItem){
+                // Foto real do usuário
+                const url = createObjectURL(userItem.blob);
+                globeTileUrls.push(url);
+                media.src = url;
+                tile.classList.add("isUserPhoto");
             } else {
-                mediaElem = document.createElement("img");
-                mediaElem.src = itemForTile.src;
-                mediaElem.loading = "lazy";
+                // Placeholder gerado localmente (não depende de internet)
+                media.src = makePlaceholderDataURL(tileGlobalIndex);
             }
 
-            tile.appendChild(mediaElem);
+            tile.appendChild(media);
 
-            // Clique para abrir no visualizador 3D
-            const currentItem = itemForTile;
+            const itemRef = userItem;
             tile.onclick = (e) => {
-                if(globeDragDistance > 7){
-                    return; // Estava arrastando para girar
+                e.stopPropagation();
+                if(globeDragDistance > 8) return;
+                if(itemRef){
+                    openViewer(itemRef);
+                } else {
+                    showToast("Importe fotos para preencher o globo");
                 }
-                openViewer(currentItem);
             };
 
             globeSphere.appendChild(tile);
             tileGlobalIndex++;
-
         }
-
     });
-
-    initGlobeMotion();
-
 }
 
 
 /* =====================================================
-   CONTROLE E INTERAÇÃO 3D DO GLOBO
+   REFRESH GLOBO
 ===================================================== */
 
-function initGlobeMotion(){
+async function refreshGlobe(){
+    const items = await getAllMedia();
+    buildGlobeTiles(items);
+}
 
-    if(globeAnimationId) return;
 
-    function animateGlobe(){
+/* =====================================================
+   ANIMAÇÃO DO GLOBO (executada uma única vez)
+===================================================== */
 
-        if(!isDraggingGlobe && globeAutoSpin){
-            globeRotY += globeVelX;
-            globeRotX += globeVelY;
-            globeVelY *= 0.94;
+function animateGlobe(){
 
-            if(Math.abs(globeVelX - 0.42) > 0.02){
-                globeVelX += (0.42 - globeVelX) * 0.04;
-            }
+    if(!isDraggingGlobe && globeAutoSpin){
+        globeRotY += globeVelX;
+        globeRotX += globeVelY;
+        globeVelY *= 0.94;
 
-            // Limite de inclinação para manter visual do globo
-            globeRotX = Math.max(-55, Math.min(55, globeRotX));
+        if(Math.abs(globeVelX - 0.42) > 0.02){
+            globeVelX += (0.42 - globeVelX) * 0.04;
         }
 
-        if(globeStage){
-            globeStage.style.transform = `rotateX(${globeRotX}deg) rotateY(${globeRotY}deg)`;
-        }
+        globeRotX = Math.max(-55, Math.min(55, globeRotX));
+    }
 
-        globeAnimationId = requestAnimationFrame(animateGlobe);
-
+    if(globeStage){
+        globeStage.style.transform =
+            `rotateX(${globeRotX}deg) rotateY(${globeRotY}deg)`;
     }
 
     globeAnimationId = requestAnimationFrame(animateGlobe);
+}
+
+
+/* =====================================================
+   LISTENERS DO GLOBO (adicionados apenas UMA vez)
+===================================================== */
+
+function attachGlobeListeners(){
+
+    if(globeListenersAttached) return;
+    globeListenersAttached = true;
 
     if(!globeViewport) return;
 
@@ -3242,9 +2626,10 @@ function initGlobeMotion(){
         globeVelY = 0;
         globeDragDistance = 0;
         globeLastMoveTime = performance.now();
+        try { globeViewport.setPointerCapture(e.pointerId); } catch(err){}
     });
 
-    window.addEventListener("pointermove", (e) => {
+    globeViewport.addEventListener("pointermove", (e) => {
         if(!isDraggingGlobe) return;
 
         const dx = e.clientX - globeLastX;
@@ -3265,16 +2650,18 @@ function initGlobeMotion(){
         globeLastMoveTime = now;
     });
 
-    window.addEventListener("pointerup", () => {
-        if(isDraggingGlobe){
-            isDraggingGlobe = false;
-            globeVelX = Math.max(-3, Math.min(3, globeVelX));
-            globeVelY = Math.max(-2, Math.min(2, globeVelY));
-            if(Math.abs(globeVelX) < 0.1 && globeAutoSpin){
-                globeVelX = 0.42;
-            }
+    const endDrag = () => {
+        if(!isDraggingGlobe) return;
+        isDraggingGlobe = false;
+        globeVelX = Math.max(-3, Math.min(3, globeVelX));
+        globeVelY = Math.max(-2, Math.min(2, globeVelY));
+        if(Math.abs(globeVelX) < 0.1 && globeAutoSpin){
+            globeVelX = 0.42;
         }
-    });
+    };
+
+    globeViewport.addEventListener("pointerup", endDrag);
+    globeViewport.addEventListener("pointercancel", endDrag);
 
     if(globeSpinToggle){
         globeSpinToggle.onclick = (e) => {
@@ -3285,6 +2672,20 @@ function initGlobeMotion(){
         };
     }
 
+    if(!globeAnimationId){
+        globeAnimationId = requestAnimationFrame(animateGlobe);
+    }
+}
+
+
+/* =====================================================
+   CARREGAR PREVIEW (GLOBO)
+===================================================== */
+
+async function loadPreview(){
+    if(!globeSphere) return;
+    await refreshGlobe();
+    attachGlobeListeners();
 }
 
 
@@ -3293,71 +2694,26 @@ function initGlobeMotion(){
 ===================================================== */
 
 function openGalleryPanel(){
-
     closeAllPanels();
-
-    $("galleryPanel")
-        .classList.add(
-            "open"
-        );
-
+    $("galleryPanel").classList.add("open");
     loadGallery();
-
 }
 
+safeOn($("openGallery"), "click", openGalleryPanel);
+safeOn($("seeAll"), "click", openGalleryPanel);
+safeOn($("navGallery"), "click", openGalleryPanel);
+safeOn($("galleryClose"), "click", () => {
+    $("galleryPanel").classList.remove("open");
+});
 
-$("openGallery").onclick =
-    openGalleryPanel;
-
-$("seeAll").onclick =
-    openGalleryPanel;
-
-$("navGallery").onclick =
-    openGalleryPanel;
-
-$("galleryClose").onclick =
-    () =>
-        $("galleryPanel")
-        .classList.remove(
-            "open"
-        );
-
-
-document
-.querySelectorAll(
-    ".galleryTab"
-)
-.forEach(
-    button => {
-
-        button.onclick =
-            () => {
-
-                document
-                .querySelectorAll(
-                    ".galleryTab"
-                )
-                .forEach(
-                    b =>
-                        b.classList.remove(
-                            "active"
-                        )
-                );
-
-                button.classList.add(
-                    "active"
-                );
-
-                currentGalleryFilter =
-                    button.dataset
-                    .galleryFilter;
-
-                loadGallery();
-
-            };
-
-    }
-);
+document.querySelectorAll(".galleryTab").forEach(button => {
+    button.onclick = () => {
+        document.querySelectorAll(".galleryTab").forEach(b => b.classList.remove("active"));
+        button.classList.add("active");
+        currentGalleryFilter = button.dataset.galleryFilter;
+        loadGallery();
+    };
+});
 
 
 /* =====================================================
@@ -3368,165 +2724,76 @@ function openViewer(item){
 
     if(!item) return;
 
-    currentViewerId =
-        item.id !== undefined
-        ?
-        item.id
-        :
-        null;
+    currentViewerItem = item;
+    currentViewerId = (item.id !== undefined && item.id !== null) ? item.id : null;
 
-    viewerContent.innerHTML =
-        "";
-
+    viewerContent.innerHTML = "";
 
     let url = "";
-
     if(item.blob){
-        url = URL.createObjectURL(item.blob);
-    }else if(item.src){
+        url = createObjectURL(item.blob);
+    } else if(item.src){
         url = item.src;
-    }else{
+    } else {
         return;
     }
 
-
     let media;
 
-    if(
-        item.type ===
-        "video"
-    ){
-
-        media =
-            document.createElement(
-                "video"
-            );
-
-        media.controls =
-            true;
-
-        media.autoplay =
-            true;
-
-        media.playsInline =
-            true;
-
-    }else{
-
-        media =
-            document.createElement(
-                "img"
-            );
-
+    if(item.type === "video"){
+        media = document.createElement("video");
+        media.controls = true;
+        media.autoplay = true;
+        media.playsInline = true;
+        media.muted = false;
+    } else {
+        media = document.createElement("img");
+        media.alt = "";
     }
 
+    media.id = "viewerMedia";
+    media.src = url;
+    viewerContent.appendChild(media);
 
-    media.id =
-        "viewerMedia";
-
-    media.src =
-        url;
-
-
-    viewerContent.appendChild(
-        media
-    );
-
-
-    if(
-        threeDEnabled &&
-        item.type ===
-        "photo"
-    ){
-
-        media.classList.add(
-            "viewer3D"
-        );
-
+    if(threeDEnabled && item.type === "photo"){
+        media.classList.add("viewer3D");
     }
 
-
-    viewer.classList.add(
-        "open"
-    );
-
+    viewer.classList.add("open");
 }
 
+function closeViewer(){
+    viewer.classList.remove("open");
+    viewerContent.innerHTML = "";
+    currentViewerId = null;
+    currentViewerItem = null;
+}
 
-$("viewerClose").onclick =
-    () => {
+safeOn($("viewerClose"), "click", closeViewer);
 
-        viewer.classList.remove(
-            "open"
-        );
+safeOn($("viewerDelete"), "click", async () => {
 
-        viewerContent.innerHTML =
-            "";
+    if(currentViewerId === null){
+        closeViewer();
+        return;
+    }
 
-        currentViewerId =
-            null;
+    try {
+        await removeMedia(currentViewerId);
+        showToast("Arquivo removido");
+        closeViewer();
+        await loadGallery();
+        await refreshGlobe();
+    } catch(e){
+        showToast("Não foi possível remover");
+    }
+});
 
-    };
-
-
-$("viewerDelete").onclick =
-    async () => {
-
-        if(
-            currentViewerId ===
-            null || currentViewerId === undefined
-        ){
-
-            viewer.classList.remove(
-                "open"
-            );
-
-            viewerContent.innerHTML =
-                "";
-
-            return;
-
-        }
-
-        await removeMedia(
-            currentViewerId
-        );
-
-        viewer.classList.remove(
-            "open"
-        );
-
-        viewerContent.innerHTML =
-            "";
-
-        showToast(
-            "Arquivo removido da Galeria Premium"
-        );
-
-        loadGallery();
-
-        loadPreview();
-
-    };
-
-
-$("viewer3DButton").onclick =
-    () => {
-
-        const media =
-            $("viewerMedia");
-
-        if(!media){
-
-            return;
-
-        }
-
-        media.classList.toggle(
-            "viewer3D"
-        );
-
-    };
+safeOn($("viewer3DButton"), "click", () => {
+    const media = $("viewerMedia");
+    if(!media) return;
+    media.classList.toggle("viewer3D");
+});
 
 
 /* =====================================================
@@ -3534,148 +2801,90 @@ $("viewer3DButton").onclick =
 ===================================================== */
 
 async function openCamera(){
-
     closeAllPanels();
+    home.style.display = "none";
+    cameraScreen.classList.add("active");
 
-    home.style.display =
-        "none";
-
-    cameraScreen.classList.add(
-        "active"
-    );
-
-    if(
-        !cameraRunning
-    ){
-
+    if(!cameraRunning){
         await startCamera();
-
     }
-
 }
 
+safeOn($("openCamera"), "click", openCamera);
+safeOn($("navCamera"), "click", openCamera);
 
-$("openCamera").onclick =
-    openCamera;
-
-$("navCamera").onclick =
-    openCamera;
-
-$("cameraClose").onclick =
-    () => {
-
-        stopCamera();
-
-        cameraScreen.classList.remove(
-            "active"
-        );
-
-        home.style.display =
-            "block";
-
-    };
+safeOn($("cameraClose"), "click", () => {
+    stopCamera();
+    cameraScreen.classList.remove("active");
+    home.style.display = "block";
+});
 
 
 async function startCamera(){
 
-    try{
+    try {
 
         if(stream){
-
-            stream
-            .getTracks()
-            .forEach(
-                track =>
-                    track.stop()
-            );
-
+            stream.getTracks().forEach(track => track.stop());
+            stream = null;
         }
 
-
-        if(
-            !navigator.mediaDevices
-            ||
-            !navigator.mediaDevices.getUserMedia
-        ){
-
-            showToast(
-                "Câmera não disponível neste navegador"
-            );
-
+        if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){
+            showToast("Câmera não disponível neste navegador");
             return;
-
         }
 
+        // Tenta com áudio; se falhar, tenta sem áudio
+        let localStream = null;
 
-        stream =
-            await navigator
-            .mediaDevices
-            .getUserMedia({
-
-                video:{
-                    facingMode:
-                        currentCamera,
-
-                    width:{
-                        ideal:3840
-                    },
-
-                    height:{
-                        ideal:2160
-                    }
+        try {
+            localStream = await navigator.mediaDevices.getUserMedia({
+                video: {
+                    facingMode: currentCamera,
+                    width: { ideal: 1920 },
+                    height: { ideal: 1080 }
                 },
-
-                audio:true
-
+                audio: true
             });
+        } catch(errAudio){
+            console.warn("Áudio indisponível, tentando sem áudio:", errAudio);
+            localStream = await navigator.mediaDevices.getUserMedia({
+                video: {
+                    facingMode: currentCamera,
+                    width: { ideal: 1920 },
+                    height: { ideal: 1080 }
+                },
+                audio: false
+            });
+        }
 
-
-        camera.srcObject =
-            stream;
-
-
+        stream = localStream;
+        camera.srcObject = stream;
         await camera.play();
 
-        cameraRunning =
-            true;
+        cameraRunning = true;
+        showToast("📷 Câmera pronta");
 
-
-        showToast(
-            "📷 Câmera pronta"
-        );
-
-    }catch(error){
-
+    } catch(error){
         console.error(error);
-
-        showToast(
-            "Permita o acesso à câmera"
-        );
-
+        showToast("Permita o acesso à câmera");
     }
-
 }
 
 
 function stopCamera(){
-
     if(stream){
-
-        stream
-        .getTracks()
-        .forEach(
-            track =>
-                track.stop()
-        );
-
+        stream.getTracks().forEach(track => track.stop());
+        stream = null;
     }
+    camera.srcObject = null;
+    cameraRunning = false;
+    videoRecording = false;
 
-    stream =
-        null;
-
-    cameraRunning =
-        false;
-
+    if(recordingAnimationId){
+        cancelAnimationFrame(recordingAnimationId);
+        recordingAnimationId = null;
+    }
 }
 
 
@@ -3683,38 +2892,20 @@ function stopCamera(){
    TROCAR CÂMERA
 ===================================================== */
 
-$("cameraFlip").onclick =
-    async () => {
-
-        currentCamera =
-            currentCamera ===
-            "environment"
-            ?
-            "user"
-            :
-            "environment";
-
-        await startCamera();
-
-    };
+safeOn($("cameraFlip"), "click", async () => {
+    currentCamera = currentCamera === "environment" ? "user" : "environment";
+    await startCamera();
+});
 
 
 /* =====================================================
    SUPER ZOOM
 ===================================================== */
 
-$("superZoom").oninput =
-    event => {
-
-        const value =
-            Number(
-                event.target.value
-            );
-
-        camera.style.transform =
-            `scale(${value})`;
-
-    };
+safeOn($("superZoom"), "input", event => {
+    const value = Number(event.target.value);
+    camera.style.transform = `scale(${value})`;
+});
 
 
 /* =====================================================
@@ -3722,419 +2913,183 @@ $("superZoom").oninput =
 ===================================================== */
 
 const filters = [
-
     ["normal","NORMAL","none"],
-
-    ["cinema","CINEMA",
-        "contrast(1.18) saturate(.9)"],
-
-    ["vintage","VINTAGE",
-        "sepia(.28) saturate(.82)"],
-
-    ["noir","NOIR",
-        "grayscale(1) contrast(1.45)"],
-
-    ["vivid","VIVID",
-        "saturate(1.7) contrast(1.1)"],
-
-    ["night","NOTURNO",
-        "brightness(.72) contrast(1.4) saturate(.8)"],
-
-    ["warm","WARM",
-        "sepia(.15) saturate(1.2)"],
-
-    ["cold","COLD",
-        "saturate(.8) hue-rotate(160deg)"],
-
-    ["dream","DREAM",
-        "brightness(1.08) contrast(.88) saturate(1.1)"],
-
-    ["matte","MATTE",
-        "contrast(.88) brightness(1.04) saturate(.86)"],
-
-    ["gold","GOLD",
-        "sepia(.2) saturate(1.45)"],
-
-    ["blue","DEEP BLUE",
-        "saturate(1.2) hue-rotate(180deg) contrast(1.15)"],
-
-    ["mono","MONO",
-        "grayscale(1) contrast(1.2)"],
-
-    ["red","RED",
-        "sepia(1) hue-rotate(325deg) saturate(2.5)"],
-
-    ["3d","3D",
-        "contrast(1.2) saturate(1.15)"]
-
+    ["cinema","CINEMA","contrast(1.18) saturate(.9)"],
+    ["vintage","VINTAGE","sepia(.28) saturate(.82)"],
+    ["noir","NOIR","grayscale(1) contrast(1.45)"],
+    ["vivid","VIVID","saturate(1.7) contrast(1.1)"],
+    ["night","NOTURNO","brightness(.72) contrast(1.4) saturate(.8)"],
+    ["warm","WARM","sepia(.15) saturate(1.2)"],
+    ["cold","COLD","saturate(.8) hue-rotate(160deg)"],
+    ["dream","DREAM","brightness(1.08) contrast(.88) saturate(1.1)"],
+    ["matte","MATTE","contrast(.88) brightness(1.04) saturate(.86)"],
+    ["gold","GOLD","sepia(.2) saturate(1.45)"],
+    ["blue","DEEP BLUE","saturate(1.2) hue-rotate(180deg) contrast(1.15)"],
+    ["mono","MONO","grayscale(1) contrast(1.2)"],
+    ["red","RED","sepia(1) hue-rotate(-30deg) saturate(3) brightness(.95)"],
+    ["3d","3D","contrast(1.2) saturate(1.15)"]
 ];
 
 
 function applyCameraFilter(){
+    const filter = filters.find(item => item[0] === currentFilter);
+    camera.style.filter = filter ? filter[2] : "none";
 
-    const filter =
-        filters.find(
-            item =>
-                item[0] ===
-                currentFilter
-        );
-
-
-    camera.style.filter =
-        filter
-        ?
-        filter[2]
-        :
-        "none";
+    const modeEl = $("cameraMode");
+    if(modeEl && !videoRecording){
+        modeEl.textContent = filter ? filter[1] : "FOTO";
+    }
+}
 
 
-    $("cameraMode").textContent =
-        filter
-        ?
-        filter[1]
-        :
-        "FOTO";
-
+function getFilterCSS(){
+    const filter = filters.find(item => item[0] === currentFilter);
+    return filter ? filter[2] : "none";
 }
 
 
 function buildFilterList(){
+    const list = $("filterList");
+    if(!list) return;
+    list.innerHTML = "";
 
-    const list =
-        $("filterList");
+    filters.forEach(filter => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "themeButton";
 
-    list.innerHTML =
-        "";
+        button.innerHTML = `
+            <div class="themeName">${filter[1]}</div>
+            <div style="margin-top:7px;height:22px;border-radius:7px;background:linear-gradient(135deg,#168cff,#6d5cff);filter:${filter[2]};"></div>
+        `;
 
+        button.onclick = () => {
+            currentFilter = filter[0];
+            applyCameraFilter();
+            $("filterPanel").classList.remove("open");
+        };
 
-    filters.forEach(
-        filter => {
-
-            const button =
-                document.createElement(
-                    "button"
-                );
-
-            button.className =
-                "themeButton";
-
-            button.innerHTML = `
-
-                <div class="themeName">
-                    ${filter[1]}
-                </div>
-
-                <div style="
-                    margin-top:7px;
-                    height:22px;
-                    border-radius:7px;
-                    background:#172235;
-                    filter:${filter[2]};
-                "></div>
-
-            `;
-
-
-            button.onclick =
-                () => {
-
-                    currentFilter =
-                        filter[0];
-
-                    applyCameraFilter();
-
-                    $("filterPanel")
-                    .classList.remove(
-                        "open"
-                    );
-
-                };
-
-
-            list.appendChild(
-                button
-            );
-
-        }
-    );
-
+        list.appendChild(button);
+    });
 }
-
 
 buildFilterList();
 
 
-document
-.querySelectorAll(
-    ".tool"
-)
-.forEach(
-    button => {
-
-        button.onclick =
-            () => {
-
-                currentFilter =
-                    button.dataset.filter;
-
-                document
-                .querySelectorAll(
-                    ".tool"
-                )
-                .forEach(
-                    b =>
-                        b.classList.remove(
-                            "active"
-                        )
-                );
-
-                button.classList.add(
-                    "active"
-                );
-
-                applyCameraFilter();
-
-            };
-
-    }
-);
+document.querySelectorAll(".tool").forEach(button => {
+    button.onclick = () => {
+        currentFilter = button.dataset.filter;
+        document.querySelectorAll(".tool").forEach(b => b.classList.remove("active"));
+        button.classList.add("active");
+        applyCameraFilter();
+    };
+});
 
 
 /* =====================================================
-   DESLIZAR FILTRO
+   DESLIZAR FILTRO NA CÂMERA
 ===================================================== */
 
-let touchStartX =
-    0;
+let touchStartX = 0;
+let touchStartY = 0;
+let touchMoved = false;
 
-cameraScreen.addEventListener(
-    "touchstart",
-    event => {
-
-        if(
-            event.touches.length === 1
-        ){
-
-            touchStartX =
-                event.touches[0]
-                .clientX;
-
-        }
-
-    },
-    {
-        passive:true
+cameraScreen.addEventListener("touchstart", event => {
+    if(event.touches.length === 1){
+        touchStartX = event.touches[0].clientX;
+        touchStartY = event.touches[0].clientY;
+        touchMoved = false;
     }
-);
+}, { passive:true });
 
+cameraScreen.addEventListener("touchmove", () => {
+    touchMoved = true;
+}, { passive:true });
 
-cameraScreen.addEventListener(
-    "touchend",
-    event => {
+cameraScreen.addEventListener("touchend", event => {
+    if(event.changedTouches.length !== 1) return;
+    if(!touchMoved) return;
 
-        if(
-            event.changedTouches.length !== 1
-        ){
+    const endX = event.changedTouches[0].clientX;
+    const endY = event.changedTouches[0].clientY;
+    const dx = endX - touchStartX;
+    const dy = endY - touchStartY;
 
-            return;
+    // Só considera swipe horizontal se for maior que vertical
+    if(Math.abs(dx) < 60 || Math.abs(dx) < Math.abs(dy)) return;
 
-        }
-
-
-        const endX =
-            event.changedTouches[0]
-            .clientX;
-
-
-        const difference =
-            endX -
-            touchStartX;
-
-
-        if(
-            Math.abs(difference)
-            <
-            45
-        ){
-
-            return;
-
-        }
-
-
-        if(
-            difference < 0
-        ){
-
-            filterIndex++;
-
-            if(
-                filterIndex >=
-                filters.length
-            ){
-
-                filterIndex =
-                    0;
-
-            }
-
-        }else{
-
-            filterIndex--;
-
-            if(
-                filterIndex < 0
-            ){
-
-                filterIndex =
-                    filters.length -
-                    1;
-
-            }
-
-        }
-
-
-        currentFilter =
-            filters[
-                filterIndex
-            ][0];
-
-
-        applyCameraFilter();
-
-        showToast(
-            filters[
-                filterIndex
-            ][1]
-        );
-
-    },
-    {
-        passive:true
+    if(dx < 0){
+        filterIndex++;
+        if(filterIndex >= filters.length) filterIndex = 0;
+    } else {
+        filterIndex--;
+        if(filterIndex < 0) filterIndex = filters.length - 1;
     }
-);
+
+    currentFilter = filters[filterIndex][0];
+    applyCameraFilter();
+    showToast(filters[filterIndex][1]);
+}, { passive:true });
 
 
 /* =====================================================
    MENU DA CAMERA
 ===================================================== */
 
-$("cameraMenu").onclick =
-    () => {
+let filterIndex = 0;
 
-        $("cameraTools")
-        .classList.toggle(
-            "open"
-        );
-
-    };
+safeOn($("cameraMenu"), "click", () => {
+    $("cameraTools").classList.toggle("open");
+});
 
 
 /* =====================================================
-   FOTO
+   TIRAR FOTO
 ===================================================== */
 
-$("shutter").onclick =
-    async () => {
+safeOn($("shutter"), "click", async () => {
 
-        if(
-            videoRecording
-        ){
+    if(videoRecording){
+        stopRecording();
+        return;
+    }
 
-            stopRecording();
+    if(!camera.videoWidth || !camera.videoHeight){
+        showToast("Câmera ainda não está pronta");
+        return;
+    }
 
-            return;
+    const canvas = document.createElement("canvas");
+    canvas.width = camera.videoWidth;
+    canvas.height = camera.videoHeight;
 
+    const context = canvas.getContext("2d");
+
+    // Aplicar filtro via canvas
+    context.filter = getFilterCSS() || "none";
+    context.drawImage(camera, 0, 0, canvas.width, canvas.height);
+    context.filter = "none";
+
+    if(aiEnabled){
+        improveImage(canvas);
+    }
+
+    canvas.toBlob(async blob => {
+        if(!blob) return;
+
+        try {
+            const file = new File([blob], `camera-${Date.now()}.jpg`, { type:"image/jpeg" });
+            await saveImportedFile(file, { source:"camera" });
+            showToast("📸 Foto salva na Galeria Premium");
+            await loadGallery();
+            await refreshGlobe();
+        } catch(e){
+            console.warn("Falha ao salvar foto:", e);
+            downloadBlob(blob, "renato-vision-foto.jpg");
+            showToast("📸 Foto capturada (baixada)");
         }
-
-
-        if(
-            !camera.videoWidth
-        ){
-
-            showToast(
-                "Câmera ainda não está pronta"
-            );
-
-            return;
-
-        }
-
-
-        const canvas =
-            document.createElement(
-                "canvas"
-            );
-
-
-        canvas.width =
-            camera.videoWidth;
-
-        canvas.height =
-            camera.videoHeight;
-
-
-        const context =
-            canvas.getContext(
-                "2d"
-            );
-
-
-        context.filter =
-            filters.find(
-                item =>
-                    item[0] ===
-                    currentFilter
-            )[2];
-
-
-        context.drawImage(
-            camera,
-            0,
-            0,
-            canvas.width,
-            canvas.height
-        );
-
-
-        if(
-            aiEnabled
-        ){
-
-            improveImage(
-                canvas
-            );
-
-        }
-
-
-        canvas.toBlob(
-            async blob => {
-
-                /*
-                 * A FOTO DA CÂMERA NÃO É
-                 * COLOCADA NA GALERIA PREMIUM.
-                 *
-                 * A Galeria Premium é reservada
-                 * aos arquivos importados do iPhone.
-                 */
-
-                downloadBlob(
-                    blob,
-                    "renato-vision-foto.jpg"
-                );
-
-                showToast(
-                    "📸 Foto capturada"
-                );
-
-            },
-            "image/jpeg",
-            .96
-        );
-
-    };
+    }, "image/jpeg", 0.95);
+});
 
 
 /* =====================================================
@@ -4142,186 +3097,61 @@ $("shutter").onclick =
 ===================================================== */
 
 function improveImage(canvas){
+    try {
+        const context = canvas.getContext("2d", { willReadFrequently:true });
+        const image = context.getImageData(0, 0, canvas.width, canvas.height);
+        const data = image.data;
 
-    try{
+        for(let i = 0; i < data.length; i += 4){
 
-        const context =
-            canvas.getContext(
-                "2d",
-                {
-                    willReadFrequently:true
-                }
-            );
+            let r = data[i];
+            let g = data[i+1];
+            let b = data[i+2];
 
-        const image =
-            context.getImageData(
-                0,
-                0,
-                canvas.width,
-                canvas.height
-            );
+            const luminance = 0.2126 * r + 0.7152 * g + 0.0722 * b;
 
-        const data =
-            image.data;
-
-
-        for(
-            let i=0;
-            i<data.length;
-            i+=4
-        ){
-
-            let r =
-                data[i];
-
-            let g =
-                data[i+1];
-
-            let b =
-                data[i+2];
-
-
-            const luminance =
-                .2126*r +
-                .7152*g +
-                .0722*b;
-
-
-            if(
-                luminance < 70
-            ){
-
-                const boost =
-                    (
-                        70 -
-                        luminance
-                    ) * .08;
-
+            if(luminance < 70){
+                const boost = (70 - luminance) * 0.08;
                 r += boost;
                 g += boost;
                 b += boost;
-
             }
 
+            r = (r - 128) * 1.025 + 128;
+            g = (g - 128) * 1.025 + 128;
+            b = (b - 128) * 1.025 + 128;
 
-            r =
-                (r-128)
-                *1.025
-                +128;
-
-            g =
-                (g-128)
-                *1.025
-                +128;
-
-            b =
-                (b-128)
-                *1.025
-                +128;
-
-
-            data[i] =
-                Math.max(
-                    0,
-                    Math.min(
-                        255,
-                        r
-                    )
-                );
-
-            data[i+1] =
-                Math.max(
-                    0,
-                    Math.min(
-                        255,
-                        g
-                    )
-                );
-
-            data[i+2] =
-                Math.max(
-                    0,
-                    Math.min(
-                        255,
-                        b
-                    )
-                );
-
+            data[i]   = Math.max(0, Math.min(255, r));
+            data[i+1] = Math.max(0, Math.min(255, g));
+            data[i+2] = Math.max(0, Math.min(255, b));
         }
 
+        context.putImageData(image, 0, 0);
 
-        context.putImageData(
-            image,
-            0,
-            0
-        );
-
-    }catch(error){
-
-        console.warn(
-            "Aprimoramento:",
-            error
-        );
-
+    } catch(error){
+        console.warn("Aprimoramento:", error);
     }
-
 }
 
 
 /* =====================================================
-   DOWNLOAD LOCAL DA FOTO DA CAMERA
+   DOWNLOAD BLOB
 ===================================================== */
 
-function downloadBlob(
-    blob,
-    filename
-){
+function downloadBlob(blob, filename){
+    if(!blob) return;
 
-    if(!blob){
+    const url = createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = filename;
+    link.style.display = "none";
 
-        return;
-
-    }
-
-
-    const url =
-        URL.createObjectURL(
-            blob
-        );
-
-
-    const link =
-        document.createElement(
-            "a"
-        );
-
-    link.href =
-        url;
-
-    link.download =
-        filename;
-
-    link.style.display =
-        "none";
-
-
-    document.body.appendChild(
-        link
-    );
-
+    document.body.appendChild(link);
     link.click();
-
     link.remove();
 
-
-    setTimeout(
-        () =>
-            URL.revokeObjectURL(
-                url
-            ),
-        3000
-    );
-
+    setTimeout(() => revokeObjectURL(url), 5000);
 }
 
 
@@ -4329,285 +3159,158 @@ function downloadBlob(
    VÍDEO
 ===================================================== */
 
-$("cameraVideo").onclick =
-    () => {
-
-        if(
-            videoRecording
-        ){
-
-            stopRecording();
-
-        }else{
-
-            startRecording();
-
-        }
-
-    };
+safeOn($("cameraVideo"), "click", () => {
+    if(videoRecording) stopRecording();
+    else startRecording();
+});
 
 
 async function startRecording(){
 
-    if(
-        !stream
-        ||
-        !window.MediaRecorder
-    ){
-
-        showToast(
-            "Gravação não suportada"
-        );
-
+    if(!stream){
+        showToast("Câmera não está ativa");
         return;
-
     }
 
+    if(!window.MediaRecorder){
+        showToast("Gravação não suportada neste navegador");
+        return;
+    }
 
-    try{
+    if(!camera.videoWidth || !camera.videoHeight){
+        showToast("Aguarde a câmera iniciar");
+        return;
+    }
 
-        const canvas =
-            document.createElement(
-                "canvas"
-            );
+    try {
 
-        canvas.width =
-            camera.videoWidth;
+        const canvas = document.createElement("canvas");
+        canvas.width = camera.videoWidth;
+        canvas.height = camera.videoHeight;
 
-        canvas.height =
-            camera.videoHeight;
+        const context = canvas.getContext("2d");
 
+        // Stream do canvas (30fps)
+        const canvasStream = canvas.captureStream(30);
 
-        const context =
-            canvas.getContext(
-                "2d"
-            );
+        // Adiciona áudio se existir
+        stream.getAudioTracks().forEach(track => {
+            canvasStream.addTrack(track);
+        });
 
-
-        const fps =
-            30;
-
-
-        const processedStream =
-            canvas.captureStream(
-                fps
-            );
-
-
-        stream
-        .getAudioTracks()
-        .forEach(
-            track =>
-                processedStream.addTrack(
-                    track
-                )
-        );
-
-
-        let mime =
-            "";
-
-
+        // MIME suportado
         const types = [
-
             "video/mp4",
-
-            "video/webm;codecs=vp9",
-
+            "video/webm;codecs=vp9,opus",
+            "video/webm;codecs=vp8,opus",
             "video/webm"
-
         ];
 
-
-        for(
-            const type of types
-        ){
-
-            if(
-                MediaRecorder.isTypeSupported
-                &&
-                MediaRecorder.isTypeSupported(
-                    type
-                )
-            ){
-
-                mime =
-                    type;
-
+        let mime = "";
+        for(const type of types){
+            if(MediaRecorder.isTypeSupported && MediaRecorder.isTypeSupported(type)){
+                mime = type;
                 break;
-
             }
-
         }
 
-
-        mediaRecorder =
-            new MediaRecorder(
-                processedStream,
-                mime
-                ?
-                {
-                    mimeType:mime
-                }
-                :
-                undefined
-            );
-
-
-        recordingChunks =
-            [];
-
-
-        mediaRecorder.ondataavailable =
-            event => {
-
-                if(
-                    event.data.size
-                ){
-
-                    recordingChunks.push(
-                        event.data
-                    );
-
-                }
-
-            };
-
-
-        mediaRecorder.onstop =
-            () => {
-
-                const blob =
-                    new Blob(
-                        recordingChunks,
-                        {
-                            type:
-                                mediaRecorder.mimeType
-                                ||
-                                "video/webm"
-                        }
-                    );
-
-
-                downloadBlob(
-                    blob,
-                    "renato-vision-video"
-                );
-
-
-                showToast(
-                    "🎥 Vídeo finalizado"
-                );
-
-            };
-
-
-        mediaRecorder.start();
-
-        videoRecording =
-            true;
-
-        $("shutter")
-        .classList.add(
-            "recording"
+        mediaRecorder = new MediaRecorder(
+            canvasStream,
+            mime ? { mimeType: mime } : undefined
         );
 
-        $("cameraMode")
-        .textContent =
-            "GRAVANDO";
+        recordingChunks = [];
 
-        showToast(
-            "🎥 Gravação iniciada"
-        );
+        mediaRecorder.ondataavailable = event => {
+            if(event.data && event.data.size) {
+                recordingChunks.push(event.data);
+            }
+        };
 
+        mediaRecorder.onstop = async () => {
 
-        function draw(){
+            if(recordingAnimationId){
+                cancelAnimationFrame(recordingAnimationId);
+                recordingAnimationId = null;
+            }
 
-            if(
-                !videoRecording
-            ){
+            const blob = new Blob(recordingChunks, {
+                type: mediaRecorder.mimeType || "video/webm"
+            });
 
+            const ext = (mediaRecorder.mimeType || "").includes("mp4") ? "mp4" : "webm";
+
+            try {
+                const file = new File(
+                    [blob],
+                    `video-${Date.now()}.${ext}`,
+                    { type: blob.type }
+                );
+                await saveImportedFile(file, { source:"camera" });
+                showToast("🎥 Vídeo salvo na Galeria Premium");
+                await loadGallery();
+                await refreshGlobe();
+            } catch(e){
+                console.warn("Falha ao salvar vídeo:", e);
+                downloadBlob(blob, `renato-vision-video.${ext}`);
+                showToast("🎥 Vídeo finalizado (baixado)");
+            }
+        };
+
+        mediaRecorder.start(1000);
+
+        videoRecording = true;
+        $("shutter").classList.add("recording");
+        $("cameraMode").textContent = "GRAVANDO";
+        showToast("🎥 Gravação iniciada");
+
+        // Loop de renderização
+        const draw = () => {
+            if(!videoRecording){
                 return;
-
             }
 
+            context.filter = getFilterCSS() || "none";
+            context.drawImage(camera, 0, 0, canvas.width, canvas.height);
+            context.filter = "none";
 
-            context.filter =
-                filters.find(
-                    item =>
-                        item[0] ===
-                        currentFilter
-                )[2];
-
-
-            context.drawImage(
-                camera,
-                0,
-                0,
-                canvas.width,
-                canvas.height
-            );
-
-
-            requestAnimationFrame(
-                draw
-            );
-
-        }
-
+            recordingAnimationId = requestAnimationFrame(draw);
+        };
 
         draw();
 
-    }catch(error){
-
+    } catch(error){
         console.error(error);
-
-        showToast(
-            "Não foi possível iniciar o vídeo"
-        );
-
+        showToast("Não foi possível iniciar a gravação");
+        videoRecording = false;
+        $("shutter").classList.remove("recording");
     }
-
 }
 
 
 function stopRecording(){
 
-    videoRecording =
-        false;
+    videoRecording = false;
 
-
-    if(
-        mediaRecorder
-        &&
-        mediaRecorder.state !==
-        "inactive"
-    ){
-
-        mediaRecorder.stop();
-
+    if(recordingAnimationId){
+        cancelAnimationFrame(recordingAnimationId);
+        recordingAnimationId = null;
     }
 
+    if(mediaRecorder && mediaRecorder.state !== "inactive"){
+        try { mediaRecorder.stop(); } catch(e){}
+    }
 
-    $("shutter")
-    .classList.remove(
-        "recording"
-    );
-
-
-    $("cameraMode")
-    .textContent =
-        currentFilter.toUpperCase();
-
+    $("shutter").classList.remove("recording");
+    applyCameraFilter();
 }
 
 
 /* =====================================================
-   90 TEMAS DE INTERFACE
+   TEMAS
 ===================================================== */
 
 const themes = [
-
 ["OCEAN","0b7cff","6d4cff","020711"],
 ["MIDNIGHT","3158ff","5d42ff","03050d"],
 ["CYBER","00e5ff","8b4cff","03050b"],
@@ -4618,7 +3321,6 @@ const themes = [
 ["SAPPHIRE","158cff","0047ff","02060f"],
 ["VIOLET","9b5cff","ff3bd4","07030c"],
 ["ICE","7cecff","537dff","02090e"],
-
 ["CRIMSON","ff2148","ff5b22","090204"],
 ["PLATINUM","c8d5e8","6f8cff","06090f"],
 ["SILVER","cbd4df","8090a5","06080c"],
@@ -4629,7 +3331,6 @@ const themes = [
 ["TURQUOISE","00e5cf","168cff","020a0d"],
 ["AQUA","00d9ff","007bff","02080d"],
 ["LIME","b7ff39","00c76b","060b02"],
-
 ["NEON","00f5ff","ff00b8","05000a"],
 ["MATRIX","39ff67","00a63c","020703"],
 ["LASER","ff004c","005dff","070007"],
@@ -4640,7 +3341,6 @@ const themes = [
 ["QUANTUM","b75cff","168cff","05020d"],
 ["TECH","008cff","7b5cff","02060c"],
 ["AI BLUE","168cff","00c8ff","020711"],
-
 ["FOREST","1d9c62","62d65a","020904"],
 ["JUNGLE","00b85a","008cff","020a05"],
 ["MOSS","83b735","2d9c64","070902"],
@@ -4651,7 +3351,6 @@ const themes = [
 ["WAVE","00d9ff","1767ff","020711"],
 ["MARINE","005dff","00c4ff","02060e"],
 ["DEEP SEA","003d8f","00a5c8","01050a"],
-
 ["SUNSET","ff7b35","ff315d","0c0402"],
 ["SUNRISE","ffb52e","ff5c4c","0a0502"],
 ["FIRE","ff3b1f","ffb000","0c0301"],
@@ -4662,7 +3361,6 @@ const themes = [
 ["AUTUMN","ff6b32","b63c30","090403"],
 ["HARVEST","e8a534","7c4c21","080502"],
 ["BRONZE","a86634","e2a354","080503"],
-
 ["MONO BLUE","6f91ff","b7c8ff","05070d"],
 ["MONO PURPLE","9d7aff","d0b8ff","07050c"],
 ["MONO RED","ff6477","ffb0b9","0b0507"],
@@ -4673,7 +3371,6 @@ const themes = [
 ["STEEL","8ba4bd","526f8d","04070b"],
 ["TITANIUM","b3c1cf","6d7f91","05080c"],
 ["CHROME","d9e4ef","8da1b6","06090d"],
-
 ["VINTAGE GOLD","d0a45c","8e6738","090704"],
 ["VINTAGE BLUE","668fc2","45658e","05080d"],
 ["VINTAGE ROSE","c97f91","8e5669","0a0508"],
@@ -4683,10 +3380,9 @@ const themes = [
 ["ROYAL NIGHT","536cff","a45cff","05040c"],
 ["LUXURY","e2b75e","8f6aff","08060a"],
 ["PRESTIGE","c89a52","5d77ff","06070d"],
-["EXECUTIVE","537cff","5a6c86","05080d"],
-
-["ARCTIC","6fe7ff","6b8dff","02090e"],
-["POLAR","a3efff","8aa7ff","030a10"],
+["EXECUTIVE","537 =cff","5a6 documentc86","05080d"],
+[".querySelectorARCTIC","6fe7('ff","6b8dff","020meta90e"],
+["POLAR","a[name3efff","8aa7ff","030a10"],
 ["GLACIER","68d9ff","5470ff","02070d"],
 ["FROST","c8f8ff","7faaff","05090e"],
 ["STORM","65758d","4e61a0","05070d"],
@@ -4695,7 +3391,6 @@ const themes = [
 ["CLOUD","b5c6d8","71839a","080b10"],
 ["MIST","92b8cf","7785b9","070a0f"],
 ["NIGHT SKY","3758ad","7356b8","02040b"],
-
 ["SPACE","3157ff","a742ff","02030b"],
 ["GALAXY","9e45ff","286cff","05020d"],
 ["COSMIC","ff4bd8","5a3bff","08020c"],
@@ -4706,126 +3401,54 @@ const themes = [
 ["POLARIS","64b8ff","d58cff","03060c"],
 ["NOVA","ff5c8a","7e4dff","08030b"],
 ["INFINITE","167cff","b75cff","02050c"]
-
 ];
 
 
 function buildThemes(){
+    const grid = $("themeGrid");
+    if(!grid) return;
+    grid.innerHTML = "";
 
-    const grid =
-        $("themeGrid");
+    themes.forEach((theme, index) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "themeButton";
 
-    grid.innerHTML =
-        "";
+        button.innerHTML = `
+            <div class="themeName">${index+1}. ${theme[0]}</div>
+            <div class="themeColor">
+                <span class="themeDot" style="background:#${theme[1]}"></span>
+                <span class="themeDot" style="background:#${theme[2]}"></span>
+                <span class="themeDot" style="background:#${theme[3]}"></span>
+            </div>
+        `;
 
+        button.onclick = () => {
+            applyTheme(theme);
+            $("themePanel").classList.remove("open");
+        };
 
-    themes.forEach(
-        (theme,index) => {
-
-            const button =
-                document.createElement(
-                    "button"
-                );
-
-            button.className =
-                "themeButton";
-
-
-            button.innerHTML = `
-
-                <div class="themeName">
-                    ${index+1}. ${theme[0]}
-                </div>
-
-                <div class="themeColor">
-
-                    <span
-                        class="themeDot"
-                        style="
-                        background:#${theme[1]}
-                        ">
-                    </span>
-
-                    <span
-                        class="themeDot"
-                        style="
-                        background:#${theme[2]}
-                        ">
-                    </span>
-
-                    <span
-                        class="themeDot"
-                        style="
-                        background:#${theme[3]}
-                        ">
-                    </span>
-
-                </div>
-
-            `;
-
-
-            button.onclick =
-                () => {
-
-                    applyTheme(
-                        theme
-                    );
-
-                    $("themePanel")
-                    .classList.remove(
-                        "open"
-                    );
-
-                };
-
-
-            grid.appendChild(
-                button
-            );
-
-        }
-    );
-
+        grid.appendChild(button);
+    });
 }
 
 
 function applyTheme(theme){
+    document.documentElement.style.setProperty("--accent", "#" + theme[1]);
+    document.documentElement.style.setProperty("--accent2", "#" + theme[2]);
+    document.documentElement.style.setProperty("--bg", "#" + theme[3]);
 
-    document.documentElement
-        .style
-        .setProperty(
-            "--accent",
-            "#" + theme[1]
-        );
+    try {
+        localStorage.setItem("renatoVisionTheme", JSON.stringify({
+            name: theme[0],
+            accent: theme[1],
+            accent2: theme[2],
+            bg: theme[3]
+        }));
+    } catch(e){}
 
-    document.documentElement
-        .style
-        .setProperty(
-            "--accent2",
-            "#" + theme[2]
-        );
-
-    document.documentElement
-        .style
-        .setProperty(
-            "--bg",
-            "#" + theme[3]
-        );
-
-    localStorage.setItem(
-        "renatoVisionTheme",
-        JSON.stringify(
-            theme
-        )
-    );
-
-    showToast(
-        "🎨 Tema " +
-        theme[0] +
-        " aplicado"
-    );
-
+    const metaTheme="theme-color"]');
+    if(metaTheme) metaTheme.setAttribute("content", "#" + theme[3]);
 }
 
 
@@ -4833,102 +3456,63 @@ buildThemes();
 
 
 function restoreTheme(){
+    try {
+        const saved = localStorage.getItem("renatoVisionTheme");
+        if(!saved) return;
 
-    try{
-
-        const saved =
-            localStorage.getItem(
-                "renatoVisionTheme"
-            );
-
-        if(saved){
-
-            applyTheme(
-                JSON.parse(saved)
-            );
-
+        const parsed = JSON.parse(saved);
+        if(parsed && parsed.accent && parsed.accent2 && parsed.bg){
+            applyTheme([parsed.name || "Tema", parsed.accent, parsed.accent2, parsed.bg]);
         }
-
-    }catch(error){
-
-        console.warn(error);
-
+    } catch(e){
+        console.warn("Restaurar tema:", e);
     }
-
 }
-
 
 restoreTheme();
 
 
 /* =====================================================
-   TEMA PANEL
+   PAINÉIS
 ===================================================== */
 
-$("openSettings").onclick =
-    () => {
+function closeAllPanels(){
+    document.querySelectorAll(".panel").forEach(panel => {
+        panel.classList.remove("open");
+    });
+}
 
-        closeAllPanels();
+safeOn($("openSettings"), "click", () => {
+    closeAllPanels();
+    $("settingsPanel").classList.add("open");
+});
 
-        $("settingsPanel")
-        .classList.add(
-            "open"
-        );
+safeOn($("navSettings"), "click", () => {
+    closeAllPanels();
+    $("settingsPanel").classList.add("open");
+});
 
-    };
+safeOn($("settingsTheme"), "click", () => {
+    $("settingsPanel").classList.remove("open");
+    $("themePanel").classList.add("open");
+});
 
+safeOn($("themeClose"), "click", () => {
+    $("themePanel").classList.remove("open");
+});
 
-$("settingsTheme").onclick =
-    () => {
+safeOn($("openFilters"), "click", () => {
+    closeAllPanels();
+    $("filterPanel").classList.add("open");
+});
 
-        $("settingsPanel")
-        .classList.remove(
-            "open"
-        );
+safeOn($("filterClose"), "click", () => {
+    $("filterPanel").classList.remove("open");
+});
 
-        $("themePanel")
-        .classList.add(
-            "open"
-        );
-
-    };
-
-
-$("themeClose").onclick =
-    () =>
-        $("themePanel")
-        .classList.remove(
-            "open"
-        );
-
-
-$("openFilters").onclick =
-    () => {
-
-        closeAllPanels();
-
-        $("filterPanel")
-        .classList.add(
-            "open"
-        );
-
-    };
-
-
-$("filterClose").onclick =
-    () =>
-        $("filterPanel")
-        .classList.remove(
-            "open"
-        );
-
-
-$("settingsClose").onclick =
-    () =>
-        $("settingsPanel")
-        .classList.remove(
-            "open"
-        );
+safeOn($("settingsClose"), "click", () => {
+    $("settingsPanel").classList.remove("open");
+});
 
 
 /* =====================================================
@@ -4936,24 +3520,14 @@ $("settingsClose").onclick =
 ===================================================== */
 
 function activate3D(){
-
-    threeDEnabled =
-        true;
-
-    showToast(
-        "🧊 Modo 3D ativado"
-    );
-
+    threeDEnabled = true;
+    $("threeDToggle").textContent = "ATIVADO";
+    showToast("🧊 Modo 3D ativado");
     openGalleryPanel();
-
 }
 
-
-$("open3D").onclick =
-    activate3D;
-
-$("feature3D").onclick =
-    activate3D;
+safeOn($("open3D"), "click", activate3D);
+safeOn($("feature3D"), "click", activate3D);
 
 
 /* =====================================================
@@ -4961,200 +3535,94 @@ $("feature3D").onclick =
 ===================================================== */
 
 function activateNight(){
+    nightEnabled = !nightEnabled;
 
-    nightEnabled =
-        !nightEnabled;
-
-
-    $("nightToggle")
-    .textContent =
-        nightEnabled
-        ?
-        "ATIVADO"
-        :
-        "DESATIVADO";
-
-
-    if(
-        nightEnabled
-    ){
-
-        currentFilter =
-            "night";
-
-        applyCameraFilter();
-
-        showToast(
-            "🌙 Modo noturno ativado"
-        );
-
-    }else{
-
-        currentFilter =
-            "normal";
-
-        applyCameraFilter();
-
-        showToast(
-            "Modo noturno desativado"
-        );
-
+    const nightBtn = $("nightToggle");
+    if(nightBtn){
+        nightBtn.textContent = nightEnabled ? "ATIVADO" : "DESATIVADO";
     }
 
+    if(nightEnabled){
+        currentFilter = "night";
+        applyCameraFilter();
+        showToast("🌙 Modo noturno ativado");
+    } else {
+        currentFilter = "normal";
+        applyCameraFilter();
+        showToast("Modo noturno desativado");
+    }
 }
 
-
-$("nightMode").onclick =
-    activateNight;
-
-$("featureNight").onclick =
-    activateNight;
-
-$("nightToggle").onclick =
-    activateNight;
+safeOn($("nightMode"), "click", activateNight);
+safeOn($("featureNight"), "click", activateNight);
+safeOn($("nightToggle"), "click", activateNight);
 
 
 /* =====================================================
-   AI
+   TOGGLES
 ===================================================== */
 
-$("aiToggle").onclick =
-    () => {
+safeOn($("aiToggle"), "click", () => {
+    aiEnabled = !aiEnabled;
+    $("aiToggle").textContent = aiEnabled ? "ATIVADO" : "DESATIVADO";
+    showToast(aiEnabled ? "🧠 Aprimoramento ativado" : "Aprimoramento desativado");
+});
 
-        aiEnabled =
-            !aiEnabled;
-
-        $("aiToggle")
-        .textContent =
-            aiEnabled
-            ?
-            "ATIVADO"
-            :
-            "DESATIVADO";
-
-        showToast(
-            aiEnabled
-            ?
-            "🧠 Aprimoramento ativado"
-            :
-            "Aprimoramento desativado"
-        );
-
-    };
+safeOn($("threeDToggle"), "click", () => {
+    threeDEnabled = !threeDEnabled;
+    $("threeDToggle").textContent = threeDEnabled ? "ATIVADO" : "DESATIVADO";
+    showToast(threeDEnabled ? "🧊 Visual 3D ativado" : "Visual 3D desativado");
+});
 
 
 /* =====================================================
-   3D TOGGLE
+   VÍDEO NA HOME
 ===================================================== */
 
-$("threeDToggle").onclick =
-    () => {
-
-        threeDEnabled =
-            !threeDEnabled;
-
-        $("threeDToggle")
-        .textContent =
-            threeDEnabled
-            ?
-            "ATIVADO"
-            :
-            "DESATIVADO";
-
-    };
-
-
-/* =====================================================
-   FILTROS
-===================================================== */
-
-$("openFilters").onclick =
-    () => {
-
-        closeAllPanels();
-
-        $("filterPanel")
-        .classList.add(
-            "open"
-        );
-
-    };
-
-
-/* =====================================================
-   BOTÕES DE VÍDEO
-===================================================== */
-
-$("featureVideo").onclick =
-    openCamera;
+safeOn($("featureVideo"), "click", openCamera);
 
 
 /* =====================================================
    PREMIUM
 ===================================================== */
 
-$("premiumButton").onclick =
-    () => {
-
-        showToast(
-            "👑 Renato Vision 3D Premium"
-        );
-
-    };
+safeOn($("premiumButton"), "click", () => {
+    showToast("👑 Renato Vision 3D Premium");
+});
 
 
 /* =====================================================
-   NAVEGAÇÃO HOME
+   NAV HOME
 ===================================================== */
 
-$("navHome").onclick =
-    () => {
+safeOn($("navHome"), "click", () => {
+    closeAllPanels();
+    cameraScreen.classList.remove("active");
+    stopCamera();
+    home.style.display = "block";
 
-        closeAllPanels();
-
-        cameraScreen.classList.remove(
-            "active"
-        );
-
-        stopCamera();
-
-        home.style.display =
-            "block";
-
-    };
-
-
-$("navSettings").onclick =
-    () => {
-
-        closeAllPanels();
-
-        $("settingsPanel")
-        .classList.add(
-            "open"
-        );
-
-    };
+    document.querySelectorAll(".navButton").forEach(b => b.classList.remove("active"));
+    $("navHome").classList.add("active");
+});
 
 
 /* =====================================================
-   FECHAR PAINÉIS
+   LIBERAR RECURSOS AO SAIR
 ===================================================== */
 
-function closeAllPanels(){
+window.addEventListener("beforeunload", () => {
+    stopCamera();
+    revokeAllObjectURLs();
+});
 
-    document
-    .querySelectorAll(
-        ".panel"
-    )
-    .forEach(
-        panel =>
-            panel.classList.remove(
-                "open"
-            )
-    );
-
-}
+document.addEventListener("visibilitychange", () => {
+    if(document.hidden){
+        // Se a aba ficar oculta, pausa gravação para evitar problemas
+        if(videoRecording){
+            stopRecording();
+        }
+    }
+});
 
 
 /* =====================================================
@@ -5163,36 +3631,19 @@ function closeAllPanels(){
 
 async function init(){
 
-    try{
+    await openDatabase();
 
-        await openDatabase();
-
+    try {
         await loadPreview();
-
-    }catch(error){
-
-        console.error(error);
-
-        showToast(
-            "Erro ao preparar a galeria"
-        );
-
+    } catch(e){
+        console.warn("Falha ao carregar globo:", e);
     }
-
 
     applyCameraFilter();
 
-
-    setTimeout(
-        () => {
-
-            loading.style.display =
-                "none";
-
-        },
-        650
-    );
-
+    setTimeout(() => {
+        loading.style.display = "none";
+    }, 650);
 }
 
 
