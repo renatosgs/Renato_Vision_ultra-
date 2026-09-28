@@ -12,7 +12,7 @@
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2302050b'/%3E%3Cellipse cx='32' cy='32' rx='22' ry='15' fill='%23168cff'/%3E%3Ccircle cx='32' cy='32' r='7' fill='%2302050b'/%3E%3Ccircle cx='32' cy='32' r='5' fill='%2300d9ff'/%3E%3Ccircle cx='30' cy='30' r='1.8' fill='%23fff'/%3E%3C/svg%3E">
 
 <style>
-:root{--accent:#168cff;--accent2:#6d5cff;--bg:#02050b;--panel:#07101c;--card:#091625;--text:#f5f7ff;--muted:#8c99ac;--border:rgba(100,170,255,.22);--glow:rgba(0,130,255,.28);}
+:root{--accent:#168cff;--accent2:#6d5cff;--bg:#02050b;--text:#f5f7ff;--border:rgba(100,170,255,.22);--glow:rgba(0,130,255,.28);}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 html,body{margin:0;width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",Arial,sans-serif;}
 body{user-select:none;-webkit-user-select:none;}
@@ -20,6 +20,7 @@ button,input,select{font:inherit;}
 button{border:0;color:white;cursor:pointer;background:none;}
 #app{position:fixed;inset:0;overflow:hidden;background:radial-gradient(circle at 50% -10%,rgba(0,100,255,.22),transparent 40%),var(--bg);}
 
+/* CAMERA */
 #cameraScreen{position:absolute;inset:0;display:none;background:#000;}
 #cameraScreen.active{display:block;}
 #camera{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:#000;transition:transform .15s linear;transform-origin:center center;}
@@ -40,6 +41,7 @@ button{border:0;color:white;cursor:pointer;background:none;}
 .tool.active{background:linear-gradient(135deg,var(--accent),var(--accent2));}
 .cameraSlider{width:100%;accent-color:var(--accent);margin-top:8px;}
 
+/* HOME */
 #home{position:absolute;inset:0;overflow:auto;padding:calc(18px + env(safe-area-inset-top)) 18px calc(120px + env(safe-area-inset-bottom));background:radial-gradient(circle at 75% 10%,rgba(30,100,255,.2),transparent 28%),radial-gradient(circle at 10% 35%,rgba(90,40,255,.12),transparent 30%),var(--bg);-webkit-overflow-scrolling:touch;}
 .header{display:flex;align-items:center;justify-content:space-between;gap:12px;}
 .logoArea{display:flex;align-items:center;gap:11px;}
@@ -73,48 +75,216 @@ button{border:0;color:white;cursor:pointer;background:none;}
 .featureTitle{font-size:11px;font-weight:950;}
 .featureText{margin-top:4px;color:#8491a6;font-size:8px;}
 
+/* =====================================================
+   GLOBO 3D — ESFERA PERFEITA E REDONDA
+===================================================== */
 .galleryHome{margin-top:22px;}
 .galleryHomeHeader{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
 .galleryHomeTitle{font-size:18px;font-weight:950;display:flex;align-items:center;gap:6px;}
 .galleryHomeTitle span{color:#ffc34d;}
 .seeAll{background:none;color:#b8c5d9;font-size:10px;cursor:pointer;}
-.globeCard{position:relative;border-radius:24px;background:radial-gradient(circle at 50% 20%,rgba(22,140,255,.14),transparent 65%),linear-gradient(180deg,#06101c 0%,#02060c 100%);border:1px solid var(--border);box-shadow:0 20px 60px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.06);padding:16px 8px 12px;display:flex;flex-direction:column;align-items:center;overflow:hidden;}
-.globeViewport{position:relative;width:100%;max-width:340px;height:340px;display:flex;align-items:center;justify-content:center;perspective:900px;perspective-origin:50% 50%;touch-action:none;cursor:grab;user-select:none;}
-.globeViewport:active{cursor:grabbing;}
-.globeFloorShadow{position:absolute;bottom:14px;left:50%;transform:translateX(-50%) rotateX(76deg);width:210px;height:36px;border-radius:50%;background:radial-gradient(ellipse at center,rgba(0,0,0,.88) 0%,rgba(0,0,0,.45) 45%,transparent 75%);pointer-events:none;filter:blur(5px);z-index:1;}
-.globeStage{position:relative;width:264px;height:264px;transform-style:preserve-3d;will-change:transform;z-index:2;transition:scale .2s ease;}
-.globeCore{position:absolute;left:50%;top:50%;width:250px;height:250px;margin-left:-125px;margin-top:-125px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#152e4d 0%,#081424 55%,#02060e 95%);box-shadow:inset 0 0 45px rgba(0,0,0,.92),0 0 35px rgba(22,140,255,.2);pointer-events:none;}
-.globeSphere{position:absolute;inset:0;transform-style:preserve-3d;}
-.globeTile{position:absolute;left:50%;top:50%;transform-style:preserve-3d;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:4px;overflow:hidden;background:#071220;border:1px solid rgba(255,255,255,.5);box-shadow:0 1px 3px rgba(0,0,0,.6),inset 0 0 4px rgba(0,0,0,.4);cursor:pointer;transition:filter .12s;}
-.globeTile::after{content:"";position:absolute;inset:0;border-radius:4px;background:linear-gradient(135deg,rgba(255,255,255,.28) 0%,transparent 40%,transparent 60%,rgba(0,0,0,.25) 100%);pointer-events:none;z-index:3;}
-.globeTile img,.globeTile video{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none;}
-.globeTile.isUserPhoto{border:1.5px solid #ffd060;box-shadow:0 0 8px rgba(255,200,50,.65);}
-.globeGloss{position:absolute;left:50%;top:50%;width:256px;height:256px;margin-left:-128px;margin-top:-128px;border-radius:50%;background:radial-gradient(circle at 32% 24%,rgba(255,255,255,.42) 0%,rgba(255,255,255,.12) 28%,transparent 58%);box-shadow:inset -12px -16px 40px rgba(0,0,0,.7),inset 2px 3px 12px rgba(255,255,255,.25);pointer-events:none;z-index:10;}
-.globeFooter{width:100%;margin-top:10px;display:flex;align-items:center;justify-content:space-between;padding:0 8px;z-index:12;gap:8px;flex-wrap:wrap;}
-.globeHint{color:#8796ac;font-size:9px;font-weight:800;letter-spacing:.3px;display:flex;align-items:center;gap:4px;}
-.globeControls{display:flex;gap:5px;}
-.globeSpinBtn{padding:6px 10px;border-radius:10px;background:rgba(12,25,44,.85);border:1px solid var(--border);font-size:9px;font-weight:900;color:#d0ddec;transition:.2s;}
-.globeSpinBtn:active{transform:scale(.95);background:rgba(22,140,255,.25);}
-.globeSpinBtn.active{background:linear-gradient(135deg,var(--accent),var(--accent2));border-color:transparent;color:white;}
-.globeCount{font-size:9px;color:#8796ac;font-weight:800;padding:0 8px;margin-top:6px;text-align:center;}
 
+.globeCard{
+    position:relative;
+    border-radius:24px;
+    background:
+        radial-gradient(circle at 50% 25%,rgba(22,140,255,.18),transparent 60%),
+        linear-gradient(180deg,#06101c 0%,#02060c 100%);
+    border:1px solid var(--border);
+    box-shadow:0 20px 60px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.06);
+    padding:22px 8px 14px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    overflow:hidden;
+}
+
+.globeViewport{
+    position:relative;
+    width:330px;
+    height:330px;
+    max-width:100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    perspective:1400px;
+    perspective-origin:50% 50%;
+    touch-action:none;
+    cursor:grab;
+    user-select:none;
+    margin:0 auto;
+}
+
+.globeViewport:active{cursor:grabbing;}
+
+.globeFloorShadow{
+    position:absolute;
+    bottom:6px;
+    left:50%;
+    transform:translateX(-50%) rotateX(78deg);
+    width:230px;
+    height:44px;
+    border-radius:50%;
+    background:radial-gradient(ellipse at center,rgba(0,0,0,.9) 0%,rgba(0,0,0,.4) 45%,transparent 75%);
+    pointer-events:none;
+    filter:blur(7px);
+    z-index:1;
+}
+
+.globeStage{
+    position:relative;
+    width:270px;
+    height:270px;
+    transform-style:preserve-3d;
+    will-change:transform;
+    z-index:2;
+}
+
+.globeCore{
+    position:absolute;
+    left:50%;
+    top:50%;
+    width:256px;
+    height:256px;
+    margin-left:-128px;
+    margin-top:-128px;
+    border-radius:50%;
+    background:radial-gradient(circle at 35% 30%,#13294a 0%,#081424 55%,#02060e 95%);
+    box-shadow:inset 0 0 50px rgba(0,0,0,.95),0 0 45px rgba(22,140,255,.25);
+    pointer-events:none;
+}
+
+.globeSphere{
+    position:absolute;
+    inset:0;
+    transform-style:preserve-3d;
+}
+
+/* TILES — QUADRADOS PERFEITOS, NUNCA ESTICAM */
+.globeTile{
+    position:absolute;
+    left:50%;
+    top:50%;
+    aspect-ratio:1 / 1;
+    transform-style:preserve-3d;
+    backface-visibility:hidden;
+    -webkit-backface-visibility:hidden;
+    border-radius:5px;
+    overflow:hidden;
+    background:#071220;
+    border:1px solid rgba(255,255,255,.55);
+    box-shadow:0 1px 4px rgba(0,0,0,.65),inset 0 0 4px rgba(0,0,0,.4);
+    cursor:pointer;
+    transition:filter .12s;
+}
+
+.globeTile::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    border-radius:5px;
+    background:linear-gradient(135deg,rgba(255,255,255,.22) 0%,transparent 45%,transparent 55%,rgba(0,0,0,.28) 100%);
+    pointer-events:none;
+    z-index:3;
+}
+
+/* FOTOS — COVER, NUNCA ESTICADAS */
+.globeTile img,
+.globeTile video{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    object-position:center;
+    display:block;
+    pointer-events:none;
+}
+
+.globeTile.isUserPhoto{
+    border:1.5px solid #ffd060;
+    box-shadow:0 0 10px rgba(255,200,50,.7);
+}
+
+/* SEM GLOSS — não distorce as fotos */
+.globeGloss{display:none;}
+
+.globeFooter{
+    width:100%;
+    margin-top:14px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 10px;
+    z-index:12;
+    gap:8px;
+    flex-wrap:wrap;
+}
+
+.globeHint{
+    color:#8796ac;
+    font-size:9px;
+    font-weight:800;
+    letter-spacing:.3px;
+    display:flex;
+    align-items:center;
+    gap:4px;
+}
+
+.globeControls{display:flex;gap:5px;}
+
+.globeSpinBtn{
+    padding:6px 10px;
+    border-radius:10px;
+    background:rgba(12,25,44,.85);
+    border:1px solid var(--border);
+    font-size:9px;
+    font-weight:900;
+    color:#d0ddec;
+    transition:.2s;
+}
+
+.globeSpinBtn:active{
+    transform:scale(.95);
+    background:rgba(22,140,255,.25);
+}
+
+.globeSpinBtn.active{
+    background:linear-gradient(135deg,var(--accent),var(--accent2));
+    border-color:transparent;
+    color:white;
+}
+
+.globeCount{
+    font-size:10px;
+    color:#8796ac;
+    font-weight:800;
+    padding:0 8px;
+    margin-top:8px;
+    text-align:center;
+}
+
+/* IMPORT */
 .importBox{margin-top:18px;padding:17px;border-radius:20px;border:1px solid rgba(0,140,255,.25);background:linear-gradient(135deg,rgba(0,100,255,.09),rgba(100,50,255,.05));}
 .importTitle{font-size:14px;font-weight:950;}
 .importText{margin-top:5px;color:#8e9bae;font-size:9px;line-height:1.5;}
 .importButton{margin-top:12px;width:100%;padding:14px;border-radius:15px;background:linear-gradient(135deg,var(--accent),var(--accent2));font-size:11px;font-weight:950;color:white;}
 
+/* NAV */
 .bottomNav{position:fixed;left:10px;right:10px;bottom:calc(8px + env(safe-area-inset-bottom));z-index:100;display:grid;grid-template-columns:repeat(4,1fr);padding:8px;border-radius:22px;background:rgba(5,11,19,.9);border:1px solid rgba(255,255,255,.1);backdrop-filter:blur(25px);-webkit-backdrop-filter:blur(25px);}
 .navButton{padding:8px 4px;background:none;color:#78869a;font-size:8px;font-weight:900;}
 .navButton span{display:block;font-size:19px;margin-bottom:3px;}
 .navButton.active{color:white;}
 .navButton.active span{filter:drop-shadow(0 0 8px var(--accent));}
 
+/* PANELS */
 .panel{position:fixed;inset:0;z-index:500;display:none;background:rgba(1,4,9,.97);overflow:auto;padding:calc(16px + env(safe-area-inset-top)) 14px calc(30px + env(safe-area-inset-bottom));-webkit-overflow-scrolling:touch;}
 .panel.open{display:block;}
 .panelHeader{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;}
 .panelTitle{font-size:22px;font-weight:950;}
 .close{width:44px;height:44px;border-radius:50%;background:#101a27;border:1px solid rgba(255,255,255,.13);font-size:25px;line-height:1;}
 
+/* GALLERY */
 .galleryTabs{display:flex;gap:7px;overflow:auto;margin-bottom:12px;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
 .galleryTabs::-webkit-scrollbar{display:none;}
 .galleryTab{flex:0 0 auto;padding:10px 14px;border-radius:13px;background:#0b1625;border:1px solid var(--border);font-size:9px;font-weight:950;color:white;}
@@ -129,6 +299,7 @@ button{border:0;color:white;cursor:pointer;background:none;}
 .emptyTitle{color:#b9c4d4;font-size:15px;font-weight:900;}
 .emptyText{margin-top:6px;max-width:280px;font-size:10px;line-height:1.5;}
 
+/* VIEWER */
 #viewer{position:fixed;inset:0;z-index:900;display:none;align-items:center;justify-content:center;background:#000;}
 #viewer.open{display:flex;}
 #viewerContent{width:100%;height:100%;display:flex;align-items:center;justify-content:center;}
@@ -137,20 +308,24 @@ button{border:0;color:white;cursor:pointer;background:none;}
 .viewerButton{width:44px;height:44px;border-radius:50%;background:rgba(20,20,25,.75);border:1px solid rgba(255,255,255,.15);backdrop-filter:blur(15px);-webkit-backdrop-filter:blur(15px);font-size:18px;}
 .viewer3D{transform:perspective(900px) rotateY(-7deg) translateZ(20px);filter:drop-shadow(-5px 0 rgba(255,0,0,.65)) drop-shadow(5px 0 rgba(0,255,255,.65));}
 
+/* THEMES */
 .themeGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;}
 .themeButton{min-height:65px;border-radius:15px;padding:10px;background:#0b1625;border:1px solid var(--border);text-align:left;color:white;}
 .themeName{font-size:10px;font-weight:950;}
 .themeColor{margin-top:7px;display:flex;gap:4px;}
 .themeDot{width:15px;height:15px;border-radius:50%;}
 
+/* SETTINGS */
 .setting{margin-bottom:9px;padding:15px;border-radius:16px;background:#081321;border:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:10px;}
 .settingInfo strong{display:block;font-size:11px;}
 .settingInfo small{display:block;margin-top:4px;color:#7f8ca0;font-size:8px;}
 .settingButton{padding:9px 13px;border-radius:12px;background:#14243a;font-size:9px;font-weight:900;color:white;white-space:nowrap;}
 
+/* TOAST */
 #toast{position:fixed;left:50%;bottom:calc(95px + env(safe-area-inset-bottom));transform:translate(-50%,20px);z-index:1000;padding:11px 15px;border-radius:14px;background:rgba(0,0,0,.9);border:1px solid rgba(255,255,255,.12);font-size:10px;font-weight:800;opacity:0;pointer-events:none;transition:.25s;max-width:calc(100% - 40px);text-align:center;}
 #toast.show{opacity:1;transform:translate(-50%,0);}
 
+/* LOADING */
 #loading{position:fixed;inset:0;z-index:2000;background:#02050b;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;}
 .loader{width:44px;height:44px;border-radius:50%;border:3px solid rgba(255,255,255,.12);border-top-color:var(--accent);animation:spin .8s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg);}}
@@ -355,7 +530,7 @@ button{border:0;color:white;cursor:pointer;background:none;}
 <script>
 "use strict";
 
-/* ============ ESTADO GLOBAL ============ */
+/* ============ ESTADO ============ */
 let db = null, dbAvailable = false, memoryStore = [], memoryNextId = 1;
 let stream = null, currentCamera = "environment", cameraRunning = false;
 let videoRecording = false, mediaRecorder = null, recordingChunks = [], recordingAnimationId = null;
@@ -363,10 +538,19 @@ let currentGalleryFilter = "all", currentViewerId = null, currentViewerItem = nu
 let currentFilter = "normal", filterIndex = 0;
 let threeDEnabled = true, aiEnabled = true, nightEnabled = false;
 let activeObjectUrls = new Set();
-let globeRotX = -12, globeRotY = 0, globeVelX = 0.42, globeVelY = 0;
-let isDraggingGlobe = false, globeLastX = 0, globeLastY = 0, globeDragDistance = 0;
-let globeAutoSpin = true, globeLastMoveTime = 0, globeAnimationId = null;
-let globeListenersAttached = false, globeTileUrls = [], globeSpinSpeed = 1;
+
+/* GLOBO 3D — estado */
+let globeRotX = -10, globeRotY = 0;
+let globeVelX = 0.45, globeVelY = 0;
+let isDraggingGlobe = false;
+let globeLastX = 0, globeLastY = 0;
+let globeDragDistance = 0;
+let globeAutoSpin = true;
+let globeLastMoveTime = 0;
+let globeAnimationId = null;
+let globeListenersAttached = false;
+let globeTileUrls = [];
+let globeSpinSpeed = 1;
 
 /* ============ HELPERS ============ */
 const $ = id => document.getElementById(id);
@@ -677,8 +861,31 @@ function closeViewer(){
     currentViewerId = null; currentViewerItem = null;
 }
 
-/* ============ GLOBO 3D ============ */
-const GLOBE_RADIUS = 132;
+/* =====================================================
+   GLOBO 3D — ESFERA PERFEITA (REDONDA DE VERDADE)
+===================================================== */
+
+/* Raio = metade do tamanho da esfera (256/2 = 128) */
+const GLOBE_RADIUS = 128;
+
+/* Anéis de latitude distribuídos como uma esfera real.
+   count = quantas fotos naquele anel,
+   size = tamanho do quadrado em px (sempre quadrado 1:1) */
+const globeRings = [
+    { lat: 78,  count: 4,  size: 30 },
+    { lat: 65,  count: 8,  size: 34 },
+    { lat: 50,  count: 11, size: 40 },
+    { lat: 33,  count: 14, size: 44 },
+    { lat: 15,  count: 16, size: 48 },
+    { lat: -5,  count: 16, size: 48 },
+    { lat: -24, count: 14, size: 44 },
+    { lat: -42, count: 11, size: 40 },
+    { lat: -58, count: 8,  size: 34 },
+    { lat: -73, count: 4,  size: 30 }
+];
+
+const GLOBE_TOTAL_SLOTS = globeRings.reduce((s, r) => s + r.count, 0);
+
 const PLACEHOLDER_COLORS = [
     ["#168cff","#0a1a2e"],["#6d5cff","#1a0f38"],["#00c58b","#042a1e"],
     ["#ff5d9b","#2e0a1a"],["#ffb52e","#2e1e04"],["#00d9ff","#042a30"],
@@ -698,36 +905,28 @@ function makePlaceholderDataURL(i){
     return "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg);
 }
 
-const globeRings = [
-    { lat: 72,  count: 6,  w: 36, h: 32 },
-    { lat: 52,  count: 10, w: 46, h: 42 },
-    { lat: 26,  count: 13, w: 52, h: 48 },
-    { lat: 0,   count: 15, w: 52, h: 50 },
-    { lat: -26, count: 13, w: 52, h: 48 },
-    { lat: -52, count: 10, w: 46, h: 42 },
-    { lat: -72, count: 6,  w: 36, h: 32 }
-];
-
-const GLOBE_TOTAL_SLOTS = globeRings.reduce((s, r) => s + r.count, 0);
-
-function buildExtraRings(n){
+/* Gera anéis extras quando há MUITAS fotos (> total padrão). */
+function buildExtraRings(totalPhotos){
     const rings = [];
-    let rc = Math.ceil(n / 12);
-    rc = Math.max(8, Math.min(16, rc));
-    const step = 150 / (rc - 1);
-    for(let i = 0; i < rc; i++){
-        const lat = 75 - i * step;
+    let ringCount = Math.ceil(totalPhotos / 12);
+    ringCount = Math.max(10, Math.min(18, ringCount));
+
+    const topLat = 80;
+    const bottomLat = -80;
+    const step = (topLat - bottomLat) / (ringCount - 1);
+
+    for(let i = 0; i < ringCount; i++){
+        const lat = topLat - (i * step);
         const cosLat = Math.cos((Math.abs(lat) * Math.PI) / 180);
-        rings.push({
-            lat, count: Math.max(4, Math.round(16 * cosLat) + 2),
-            w: Math.max(28, Math.round(38 * cosLat + 14)),
-            h: Math.max(26, Math.round(34 * cosLat + 12))
-        });
+        const count = Math.max(4, Math.round(18 * cosLat) + 2);
+        const size = Math.max(24, Math.round(38 * cosLat + 12));
+        rings.push({ lat, count, size });
     }
     return rings;
 }
 
 function buildGlobeTiles(userItems){
+    /* limpa URLs antigas */
     globeTileUrls.forEach(u => revokeObjectURL(u));
     globeTileUrls = [];
     globeSphere.innerHTML = "";
@@ -739,8 +938,11 @@ function buildGlobeTiles(userItems){
         globeCountEl.textContent = "🌐 " + label;
     }
 
+    /* escolhe anéis: padrão ou expandido */
     const rings = photos.length > GLOBE_TOTAL_SLOTS ? buildExtraRings(photos.length) : globeRings;
     const totalSlots = rings.reduce((s, r) => s + r.count, 0);
+
+    /* mapa de slot → foto (sem repetir até esgotar) */
     const slotMap = new Array(totalSlots).fill(null);
 
     if(photos.length > 0){
@@ -756,19 +958,29 @@ function buildGlobeTiles(userItems){
 
     let idx = 0;
     rings.forEach(ring => {
-        const step = 360 / ring.count;
+        const stepDeg = 360 / ring.count;
         for(let i = 0; i < ring.count; i++){
-            const lon = i * step;
+            const lon = i * stepDeg;
+
             const tile = document.createElement("div");
             tile.className = "globeTile";
-            tile.style.width = ring.w + "px";
-            tile.style.height = ring.h + "px";
+
+            /* CRÍTICO: passa só a largura; aspect-ratio 1:1 do CSS
+               garante que é quadrado perfeito → sem esticar as fotos */
+            tile.style.width = ring.size + "px";
+
+            /* Posiciona no ponto da esfera */
             tile.style.transform =
-                "translate(-50%, -50%) rotateY(" + lon + "deg) rotateX(" + (-ring.lat) + "deg) translateZ(" + GLOBE_RADIUS + "px)";
+                "translate(-50%, -50%) " +
+                "rotateY(" + lon + "deg) " +
+                "rotateX(" + (-ring.lat) + "deg) " +
+                "translateZ(" + GLOBE_RADIUS + "px)";
 
             const userItem = slotMap[idx];
+
             const media = document.createElement("img");
-            media.draggable = false; media.alt = "";
+            media.draggable = false;
+            media.alt = "";
 
             if(userItem){
                 const url = createObjectURL(userItem.blob);
@@ -787,6 +999,7 @@ function buildGlobeTiles(userItems){
                 if(ref) openViewer(ref);
                 else showToast("Importe fotos para preencher o globo");
             };
+
             globeSphere.appendChild(tile);
             idx++;
         }
@@ -798,24 +1011,43 @@ async function refreshGlobe(){
     buildGlobeTiles(items);
 }
 
+/* ============ ANIMAÇÃO DO GLOBO ============ */
 function animateGlobe(){
     if(!isDraggingGlobe && globeAutoSpin){
+        /* gira Y continuamente */
         globeRotY += globeVelX * globeSpinSpeed;
+
+        /* inércia no eixo X */
         globeRotX += globeVelY;
         globeVelY *= 0.94;
-        const targetTilt = -12;
-        if(Math.abs(globeVelY) < 0.02) globeRotX += (targetTilt - globeRotX) * 0.01;
+
+        /* volta suavemente à inclinação padrão */
+        const targetTilt = -10;
+        if(Math.abs(globeVelY) < 0.02){
+            globeRotX += (targetTilt - globeRotX) * 0.01;
+        }
+
+        /* limites seguros */
         globeRotX = Math.max(-90, Math.min(90, globeRotX));
         if(globeRotY > 360) globeRotY -= 360;
         if(globeRotY < 0) globeRotY += 360;
-        if(Math.abs(globeVelX - 0.42) > 0.02) globeVelX += (0.42 - globeVelX) * 0.04;
+
+        /* suaviza velocidade de volta ao normal */
+        if(Math.abs(globeVelX - 0.45) > 0.02){
+            globeVelX += (0.45 - globeVelX) * 0.04;
+        }
     }
+
     if(globeStage){
-        globeStage.style.transform = "rotateX(" + globeRotX + "deg) rotateY(" + globeRotY + "deg)";
+        globeStage.style.transform =
+            "rotateX(" + globeRotX + "deg) " +
+            "rotateY(" + globeRotY + "deg)";
     }
+
     globeAnimationId = requestAnimationFrame(animateGlobe);
 }
 
+/* ============ LISTENERS DO GLOBO ============ */
 function attachGlobeListeners(){
     if(globeListenersAttached) return;
     globeListenersAttached = true;
@@ -834,16 +1066,20 @@ function attachGlobeListeners(){
         const dx = e.clientX - globeLastX;
         const dy = e.clientY - globeLastY;
         globeDragDistance += Math.sqrt(dx*dx + dy*dy);
+
         globeRotY += dx * 0.5;
         globeRotX -= dy * 0.5;
         globeRotX = Math.max(-90, Math.min(90, globeRotX));
         if(globeRotY > 360) globeRotY -= 360;
         if(globeRotY < 0) globeRotY += 360;
+
         const now = performance.now();
         const dt = Math.max(1, now - globeLastMoveTime);
         globeVelX = (dx / dt) * 8;
         globeVelY = (-dy / dt) * 8;
-        globeLastX = e.clientX; globeLastY = e.clientY;
+
+        globeLastX = e.clientX;
+        globeLastY = e.clientY;
         globeLastMoveTime = now;
     });
 
@@ -852,7 +1088,7 @@ function attachGlobeListeners(){
         isDraggingGlobe = false;
         globeVelX = Math.max(-5, Math.min(5, globeVelX));
         globeVelY = Math.max(-3, Math.min(3, globeVelY));
-        if(Math.abs(globeVelX) < 0.1 && globeAutoSpin) globeVelX = 0.42;
+        if(Math.abs(globeVelX) < 0.1 && globeAutoSpin) globeVelX = 0.45;
     };
 
     globeViewport.addEventListener("pointerup", endDrag);
@@ -864,7 +1100,7 @@ function attachGlobeListeners(){
             globeAutoSpin = !globeAutoSpin;
             globeSpinToggle.textContent = globeAutoSpin ? "⏸ Pausar" : "▶ Girar";
             globeSpinToggle.classList.toggle("active", globeAutoSpin);
-            if(globeAutoSpin) globeVelX = 0.42;
+            if(globeAutoSpin) globeVelX = 0.45;
         };
     }
 
