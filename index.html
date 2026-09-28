@@ -2,2860 +2,5174 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="theme-color" content="#02060d">
+
+<meta name="viewport"
+      content="width=device-width,
+      initial-scale=1,
+      maximum-scale=1,
+      user-scalable=no,
+      viewport-fit=cover">
+
+<meta name="theme-color" content="#02050d">
 
 <title>RENATO VISION 3D</title>
 
 <style>
-:root{
-  --bg:#02060d;
-  --panel:#06101d;
-  --line:#16446d;
-  --blue:#19aaff;
-  --violet:#725cff;
-  --text:#f7f9ff;
-  --muted:#aeb9c8;
-  --success:#37df86;
-}
+
+/* =========================================================
+   RESET
+========================================================= */
 
 *{
-  box-sizing:border-box;
-  -webkit-tap-highlight-color:transparent;
+    box-sizing:border-box;
+    -webkit-tap-highlight-color:transparent;
 }
 
 html,
 body{
-  margin:0;
-  width:100%;
-  min-height:100%;
-  background:#02060d;
-  color:var(--text);
-  font-family:
-    -apple-system,
-    BlinkMacSystemFont,
-    "SF Pro Display",
-    "Segoe UI",
-    Arial,
-    sans-serif;
+    margin:0;
+    padding:0;
+    width:100%;
+    min-height:100%;
+    background:#02050d;
+    color:#fff;
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "SF Pro Display",
+        "Segoe UI",
+        Arial,
+        sans-serif;
 }
 
 body{
-  overflow-x:hidden;
+    overflow-x:hidden;
 }
 
 button,
-input{
-  font:inherit;
-  outline:none;
+input,
+select{
+    font-family:inherit;
 }
 
 button{
-  color:inherit;
-  cursor:pointer;
+    cursor:pointer;
 }
 
-button:active{
-  transform:scale(.97);
+img,
+video{
+    max-width:100%;
 }
 
-.app{
-  min-height:100vh;
-  overflow:hidden;
+/* =========================================================
+   APP
+========================================================= */
 
-  background:
-    radial-gradient(
-      circle at 78% 20%,
-      #063b70 0,
-      transparent 28%
-    ),
-    radial-gradient(
-      circle at 10% 60%,
-      #0a1f3c 0,
-      transparent 32%
-    ),
-    linear-gradient(
-      180deg,
-      #02060d,
-      #02050a 60%,
-      #010307
-    );
+:root{
+
+    --bg:#02050d;
+    --bg2:#050b18;
+
+    --card:rgba(8,17,31,.78);
+
+    --line:rgba(74,145,255,.25);
+
+    --blue:#168cff;
+    --blue2:#5f65ff;
+    --cyan:#00d9ff;
+
+    --text:#f7f9ff;
+    --muted:#9ba9c2;
+
+    --success:#28d86f;
+
+    --radius:24px;
 }
 
-.bg{
-  position:fixed;
-  inset:0;
-  z-index:0;
-  pointer-events:none;
-
-  background:
-    linear-gradient(
-      180deg,
-      #0006,
-      #000b 65%,
-      #000
-    ),
-    radial-gradient(
-      circle at 65% 35%,
-      #09294d66,
-      transparent 35%
-    );
+body{
+    background:
+        radial-gradient(
+            circle at 50% -10%,
+            rgba(0,119,255,.25),
+            transparent 42%
+        ),
+        linear-gradient(
+            180deg,
+            #02050d,
+            #02040a 70%,
+            #010207
+        );
 }
 
-.container{
-  position:relative;
-  z-index:2;
-  width:min(1100px,94%);
-  margin:auto;
+/* =========================================================
+   BACKGROUND
+========================================================= */
+
+#app{
+    min-height:100vh;
+    position:relative;
+    overflow:hidden;
 }
 
-/* =========================
-HEADER
-========================= */
+.bgGlow{
+    position:fixed;
+    width:350px;
+    height:350px;
+    border-radius:50%;
+    filter:blur(100px);
+    opacity:.22;
+    pointer-events:none;
+    z-index:0;
+}
 
-header{
-  padding:24px 0 12px;
+.glow1{
+    top:50px;
+    left:-180px;
+    background:#006eff;
+}
 
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
+.glow2{
+    top:480px;
+    right:-180px;
+    background:#5200ff;
+}
 
-  gap:18px;
+.glow3{
+    bottom:-200px;
+    left:30%;
+    background:#00c8ff;
+}
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.header{
+    position:relative;
+    z-index:10;
+
+    padding:
+        calc(18px + env(safe-area-inset-top))
+        24px
+        10px;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:15px;
 }
 
 .brand{
-  display:flex;
-  align-items:center;
-  gap:13px;
+    display:flex;
+    align-items:center;
+    gap:12px;
 }
 
-.eye{
-  width:74px;
-  height:48px;
+.logoEye{
+    width:76px;
+    height:45px;
 
-  position:relative;
+    position:relative;
 
-  border:4px solid #e8f5ff;
-  border-radius:70% 10%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
 
-  transform:
-    skewX(-16deg)
-    rotate(-10deg);
+    font-size:38px;
 
-  box-shadow:
-    0 0 22px #20aaff99;
+    filter:
+        drop-shadow(
+            0 0 13px
+            rgba(0,145,255,.75)
+        );
 }
 
-.eye:before{
-  content:"";
-
-  position:absolute;
-
-  left:24px;
-  top:7px;
-
-  width:22px;
-  height:22px;
-
-  border-radius:50%;
-
-  background:
-    radial-gradient(
-      circle,
-      #02050b 0 18%,
-      #17baff 20% 43%,
-      #1540ff 45% 70%,
-      #02050b 72%
-    );
-
-  transform:
-    skewX(16deg)
-    rotate(10deg);
-
-  box-shadow:
-    0 0 15px #12baff;
+.logoEye::before{
+    content:"";
+    position:absolute;
+    width:65px;
+    height:30px;
+    border-radius:50% 8px 50% 8px;
+    border:
+        3px solid
+        rgba(225,238,255,.85);
+    transform:rotate(-5deg);
 }
 
-.brand h1{
-  margin:0;
-
-  font-size:30px;
-  line-height:.9;
-  font-weight:950;
-  letter-spacing:-1px;
+.brandText h1{
+    margin:0;
+    font-size:29px;
+    line-height:1;
+    font-weight:950;
+    letter-spacing:-1px;
 }
 
-.brand h1 span{
-  font-size:50px;
-  font-style:italic;
-
-  color:#318dff;
-
-  text-shadow:
-    4px 0 #6928ff,
-    -2px 0 #00d9ff;
+.brandText h1 span{
+    color:#3f9cff;
+    text-shadow:
+        0 0 12px
+        rgba(0,145,255,.7);
 }
 
-.brand p{
-  margin:8px 0 0;
-
-  font-size:14px;
-
-  color:#eef4ff;
+.brandText p{
+    margin:5px 0 0;
+    color:#d8dfef;
+    font-size:12px;
 }
 
-.topActions{
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
+/* PREMIUM */
 
 .premium{
-  padding:10px 18px;
+    border:1px solid #a77928;
+    background:
+        linear-gradient(
+            135deg,
+            rgba(79,48,8,.45),
+            rgba(18,13,3,.8)
+        );
 
-  border:
-    1px solid #e7a900;
+    color:#ffd66b;
 
-  border-radius:16px;
+    border-radius:17px;
 
-  background:#0a0d12cc;
+    padding:10px 16px;
 
-  color:#ffd348;
+    font-size:11px;
+    font-weight:900;
 
-  font-weight:900;
-  font-size:11px;
+    box-shadow:
+        0 0 25px
+        rgba(255,185,45,.08);
 }
 
 .premium small{
-  color:#fff;
+    display:block;
+    font-size:8px;
+    opacity:.8;
+    margin-top:2px;
 }
 
-.gear{
-  width:42px;
-  height:42px;
+/* SETTINGS */
 
-  border-radius:50%;
+.settingsTop{
+    width:42px;
+    height:42px;
 
-  border:
-    1px solid #ffffff28;
+    border-radius:50%;
 
-  background:#07101c;
+    background:
+        rgba(255,255,255,.04);
 
-  font-size:22px;
+    border:
+        1px solid
+        rgba(255,255,255,.12);
+
+    color:#fff;
+
+    font-size:21px;
 }
 
-/* =========================
-HERO
-========================= */
+/* =========================================================
+   HERO
+========================================================= */
 
 .hero{
-  min-height:340px;
+    position:relative;
+    z-index:5;
 
-  display:grid;
-  grid-template-columns:44% 56%;
+    margin:15px 24px 20px;
 
-  align-items:center;
+    min-height:330px;
 
-  gap:10px;
+    border-radius:30px;
 
-  padding:24px 0 18px;
+    overflow:hidden;
+
+    border:
+        1px solid
+        rgba(57,145,255,.25);
+
+    background:
+        radial-gradient(
+            circle at 78% 50%,
+            rgba(0,125,255,.32),
+            transparent 35%
+        ),
+        linear-gradient(
+            110deg,
+            #030712 10%,
+            #071225 60%,
+            #020711
+        );
+
+    box-shadow:
+        0 25px 80px
+        rgba(0,0,0,.55);
+}
+
+.hero::before{
+    content:"";
+
+    position:absolute;
+    inset:0;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(0,0,0,.9),
+            rgba(0,0,0,.35),
+            transparent
+        );
+}
+
+.heroText{
+    position:relative;
+    z-index:4;
+
+    width:48%;
+
+    padding:
+        45px 0 40px 32px;
 }
 
 .heroText h2{
-  font-size:34px;
-  line-height:1.05;
+    margin:0;
 
-  margin:0 0 16px;
+    font-size:
+        clamp(
+            28px,
+            5vw,
+            50px
+        );
 
-  font-weight:950;
+    line-height:1.05;
+
+    font-weight:950;
 }
 
 .heroText h2 span{
-  display:block;
+    color:#368dff;
 
-  font-size:55px;
-
-  font-style:italic;
-
-  background:
-    linear-gradient(
-      90deg,
-      #2f82ff,
-      #7a4cff,
-      #e8f7ff
-    );
-
-  -webkit-background-clip:text;
-  background-clip:text;
-
-  color:transparent;
+    text-shadow:
+        0 0 20px
+        rgba(0,132,255,.8);
 }
 
 .heroText p{
-  font-size:17px;
-  line-height:1.55;
+    margin:18px 0 0;
 
-  color:#d8e1ed;
+    color:#d7dfed;
 
-  max-width:430px;
+    line-height:1.55;
+
+    font-size:14px;
+
+    max-width:440px;
 }
 
 .heroVisual{
-  height:310px;
+    position:absolute;
 
-  display:grid;
-  place-items:center;
+    right:2%;
+    top:8%;
+
+    width:53%;
+    height:84%;
+
+    border-radius:35px;
+
+    border:
+        3px solid
+        rgba(0,184,255,.65);
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(0,119,255,.18),
+            rgba(0,0,0,.4)
+        );
+
+    transform:
+        perspective(900px)
+        rotateY(-7deg)
+        rotateX(2deg);
+
+    box-shadow:
+        0 0 35px
+        rgba(0,119,255,.18),
+        inset 0 0 40px
+        rgba(0,0,0,.7);
+
+    overflow:hidden;
 }
 
-.device{
-  width:min(500px,100%);
-  height:285px;
+.heroVisual::before,
+.heroVisual::after{
+    content:"";
 
-  border-radius:28px;
+    position:absolute;
+    inset:0;
 
-  border:
-    2px solid #0aaeff;
-
-  transform:
-    perspective(900px)
-    rotateY(-8deg)
-    rotateX(2deg);
-
-  background:
-    radial-gradient(
-      circle at 30% 30%,
-      #7cf5ff55,
-      transparent 22%
-    ),
-    linear-gradient(
-      135deg,
-      #072b45,
-      #06101b 55%,
-      #0b1e38
-    );
-
-  box-shadow:
-    0 0 35px #00aaff55,
-    0 20px 60px #000;
-
-  position:relative;
-
-  overflow:hidden;
+    background:
+        linear-gradient(
+            135deg,
+            #0d2d55,
+            #122e42 45%,
+            #05111d
+        );
 }
 
-.device:before,
-.device:after{
-  content:"";
-
-  position:absolute;
-
-  top:0;
-  bottom:0;
-
-  width:50%;
-
-  background:
-    radial-gradient(
-      circle at 40% 35%,
-      #fff9,
-      transparent 2%
-    ),
-    linear-gradient(
-      160deg,
-      transparent 25%,
-      #34aaff77 26% 28%,
-      transparent 29%
-    ),
-    linear-gradient(
-      20deg,
-      transparent 40%,
-      #8b4dff66 41% 44%,
-      transparent 45%
-    );
+.heroVisual::after{
+    background:
+        radial-gradient(
+            circle at 60% 38%,
+            rgba(0,205,255,.7),
+            transparent 5%
+        ),
+        radial-gradient(
+            circle at 30% 65%,
+            rgba(40,100,255,.6),
+            transparent 10%
+        );
+    mix-blend-mode:screen;
 }
 
-.device:before{
-  left:0;
-  border-right:3px solid #ff3030;
+.heroPhone{
+    position:absolute;
+
+    left:17%;
+    top:12%;
+
+    width:70%;
+    height:75%;
+
+    border-radius:28px;
+
+    border:
+        2px solid
+        rgba(0,210,255,.7);
+
+    background:
+        linear-gradient(
+            135deg,
+            #102a4d,
+            #06111f
+        );
+
+    z-index:4;
+
+    transform:
+        rotate(-5deg);
+
+    box-shadow:
+        0 20px 50px
+        rgba(0,0,0,.8);
 }
 
-.device:after{
-  right:0;
-  border-left:3px solid #00eaff;
-  opacity:.65;
+.fakeLandscape{
+    position:absolute;
+    inset:8px;
+
+    border-radius:21px;
+
+    overflow:hidden;
+
+    background:
+        linear-gradient(
+            160deg,
+            #123a68,
+            #0c5b70 42%,
+            #061323
+        );
 }
 
-.threeDTag{
-  position:absolute;
+.fakeLandscape::before{
+    content:"";
 
-  right:16px;
-  bottom:14px;
+    position:absolute;
+    left:-5%;
+    bottom:25%;
 
-  z-index:3;
+    width:110%;
+    height:40%;
 
-  padding:9px 15px;
+    background:
+        linear-gradient(
+            145deg,
+            transparent 0 18%,
+            #152c42 19% 36%,
+            #0a1b2c 37% 52%,
+            transparent 53%
+        );
 
-  border:
-    2px solid #168cff;
-
-  border-radius:18px;
-
-  font-size:25px;
-  font-weight:950;
-  font-style:italic;
-
-  color:#1daaff;
-
-  text-shadow:
-    2px 0 #ff214f;
+    filter:
+        drop-shadow(
+            0 5px 5px
+            rgba(0,0,0,.6)
+        );
 }
 
-.sliderDot{
-  position:absolute;
+.fakeLandscape::after{
+    content:"3D";
 
-  left:50%;
-  top:50%;
+    position:absolute;
 
-  transform:
-    translate(-50%,-50%);
+    right:12px;
+    bottom:12px;
 
-  z-index:4;
+    padding:8px 12px;
 
-  width:45px;
-  height:45px;
+    border-radius:20px;
 
-  border:
-    4px solid #fff;
+    border:
+        1px solid
+        #008cff;
 
-  border-radius:50%;
+    background:
+        rgba(0,20,50,.75);
 
-  background:#07101dcc;
+    color:#36a5ff;
+
+    font-weight:950;
+
+    font-size:20px;
 }
 
-.sliderDot:after{
-  content:"↔";
+.divider3d{
+    position:absolute;
 
-  font-size:19px;
+    left:50%;
+    top:0;
+    bottom:0;
 
-  display:grid;
-  place-items:center;
+    width:3px;
 
-  height:100%;
+    background:
+        linear-gradient(
+            transparent,
+            #00e5ff,
+            transparent
+        );
+
+    box-shadow:
+        0 0 15px
+        #00dfff;
+
+    z-index:10;
 }
 
-/* =========================
-FEATURES
-========================= */
+/* =========================================================
+   ACTION GRID
+========================================================= */
 
-.featureGrid{
-  display:grid;
+.actionGrid{
+    position:relative;
+    z-index:10;
 
-  grid-template-columns:
-    repeat(6,1fr);
+    margin:
+        0 24px
+        28px;
 
-  gap:13px;
+    display:grid;
 
-  margin:
-    5px 0 24px;
+    grid-template-columns:
+        repeat(6,1fr);
+
+    gap:13px;
+}
+
+.actionCard{
+    min-height:145px;
+
+    border-radius:22px;
+
+    border:
+        1px solid
+        rgba(73,139,226,.28);
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(9,20,37,.9),
+            rgba(3,9,18,.9)
+        );
+
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+
+    text-align:center;
+
+    color:#fff;
+
+    transition:
+        transform .2s,
+        border-color .2s,
+        box-shadow .2s;
+}
+
+.actionCard:active{
+    transform:scale(.96);
+}
+
+.actionIcon{
+    width:58px;
+    height:58px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:31px;
+
+    margin-bottom:10px;
+
+    color:#55aaff;
+
+    filter:
+        drop-shadow(
+            0 0 12px
+            rgba(0,132,255,.65)
+        );
+}
+
+.actionCard strong{
+    font-size:15px;
+}
+
+.actionCard small{
+    margin-top:5px;
+
+    color:#91a0b9;
+
+    font-size:9px;
+}
+
+/* =========================================================
+   FEATURE CARDS
+========================================================= */
+
+.features{
+    position:relative;
+    z-index:5;
+
+    margin:
+        0 24px
+        28px;
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(3,1fr);
+
+    gap:16px;
 }
 
 .feature{
-  min-height:130px;
+    min-height:300px;
 
-  padding:17px 9px;
+    border-radius:23px;
 
-  border-radius:21px;
+    overflow:hidden;
 
-  border:
-    1px solid #1a5687;
+    position:relative;
 
-  background:
-    linear-gradient(
-      180deg,
-      #061322dd,
-      #030912dd
-    );
+    border:
+        1px solid
+        rgba(62,132,225,.25);
 
-  text-align:center;
+    background:#07101d;
 
-  box-shadow:
-    0 12px 35px #0007;
+    box-shadow:
+        0 15px 45px
+        rgba(0,0,0,.4);
 }
 
-.icon{
-  width:50px;
-  height:50px;
+.featureVisual{
+    position:absolute;
+    inset:0;
 
-  margin:
-    0 auto 10px;
-
-  border-radius:16px;
-
-  display:grid;
-  place-items:center;
-
-  background:#10255a;
-
-  color:#5cbcff;
-
-  font-size:28px;
-
-  box-shadow:
-    0 0 20px #245cff55;
+    background:
+        radial-gradient(
+            circle at 50% 40%,
+            rgba(0,140,255,.35),
+            transparent 30%
+        ),
+        linear-gradient(
+            150deg,
+            #1d3152,
+            #07111e 70%
+        );
 }
 
-.feature b{
-  display:block;
-  font-size:16px;
+.featureVisual.tiger{
+    background:
+        radial-gradient(
+            circle at 50% 40%,
+            #ff8b00,
+            transparent 9%
+        ),
+        repeating-linear-gradient(
+            125deg,
+            #151515 0 8px,
+            #e87500 9px 20px,
+            #171717 21px 28px
+        );
 }
 
-.feature small{
-  display:block;
-
-  color:#b9c4d3;
-
-  margin-top:5px;
-
-  font-size:10px;
+.featureVisual.city{
+    background:
+        linear-gradient(
+            180deg,
+            #161f65,
+            #100b26 50%,
+            #03070e
+        );
 }
 
-/* =========================
-CARDS
-========================= */
-
-.cards{
-  display:grid;
-
-  grid-template-columns:
-    1.15fr 1.15fr .9fr;
-
-  gap:15px;
-
-  margin-bottom:26px;
+.featureVisual.moon{
+    background:
+        radial-gradient(
+            circle at 65% 30%,
+            #dce8ff 0 7%,
+            transparent 8%
+        ),
+        linear-gradient(
+            180deg,
+            #131a3b,
+            #030711
+        );
 }
 
-.card{
-  position:relative;
+.featureOverlay{
+    position:absolute;
+    inset:0;
 
-  min-height:315px;
-
-  border-radius:18px;
-
-  overflow:hidden;
-
-  border:
-    1px solid #194b76;
-
-  background:#07111d;
-
-  box-shadow:
-    0 18px 50px #0008;
+    background:
+        linear-gradient(
+            transparent 25%,
+            rgba(0,0,0,.85) 80%
+        );
 }
 
-.cardArt{
-  position:absolute;
-  inset:0;
+.featureText{
+    position:absolute;
 
-  background:
-    radial-gradient(
-      circle at 50% 35%,
-      #1d8eff55,
-      transparent 22%
-    ),
-    linear-gradient(
-      140deg,
-      #0c2d3e,
-      #04111d 48%,
-      #05070b
-    );
+    left:18px;
+    right:18px;
+    bottom:18px;
+
+    z-index:3;
 }
 
-.tiger{
-  background:
-    radial-gradient(
-      ellipse at 50% 44%,
-      #f0a64d 0 12%,
-      transparent 13%
-    ),
-    radial-gradient(
-      ellipse at 50% 45%,
-      #111 0 4%,
-      transparent 5%
-    ),
-    repeating-linear-gradient(
-      75deg,
-      #d88631 0 10px,
-      #12100e 11px 20px,
-      #d88631 21px 29px
-    );
+.featureText h3{
+    margin:0 0 5px;
+
+    font-size:19px;
 }
 
-.city{
-  background:
-    linear-gradient(
-      180deg,
-      #07102a,
-      #172c56 45%,
-      #0c1720
-    ),
-    repeating-linear-gradient(
-      90deg,
-      transparent 0 24px,
-      #64b9ff33 25px 27px
-    );
+.featureText p{
+    margin:0;
+
+    color:#9da9be;
+
+    font-size:10px;
 }
 
-.moon{
-  background:
-    radial-gradient(
-      circle at 66% 25%,
-      #fff 0 4%,
-      #c9d7ff 5% 7%,
-      transparent 8%
-    ),
-    linear-gradient(
-      180deg,
-      #10182b,
-      #04070d 75%
-    );
+.badge3d{
+    position:absolute;
+
+    right:15px;
+    bottom:16px;
+
+    z-index:4;
+
+    border:
+        1px solid
+        #007dff;
+
+    color:#2da0ff;
+
+    background:
+        rgba(0,25,60,.75);
+
+    border-radius:20px;
+
+    padding:5px 9px;
+
+    font-size:10px;
+    font-weight:950;
 }
 
-.cardContent{
-  position:absolute;
+/* =========================================================
+   GALLERY SECTION
+========================================================= */
 
-  left:0;
-  right:0;
-  bottom:0;
+.sectionWrap{
+    position:relative;
+    z-index:5;
 
-  padding:18px;
-
-  background:
-    linear-gradient(
-      transparent,
-      #000e 25%,
-      #000f
-    );
-}
-
-.card h3{
-  margin:0 0 6px;
-  font-size:18px;
-}
-
-.card p{
-  margin:0;
-
-  color:#bac5d4;
-
-  font-size:11px;
-}
-
-.badge{
-  position:absolute;
-
-  right:12px;
-  bottom:13px;
-
-  border:
-    1px solid #138fff;
-
-  border-radius:50%;
-
-  width:42px;
-  height:42px;
-
-  display:grid;
-  place-items:center;
-
-  font-weight:950;
-
-  color:#19aaff;
-
-  background:#04101d99;
-}
-
-/* =========================
-GALLERY
-========================= */
-
-.gallerySection{
-  margin:12px 0 28px;
+    margin:
+        0 24px
+        30px;
 }
 
 .sectionHead{
-  display:flex;
+    display:flex;
 
-  align-items:center;
-  justify-content:space-between;
+    align-items:center;
+    justify-content:space-between;
 
-  margin-bottom:13px;
+    margin-bottom:14px;
 }
 
 .sectionHead h2{
-  margin:0;
-  font-size:23px;
+    margin:0;
+
+    font-size:22px;
 }
 
-.sectionHead h2:before{
-  content:"♛";
-  color:#ffd12c;
-  margin-right:10px;
+.sectionHead h2 span{
+    color:#ffd04f;
 }
 
-.see{
-  background:none;
-  color:#fff;
-  border:0;
-  font-size:12px;
+.sectionHead button{
+    background:none;
+    border:0;
+    color:#d9e6ff;
+    font-size:12px;
 }
 
-.gallery{
-  display:grid;
+.galleryCategories{
+    display:grid;
 
-  grid-template-columns:
-    repeat(6,1fr);
+    grid-template-columns:
+        repeat(6,1fr);
 
-  gap:11px;
+    gap:10px;
 }
 
-.thumb{
-  aspect-ratio:1;
+.category{
+    background:
+        #091426;
 
-  border-radius:13px;
+    border:
+        1px solid
+        rgba(70,130,220,.2);
 
-  border:
-    1px solid #17486e;
+    border-radius:15px;
 
-  overflow:hidden;
+    overflow:hidden;
 
-  background:#09111a;
+    color:#fff;
+
+    text-align:left;
 }
 
-.thumb div{
-  width:100%;
-  height:100%;
+.categoryVisual{
+    height:105px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #0d4c87,
+            #101728
+        );
 }
 
-.t1{
-  background:
-    linear-gradient(
-      135deg,
-      #1576b8,
-      #bcd9e7 35%,
-      #0b314a
-    );
+.category:nth-child(2)
+.categoryVisual{
+    background:
+        linear-gradient(
+            145deg,
+            #462a8e,
+            #08152d
+        );
 }
 
-.t2{
-  background:
-    linear-gradient(
-      135deg,
-      #03070d,
-      #21447c,
-      #ee7446
-    );
+.categoryName{
+    padding:9px;
+
+    font-size:11px;
 }
 
-.t3{
-  background:
-    linear-gradient(
-      135deg,
-      #e2d3b0,
-      #7896b1,
-      #273a51
-    );
-}
-
-.t4{
-  background:
-    linear-gradient(
-      135deg,
-      #5c130b,
-      #bc6934,
-      #4b7e75
-    );
-}
-
-.t5{
-  background:
-    linear-gradient(
-      135deg,
-      #6e4a27,
-      #d59a53,
-      #1e2619
-    );
-}
-
-.t6{
-  background:
-    linear-gradient(
-      135deg,
-      #13235c,
-      #8d51ff,
-      #09b8ff
-    );
-}
-
-/* =========================
-PERMISSIONS
-========================= */
+/* =========================================================
+   PERMISSIONS
+========================================================= */
 
 .permissions{
-  display:grid;
+    position:relative;
+    z-index:5;
 
-  grid-template-columns:
-    1.5fr .8fr;
+    margin:
+        0 24px
+        25px;
 
-  gap:20px;
+    padding:25px;
 
-  align-items:center;
+    border-radius:22px;
 
-  padding:22px;
+    border:
+        1px solid
+        rgba(51,123,216,.3);
 
-  border:
-    1px solid #1b5686;
+    background:
+        linear-gradient(
+            135deg,
+            rgba(8,26,48,.95),
+            rgba(3,10,20,.95)
+        );
 
-  border-radius:22px;
+    display:grid;
 
-  background:
-    linear-gradient(
-      120deg,
-      #06182a,
-      #030914
-    );
+    grid-template-columns:
+        1.5fr
+        1fr;
 
-  margin-bottom:35px;
+    gap:25px;
 }
 
-.permissions h3{
-  margin:0 0 8px;
-  font-size:18px;
+.permissionTitle{
+    display:flex;
+    gap:13px;
+    align-items:flex-start;
 }
 
-.permissions p{
-  margin:0 0 12px;
-
-  color:#b6c1cf;
-
-  font-size:11px;
-  line-height:1.5;
+.permissionShield{
+    font-size:35px;
 }
 
-.permList{
-  display:grid;
-  gap:6px;
-
-  color:#dce7f5;
-
-  font-size:11px;
+.permissionTitle h2{
+    margin:0;
+    font-size:18px;
 }
 
-.permList span:before{
-  content:"✓";
-
-  color:#39db70;
-
-  font-weight:900;
-
-  margin-right:8px;
+.permissionTitle p{
+    color:#9caac0;
+    font-size:10px;
+    line-height:1.5;
 }
 
-.permissionBtn{
-  width:100%;
-
-  padding:15px;
-
-  border-radius:14px;
-
-  background:
-    linear-gradient(
-      90deg,
-      #168eff,
-      #754fff
-    );
-
-  font-weight:950;
-
-  border:0;
-
-  box-shadow:
-    0 10px 30px #256cff55;
+.permissionList{
+    list-style:none;
+    padding:0;
+    margin:15px 0 0;
 }
 
-.security{
-  grid-column:1/-1;
-
-  border-top:
-    1px solid #ffffff12;
-
-  padding-top:15px;
-
-  color:#aeb9c8;
-
-  font-size:11px;
-
-  line-height:1.5;
+.permissionList li{
+    margin:8px 0;
+    font-size:11px;
+    color:#d5deed;
 }
 
-.security strong{
-  display:block;
-
-  color:#fff;
-
-  font-size:13px;
-
-  margin-bottom:8px;
+.permissionList li::before{
+    content:"✓";
+    color:#2ee477;
+    font-weight:900;
+    margin-right:8px;
 }
 
-/* =========================
-FOOTER
-========================= */
-
-footer{
-  text-align:center;
-
-  padding:
-    8px 0 40px;
-
-  color:#aab4c2;
-
-  font-size:12px;
+.permissionAction{
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
 }
 
-.footerBrand{
-  color:#21b7ff;
+.primary{
+    width:100%;
 
-  letter-spacing:5px;
+    min-height:54px;
 
-  font-weight:900;
+    border:0;
 
-  margin-bottom:8px;
+    border-radius:15px;
+
+    color:white;
+
+    font-weight:900;
+
+    background:
+        linear-gradient(
+            135deg,
+            #167cff,
+            #615dff
+        );
+
+    box-shadow:
+        0 10px 30px
+        rgba(48,109,255,.28);
 }
 
-/* =========================
-MODAIS
-========================= */
-
-.modal{
-  position:fixed;
-
-  inset:0;
-
-  z-index:100;
-
-  display:none;
-
-  align-items:flex-end;
-  justify-content:center;
-
-  background:#000a;
+.permissionAction small{
+    margin-top:12px;
+    color:#8997ac;
+    font-size:9px;
+    text-align:center;
 }
 
-.modal.open{
-  display:flex;
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.footer{
+    position:relative;
+    z-index:5;
+
+    text-align:center;
+
+    padding:
+        20px
+        20px
+        calc(
+            35px +
+            env(safe-area-inset-bottom)
+        );
+
+    color:#8995aa;
+}
+
+.footerLogo{
+    color:#2ba1ff;
+
+    font-size:12px;
+
+    letter-spacing:5px;
+
+    font-weight:900;
+}
+
+.footer p{
+    font-size:10px;
+}
+
+/* =========================================================
+   OVERLAY / PANELS
+========================================================= */
+
+.overlay{
+    position:fixed;
+    inset:0;
+
+    z-index:1000;
+
+    display:none;
+
+    background:
+        rgba(0,0,0,.72);
+
+    backdrop-filter:
+        blur(10px);
+}
+
+.overlay.open{
+    display:block;
 }
 
 .sheet{
-  width:min(650px,100%);
+    position:fixed;
 
-  max-height:90vh;
+    left:0;
+    right:0;
+    bottom:0;
 
-  overflow:auto;
+    z-index:1100;
 
-  border-radius:
-    28px 28px 0 0;
+    max-height:
+        90vh;
 
-  background:#07101b;
+    overflow:auto;
 
-  border:
-    1px solid #1d527c;
+    border-radius:
+        28px
+        28px
+        0
+        0;
 
-  padding:18px;
+    background:
+        #07101c;
 
-  box-shadow:
-    0 -20px 70px #000;
+    border:
+        1px solid
+        rgba(81,147,236,.25);
+
+    box-shadow:
+        0 -20px 80px
+        rgba(0,0,0,.75);
+
+    transform:
+        translateY(110%);
+
+    transition:
+        transform .3s ease;
+
+    padding:
+        20px
+        20px
+        calc(
+            25px +
+            env(safe-area-inset-bottom)
+        );
 }
 
-.sheetHead{
-  display:flex;
-
-  justify-content:space-between;
-
-  align-items:center;
+.sheet.open{
+    transform:
+        translateY(0);
 }
 
-.sheet h2{
-  margin:0;
+.sheetHeader{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    margin-bottom:20px;
 }
 
-.close{
-  width:42px;
-  height:42px;
-
-  border-radius:50%;
-
-  background:#101923;
-
-  border:
-    1px solid #ffffff18;
-
-  font-size:24px;
+.sheetHeader h2{
+    margin:0;
+    font-size:19px;
 }
 
-video#preview{
-  width:100%;
-
-  max-height:55vh;
-
-  object-fit:cover;
-
-  border-radius:20px;
-
-  background:#000;
-
-  margin:14px 0;
-}
-
-.actions{
-  display:grid;
-
-  grid-template-columns:
-    repeat(2,1fr);
-
-  gap:9px;
-}
-
-.action{
-  padding:13px;
-
-  border-radius:13px;
-
-  background:#101a26;
-
-  border:
-    1px solid #ffffff13;
-
-  font-size:11px;
-
-  font-weight:900;
-}
-
-#fileInput{
-  display:none;
-}
-
-/* =========================
-TOAST
-========================= */
-
-.toast{
-  position:fixed;
-
-  z-index:300;
-
-  left:50%;
-  bottom:25px;
-
-  transform:
-    translate(-50%,20px);
-
-  padding:11px 15px;
-
-  border-radius:14px;
-
-  background:#07101ddd;
-
-  border:
-    1px solid #ffffff18;
-
-  opacity:0;
-
-  pointer-events:none;
-
-  font-size:11px;
-
-  transition:.25s;
-}
-
-.toast.show{
-  opacity:1;
-
-  transform:
-    translate(-50%,0);
-}
-
-/* =========================
-MODO ESCURO EXTRA
-========================= */
-
-body.extraNight .app{
-  filter:
-    brightness(.78)
-    contrast(1.15);
-}
-
-/* =========================
-RESPONSIVO
-========================= */
-
-@media(max-width:800px){
-
-  header{
-    align-items:flex-start;
-  }
-
-  .brand h1{
-    font-size:23px;
-  }
-
-  .brand h1 span{
-    font-size:38px;
-  }
-
-  .eye{
-    width:56px;
-    height:38px;
-  }
-
-  .topActions .premium{
-    padding:8px 10px;
-  }
-
-  .gear{
-    width:38px;
-    height:38px;
-  }
-
-  .hero{
-    grid-template-columns:1fr;
-
-    min-height:auto;
-
-    padding-top:14px;
-  }
-
-  .heroText h2{
-    font-size:27px;
-  }
-
-  .heroText h2 span{
-    font-size:45px;
-  }
-
-  .heroVisual{
-    height:235px;
-  }
-
-  .device{
-    height:220px;
-  }
-
-  .featureGrid{
-    grid-template-columns:
-      repeat(3,1fr);
-  }
-
-  .feature{
-    min-height:112px;
-  }
-
-  .icon{
+.closeBtn{
     width:42px;
     height:42px;
-    font-size:23px;
-  }
 
-  .cards{
-    grid-template-columns:
-      1fr 1fr;
-  }
+    border-radius:50%;
 
-  .card{
-    min-height:250px;
-  }
+    border:
+        1px solid
+        rgba(255,255,255,.13);
 
-  .cards .card:last-child{
-    grid-column:1/-1;
-    min-height:210px;
-  }
+    background:
+        rgba(255,255,255,.05);
 
-  .gallery{
-    grid-template-columns:
-      repeat(3,1fr);
-  }
+    color:#fff;
 
-  .permissions{
-    grid-template-columns:1fr;
-  }
-
-  .security{
-    grid-column:auto;
-  }
-
+    font-size:25px;
 }
 
-@media(max-width:430px){
+/* =========================================================
+   CAMERA
+========================================================= */
 
-  .container{
-    width:92%;
-  }
+.cameraScreen{
+    position:fixed;
+    inset:0;
 
-  .topActions .premium{
+    z-index:2000;
+
     display:none;
-  }
 
-  .featureGrid{
-    gap:7px;
-  }
+    background:#000;
+}
 
-  .feature{
-    padding:12px 5px;
-  }
+.cameraScreen.open{
+    display:block;
+}
 
-  .feature b{
-    font-size:12px;
-  }
+#cameraVideo{
+    width:100%;
+    height:100%;
 
-  .feature small{
-    font-size:9px;
-  }
+    object-fit:cover;
 
-  .cards{
-    gap:8px;
-  }
+    background:#000;
 
-  .card{
-    min-height:215px;
-  }
+    transition:
+        filter .15s,
+        transform .15s;
+}
 
-  .card h3{
-    font-size:15px;
-  }
+.cameraTop{
+    position:absolute;
 
-  .card p{
-    font-size:9px;
-  }
+    top:
+        calc(
+            15px +
+            env(safe-area-inset-top)
+        );
 
-  .brand p{
+    left:15px;
+    right:15px;
+
+    display:flex;
+    justify-content:space-between;
+
+    z-index:10;
+}
+
+.cameraPill{
+    padding:9px 12px;
+
+    border-radius:16px;
+
+    background:
+        rgba(0,0,0,.5);
+
+    border:
+        1px solid
+        rgba(255,255,255,.14);
+
+    backdrop-filter:
+        blur(15px);
+
     font-size:10px;
-  }
+    font-weight:900;
+}
 
-  .brand h1{
-    font-size:20px;
-  }
+.cameraBottom{
+    position:absolute;
 
-  .brand h1 span{
-    font-size:31px;
-  }
+    left:0;
+    right:0;
+    bottom:0;
 
-  .eye{
-    width:48px;
-    height:33px;
-  }
+    z-index:10;
 
-  .actions{
-    grid-template-columns:1fr;
-  }
+    padding:
+        20px
+        20px
+        calc(
+            30px +
+            env(safe-area-inset-bottom)
+        );
+
+    background:
+        linear-gradient(
+            transparent,
+            rgba(0,0,0,.85)
+        );
+
+    display:flex;
+
+    justify-content:center;
+    align-items:center;
+
+    gap:25px;
+}
+
+.camBtn{
+    width:62px;
+    height:62px;
+
+    border-radius:50%;
+
+    border:
+        2px solid
+        rgba(255,255,255,.6);
+
+    background:
+        rgba(255,255,255,.1);
+
+    color:white;
+
+    font-size:23px;
+}
+
+.capture{
+    width:84px;
+    height:84px;
+
+    border:
+        5px solid
+        white;
+
+    background:
+        rgba(255,255,255,.1);
+}
+
+.capture::after{
+    content:"";
+
+    display:block;
+
+    width:65px;
+    height:65px;
+
+    margin:auto;
+
+    border-radius:50%;
+
+    background:white;
+}
+
+.recording .capture::after{
+    width:30px;
+    height:30px;
+
+    border-radius:8px;
+
+    background:#ff2638;
+}
+
+.cameraTools{
+    position:absolute;
+
+    left:15px;
+    right:15px;
+
+    bottom:
+        calc(
+            130px +
+            env(safe-area-inset-bottom)
+        );
+
+    z-index:20;
+
+    display:flex;
+
+    gap:8px;
+
+    overflow-x:auto;
+
+    scrollbar-width:none;
+}
+
+.cameraTools::-webkit-scrollbar{
+    display:none;
+}
+
+.tool{
+    flex:none;
+
+    padding:9px 13px;
+
+    border-radius:16px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.14);
+
+    background:
+        rgba(0,0,0,.5);
+
+    color:white;
+
+    font-size:9px;
+    font-weight:900;
+
+    backdrop-filter:
+        blur(15px);
+}
+
+.tool.active{
+    background:
+        #176fff;
+}
+
+/* =========================================================
+   FILTER STRIP
+========================================================= */
+
+.filterStrip{
+    display:flex;
+
+    gap:8px;
+
+    overflow-x:auto;
+
+    scrollbar-width:none;
+
+    padding-bottom:5px;
+}
+
+.filterStrip::-webkit-scrollbar{
+    display:none;
+}
+
+.filterBtn{
+    flex:none;
+
+    border-radius:15px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.12);
+
+    background:#101a2a;
+
+    color:white;
+
+    padding:9px 13px;
+
+    font-size:9px;
+}
+
+.filterBtn.active{
+    border-color:#268fff;
+    background:#0e4081;
+}
+
+/* =========================================================
+   GALLERY APP
+========================================================= */
+
+.galleryScreen{
+    position:fixed;
+    inset:0;
+
+    z-index:1900;
+
+    display:none;
+
+    background:
+        #02050d;
+
+    overflow:auto;
+
+    padding:
+        calc(
+            15px +
+            env(safe-area-inset-top)
+        )
+        15px
+        calc(
+            30px +
+            env(safe-area-inset-bottom)
+        );
+}
+
+.galleryScreen.open{
+    display:block;
+}
+
+.galleryTop{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    margin-bottom:15px;
+}
+
+.galleryTop h1{
+    margin:0;
+    font-size:25px;
+}
+
+.galleryActions{
+    display:flex;
+    gap:7px;
+}
+
+.galleryTabs{
+    display:flex;
+    gap:8px;
+
+    overflow-x:auto;
+
+    margin-bottom:15px;
+}
+
+.galleryTab{
+    flex:none;
+
+    border:1px solid
+        rgba(255,255,255,.12);
+
+    background:#0b1423;
+
+    color:#cbd7ea;
+
+    padding:9px 14px;
+
+    border-radius:15px;
+
+    font-size:10px;
+}
+
+.galleryTab.active{
+    background:#176fff;
+    color:white;
+}
+
+.mediaGrid{
+    display:grid;
+
+    grid-template-columns:
+        repeat(3,1fr);
+
+    gap:5px;
+}
+
+.mediaItem{
+    position:relative;
+
+    aspect-ratio:1;
+
+    border-radius:10px;
+
+    overflow:hidden;
+
+    background:#0b111b;
+
+    border:
+        1px solid
+        rgba(255,255,255,.08);
+}
+
+.mediaItem img,
+.mediaItem video{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+.mediaBadge{
+    position:absolute;
+
+    left:5px;
+    bottom:5px;
+
+    padding:4px 7px;
+
+    border-radius:7px;
+
+    background:
+        rgba(0,0,0,.75);
+
+    font-size:8px;
+    font-weight:900;
+}
+
+.mediaDelete{
+    position:absolute;
+
+    top:5px;
+    right:5px;
+
+    width:25px;
+    height:25px;
+
+    border-radius:50%;
+
+    border:0;
+
+    background:
+        rgba(0,0,0,.75);
+
+    color:white;
+}
+
+/* =========================================================
+   SETTINGS
+========================================================= */
+
+.settingGrid{
+    display:grid;
+
+    grid-template-columns:
+        repeat(2,1fr);
+
+    gap:10px;
+}
+
+.settingButton{
+    min-height:70px;
+
+    border-radius:17px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.1);
+
+    background:
+        #0d1828;
+
+    color:white;
+
+    text-align:left;
+
+    padding:15px;
+
+    font-weight:800;
+}
+
+.settingButton small{
+    display:block;
+
+    color:#8390a6;
+
+    font-size:8px;
+
+    margin-top:4px;
+}
+
+/* =========================================================
+   THEME COLORS
+========================================================= */
+
+.themeList{
+    display:grid;
+
+    grid-template-columns:
+        repeat(3,1fr);
+
+    gap:9px;
+}
+
+.themeChoice{
+    height:72px;
+
+    border-radius:17px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.12);
+
+    color:white;
+
+    font-size:9px;
+    font-weight:900;
+}
+
+.themeChoice.active{
+    border:
+        2px solid
+        white;
+}
+
+/* =========================================================
+   3D VIEWER
+========================================================= */
+
+.viewer3D{
+    position:fixed;
+    inset:0;
+
+    z-index:3000;
+
+    display:none;
+
+    align-items:center;
+    justify-content:center;
+
+    background:
+        rgba(0,0,0,.96);
+}
+
+.viewer3D.open{
+    display:flex;
+}
+
+.viewer3D img{
+    max-width:94%;
+    max-height:82%;
+
+    object-fit:contain;
+
+    filter:
+        drop-shadow(
+            -7px 0 rgba(255,0,0,.55)
+        )
+        drop-shadow(
+            7px 0 rgba(0,255,255,.55)
+        );
+}
+
+.viewer3D .closeBtn{
+    position:absolute;
+
+    top:
+        calc(
+            15px +
+            env(safe-area-inset-top)
+        );
+
+    right:15px;
+}
+
+.viewerControls{
+    position:absolute;
+
+    left:15px;
+    right:15px;
+    bottom:
+        calc(
+            25px +
+            env(safe-area-inset-bottom)
+        );
+
+    display:flex;
+    justify-content:center;
+    gap:8px;
+}
+
+.viewerControls button{
+    padding:11px 15px;
+
+    border-radius:15px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.15);
+
+    background:
+        rgba(20,25,35,.9);
+
+    color:white;
+
+    font-size:9px;
+    font-weight:900;
+}
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+#toast{
+    position:fixed;
+
+    left:50%;
+
+    bottom:
+        calc(
+            25px +
+            env(safe-area-inset-bottom)
+        );
+
+    transform:
+        translate(-50%,20px);
+
+    z-index:5000;
+
+    opacity:0;
+
+    pointer-events:none;
+
+    padding:
+        11px 16px;
+
+    border-radius:16px;
+
+    background:
+        rgba(7,12,20,.94);
+
+    border:
+        1px solid
+        rgba(70,145,255,.35);
+
+    font-size:10px;
+
+    transition:.25s;
+
+    white-space:nowrap;
+}
+
+#toast.show{
+    opacity:1;
+
+    transform:
+        translate(-50%,0);
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media(max-width:850px){
+
+    .header{
+        padding-left:16px;
+        padding-right:16px;
+    }
+
+    .brandText h1{
+        font-size:21px;
+    }
+
+    .logoEye{
+        width:53px;
+        font-size:27px;
+    }
+
+    .premium{
+        display:none;
+    }
+
+    .hero{
+        margin-left:15px;
+        margin-right:15px;
+        min-height:430px;
+    }
+
+    .heroText{
+        width:100%;
+        padding:
+            30px
+            25px;
+    }
+
+    .heroText h2{
+        font-size:31px;
+    }
+
+    .heroText p{
+        font-size:12px;
+        max-width:310px;
+    }
+
+    .heroVisual{
+        top:auto;
+        bottom:15px;
+        right:8%;
+        width:84%;
+        height:45%;
+    }
+
+    .actionGrid{
+        margin-left:15px;
+        margin-right:15px;
+
+        grid-template-columns:
+            repeat(3,1fr);
+
+        gap:8px;
+    }
+
+    .actionCard{
+        min-height:110px;
+        border-radius:17px;
+    }
+
+    .actionIcon{
+        font-size:25px;
+        width:45px;
+        height:45px;
+    }
+
+    .actionCard strong{
+        font-size:11px;
+    }
+
+    .features{
+        margin-left:15px;
+        margin-right:15px;
+
+        grid-template-columns:
+            1fr;
+
+        gap:10px;
+    }
+
+    .feature{
+        min-height:260px;
+    }
+
+    .sectionWrap,
+    .permissions{
+        margin-left:15px;
+        margin-right:15px;
+    }
+
+    .galleryCategories{
+        grid-template-columns:
+            repeat(3,1fr);
+    }
+
+    .categoryVisual{
+        height:80px;
+    }
+
+    .permissions{
+        grid-template-columns:1fr;
+    }
+
+    .permissionAction{
+        align-items:stretch;
+    }
 
 }
+
+@media(min-width:1000px){
+
+    .hero{
+        min-height:390px;
+    }
+
+    .actionGrid{
+        max-width:1500px;
+        margin-left:auto;
+        margin-right:auto;
+        padding-left:24px;
+        padding-right:24px;
+    }
+
+    .features,
+    .sectionWrap,
+    .permissions{
+        max-width:1500px;
+        margin-left:auto;
+        margin-right:auto;
+    }
+
+    .mediaGrid{
+        grid-template-columns:
+            repeat(6,1fr);
+    }
+
+}
+
+/* =========================================================
+   HIDE SCROLLBARS
+========================================================= */
+
+::-webkit-scrollbar{
+    width:0;
+    height:0;
+}
+
 </style>
 </head>
 
 <body>
 
-<div class="app">
+<div id="app">
 
-<div class="bg"></div>
+<div class="bgGlow glow1"></div>
+<div class="bgGlow glow2"></div>
+<div class="bgGlow glow3"></div>
 
-<main class="container">
+<!-- =====================================================
+     HEADER
+===================================================== -->
 
-<header>
+<header class="header">
 
-  <div class="brand">
+    <div class="brand">
 
-    <div class="eye"></div>
+        <div class="logoEye">
+            👁️
+        </div>
 
-    <div>
+        <div class="brandText">
 
-      <h1>
-        RENATO VISION
-        <span>3D</span>
-      </h1>
+            <h1>
+                RENATO VISION
+                <span>3D</span>
+            </h1>
 
-      <p>
-        Veja o mundo em outra dimensão
-      </p>
+            <p>
+                Veja o mundo em outra dimensão
+            </p>
+
+        </div>
 
     </div>
 
-  </div>
-
-  <div class="topActions">
-
     <button
-      class="premium"
-      id="premiumBtn">
+        class="premium"
+        id="premiumButton">
 
-      ♛ PREMIUM
-      <br>
+        👑 PREMIUM
 
-      <small>
-        Versão Completa
-      </small>
+        <small>
+            Versão Completa
+        </small>
 
     </button>
 
     <button
-      class="gear"
-      id="settingsBtn">
+        class="settingsTop"
+        id="settingsButton">
 
-      ⚙
+        ⚙️
 
     </button>
-
-  </div>
 
 </header>
 
 
+<!-- =====================================================
+     HERO
+===================================================== -->
+
 <section class="hero">
 
-  <div class="heroText">
+    <div class="heroText">
 
-    <h2>
+        <h2>
+            Fotos e vídeos em
+            <span>3D REAL</span>
+        </h2>
 
-      Fotos e vídeos em
-
-      <span>
-        3D REAL
-      </span>
-
-    </h2>
-
-    <p>
-
-      Transforme seus momentos em
-      experiências visuais incríveis.
-      Com tecnologia avançada, o
-      Renato Vision 3D leva suas fotos
-      e vídeos para um novo nível de
-      realidade.
-
-    </p>
-
-  </div>
-
-
-  <div class="heroVisual">
-
-    <div class="device">
-
-      <div class="sliderDot"></div>
-
-      <div class="threeDTag">
-        3D
-      </div>
+        <p>
+            Transforme seus momentos em
+            experiências visuais incríveis.
+            Com tecnologia avançada, o
+            Renato Vision 3D leva suas fotos
+            e vídeos para um novo nível
+            de realidade.
+        </p>
 
     </div>
 
-  </div>
+    <div class="heroVisual">
+
+        <div class="heroPhone">
+
+            <div class="fakeLandscape"></div>
+
+            <div class="divider3d"></div>
+
+        </div>
+
+    </div>
 
 </section>
 
 
-<section class="featureGrid">
-
-  <button
-    class="feature"
-    data-open="camera">
-
-    <div class="icon">
-      📷
-    </div>
-
-    <b>
-      Câmera
-    </b>
-
-    <small>
-      Foto / Vídeo
-    </small>
-
-  </button>
-
-
-  <button
-    class="feature"
-    data-open="gallery">
-
-    <div class="icon">
-      ▧
-    </div>
-
-    <b>
-      Galeria
-    </b>
-
-    <small>
-      Do seu iPhone
-    </small>
-
-  </button>
-
-
-  <button
-    class="feature"
-    data-open="3d">
-
-    <div class="icon">
-      ◇
-    </div>
-
-    <b>
-      Modo 3D
-    </b>
-
-    <small>
-      Anáglifo / Realidade
-    </small>
-
-  </button>
-
-
-  <button
-    class="feature"
-    data-open="night">
-
-    <div class="icon">
-      ◐
-    </div>
-
-    <b>
-      Modo Noturno
-    </b>
-
-    <small>
-      Visão Digital
-    </small>
-
-  </button>
-
-
-  <button
-    class="feature"
-    data-open="filters">
-
-    <div class="icon">
-      ☷
-    </div>
-
-    <b>
-      Filtros
-    </b>
-
-    <small>
-      Deslize e escolha
-    </small>
-
-  </button>
-
-
-  <button
-    class="feature"
-    data-open="settings">
-
-    <div class="icon">
-      ⚙
-    </div>
-
-    <b>
-      Configurações
-    </b>
-
-    <small>
-      Personalize sua experiência
-    </small>
-
-  </button>
-
-</section>
-
-
-<section class="cards">
-
-  <article class="card">
-
-    <div class="cardArt tiger"></div>
-
-    <div class="badge">
-      3D
-    </div>
-
-    <div class="cardContent">
-
-      <h3>
-        Fotos em 3D
-      </h3>
-
-      <p>
-        Transforme suas fotos
-        em anáglifo 3D
-      </p>
-
-    </div>
-
-  </article>
-
-
-  <article class="card">
-
-    <div class="cardArt city"></div>
-
-    <div class="badge">
-      3D
-    </div>
-
-    <div class="cardContent">
-
-      <h3>
-        Vídeos em 3D
-      </h3>
-
-      <p>
-        Grave e assista em
-        terceira dimensão
-      </p>
-
-    </div>
-
-  </article>
-
-
-  <article class="card">
-
-    <div class="cardArt moon"></div>
-
-    <div class="cardContent">
-
-      <h3>
-        Modo Noturno
-      </h3>
-
-      <p>
-        Fotos incríveis mesmo
-        no escuro
-      </p>
-
-    </div>
-
-  </article>
-
-</section>
-
-
-<section class="gallerySection">
-
-  <div class="sectionHead">
-
-    <h2>
-      Galeria Premium
-    </h2>
+<!-- =====================================================
+     ACTIONS
+===================================================== -->
+
+<section class="actionGrid">
 
     <button
-      class="see"
-      id="seeGallery">
+        class="actionCard"
+        id="cameraButton">
 
-      Ver todas ›
+        <div class="actionIcon">
+            📷
+        </div>
+
+        <strong>
+            Câmera
+        </strong>
+
+        <small>
+            Foto / Vídeo
+        </small>
 
     </button>
 
-  </div>
+
+    <button
+        class="actionCard"
+        id="galleryButton">
+
+        <div class="actionIcon">
+            🖼️
+        </div>
+
+        <strong>
+            Galeria
+        </strong>
+
+        <small>
+            Do seu iPhone
+        </small>
+
+    </button>
 
 
-  <div class="gallery">
+    <button
+        class="actionCard"
+        id="mode3DButton">
 
-    <div>
-      <div class="thumb">
-        <div class="t1"></div>
-      </div>
-      <small>Fotos</small>
-    </div>
+        <div class="actionIcon">
+            ◈
+        </div>
 
-    <div>
-      <div class="thumb">
-        <div class="t2"></div>
-      </div>
-      <small>Vídeos</small>
-    </div>
+        <strong>
+            Modo 3D
+        </strong>
 
-    <div>
-      <div class="thumb">
-        <div class="t3"></div>
-      </div>
-      <small>Favoritos</small>
-    </div>
+        <small>
+            Anaglifo / Realidade
+        </small>
 
-    <div>
-      <div class="thumb">
-        <div class="t4"></div>
-      </div>
-      <small>3D</small>
-    </div>
+    </button>
 
-    <div>
-      <div class="thumb">
-        <div class="t5"></div>
-      </div>
-      <small>Pets</small>
-    </div>
 
-    <div>
-      <div class="thumb">
-        <div class="t6"></div>
-      </div>
-      <small>Paisagens</small>
-    </div>
+    <button
+        class="actionCard"
+        id="nightButton">
 
-  </div>
+        <div class="actionIcon">
+            🌙
+        </div>
+
+        <strong>
+            Modo Noturno
+        </strong>
+
+        <small>
+            Visão Digital
+        </small>
+
+    </button>
+
+
+    <button
+        class="actionCard"
+        id="filtersButton">
+
+        <div class="actionIcon">
+            🎚️
+        </div>
+
+        <strong>
+            Filtros
+        </strong>
+
+        <small>
+            Deslize e escolha
+        </small>
+
+    </button>
+
+
+    <button
+        class="actionCard"
+        id="settingsButton2">
+
+        <div class="actionIcon">
+            ⚙️
+        </div>
+
+        <strong>
+            Configurações
+        </strong>
+
+        <small>
+            Personalize sua experiência
+        </small>
+
+    </button>
 
 </section>
 
+
+<!-- =====================================================
+     FEATURES
+===================================================== -->
+
+<section class="features">
+
+    <article
+        class="feature"
+        id="feature3D">
+
+        <div class="featureVisual tiger"></div>
+
+        <div class="featureOverlay"></div>
+
+        <div class="featureText">
+
+            <h3>
+                Fotos em 3D
+            </h3>
+
+            <p>
+                Transforme suas fotos em
+                anaglifo 3D
+            </p>
+
+        </div>
+
+        <span class="badge3d">
+            3D
+        </span>
+
+    </article>
+
+
+    <article
+        class="feature"
+        id="featureVideo">
+
+        <div class="featureVisual city"></div>
+
+        <div class="featureOverlay"></div>
+
+        <div class="featureText">
+
+            <h3>
+                Vídeos em 3D
+            </h3>
+
+            <p>
+                Grave e assista em terceira
+                dimensão
+            </p>
+
+        </div>
+
+        <span class="badge3d">
+            ▶
+        </span>
+
+    </article>
+
+
+    <article
+        class="feature"
+        id="featureNight">
+
+        <div class="featureVisual moon"></div>
+
+        <div class="featureOverlay"></div>
+
+        <div class="featureText">
+
+            <h3>
+                Modo Noturno
+            </h3>
+
+            <p>
+                Fotos incríveis mesmo
+                no escuro
+            </p>
+
+        </div>
+
+        <span class="badge3d">
+            🌙
+        </span>
+
+    </article>
+
+</section>
+
+
+<!-- =====================================================
+     GALLERY CATEGORIES
+===================================================== -->
+
+<section class="sectionWrap">
+
+    <div class="sectionHead">
+
+        <h2>
+            👑 Galeria Premium
+        </h2>
+
+        <button id="seeAll">
+            Ver todas ›
+        </button>
+
+    </div>
+
+    <div class="galleryCategories">
+
+        <button class="category" data-filter="photo">
+
+            <div class="categoryVisual"></div>
+
+            <div class="categoryName">
+                Fotos
+            </div>
+
+        </button>
+
+
+        <button class="category" data-filter="video">
+
+            <div class="categoryVisual"></div>
+
+            <div class="categoryName">
+                Vídeos
+            </div>
+
+        </button>
+
+
+        <button class="category" data-filter="favorite">
+
+            <div class="categoryVisual"></div>
+
+            <div class="categoryName">
+                Favoritos
+            </div>
+
+        </button>
+
+
+        <button class="category" data-filter="3d">
+
+            <div class="categoryVisual"></div>
+
+            <div class="categoryName">
+                3D
+            </div>
+
+        </button>
+
+
+        <button class="category" data-filter="pets">
+
+            <div class="categoryVisual"></div>
+
+            <div class="categoryName">
+                Pets
+            </div>
+
+        </button>
+
+
+        <button class="category" data-filter="landscape">
+
+            <div class="categoryVisual"></div>
+
+            <div class="categoryName">
+                Paisagens
+            </div>
+
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     PERMISSIONS
+===================================================== -->
 
 <section class="permissions">
 
-  <div>
+    <div>
 
-    <h3>
-      🛡️ Permissões necessárias
-    </h3>
+        <div class="permissionTitle">
 
-    <p>
+            <div class="permissionShield">
+                🛡️
+            </div>
 
-      Para oferecer a melhor experiência,
-      o Renato Vision 3D precisa de
-      algumas permissões do seu iPhone.
+            <div>
 
-    </p>
+                <h2>
+                    Permissões necessárias
+                </h2>
 
-    <div class="permList">
+                <p>
+                    Para oferecer a melhor experiência,
+                    o Renato Vision 3D precisa de algumas
+                    permissões do seu iPhone.
+                </p>
 
-      <span>
-        Câmera — fotos e vídeos
-      </span>
+            </div>
 
-      <span>
-        Fotos — acesso à galeria
-      </span>
+        </div>
 
-      <span>
-        Microfone — vídeos com áudio
-      </span>
+        <ul class="permissionList">
 
-      <span>
-        Armazenamento local
-      </span>
+            <li>
+                Câmera — fotos e vídeos
+            </li>
+
+            <li>
+                Fotos — acesso à galeria
+            </li>
+
+            <li>
+                Microfone — vídeos com áudio
+            </li>
+
+            <li>
+                Armazenamento — conteúdos locais
+            </li>
+
+        </ul>
 
     </div>
 
-  </div>
+    <div class="permissionAction">
 
+        <button
+            class="primary"
+            id="permissionButton">
 
-  <div>
+            🔒 CONCEDER PERMISSÕES
 
-    <button
-      class="permissionBtn"
-      id="permissionBtn">
+        </button>
 
-      🔒 Conceder Permissões
+        <small>
+            Mais privacidade, mais qualidade,
+            mais 3D.
+        </small>
 
-    </button>
-
-    <p
-      style="
-      text-align:center;
-      margin:9px 0 0;
-      color:#9ba7b6;
-      font-size:9px;
-      ">
-
-      Mais privacidade,
-      mais qualidade,
-      mais 3D!
-
-    </p>
-
-  </div>
-
-
-  <div class="security">
-
-    <strong>
-      🛡️ Seus dados são locais
-    </strong>
-
-    O aplicativo utiliza o armazenamento
-    local do navegador para guardar os
-    arquivos importados e capturados.
-
-  </div>
+    </div>
 
 </section>
 
 
-<footer>
+<!-- =====================================================
+     FOOTER
+===================================================== -->
 
-  <div class="footerBrand">
-    — RENATO VISION 3D —
-  </div>
+<footer class="footer">
 
-  Mais que um app,
-  uma nova forma de ver o mundo.
+    <div class="footerLogo">
+        RENATO VISION 3D
+    </div>
+
+    <p>
+        Mais que um app, uma nova forma
+        de ver o mundo.
+    </p>
 
 </footer>
 
-</main>
-
 </div>
 
 
-<!-- =========================
-CÂMERA
-========================= -->
+<!-- =====================================================
+     OVERLAY
+===================================================== -->
 
 <div
-  class="modal"
-  id="cameraModal">
+    class="overlay"
+    id="overlay">
+</div>
 
-  <div class="sheet">
 
-    <div class="sheetHead">
+<!-- =====================================================
+     SETTINGS SHEET
+===================================================== -->
 
-      <h2>
-        Câmera 3D
-      </h2>
+<section
+    class="sheet"
+    id="settingsSheet">
 
-      <button
-        class="close"
-        data-close="cameraModal">
+    <div class="sheetHeader">
 
-        ×
+        <h2>
+            ⚙️ Configurações
+        </h2>
 
-      </button>
+        <button
+            class="closeBtn"
+            data-close="settingsSheet">
+
+            ×
+
+        </button>
 
     </div>
 
 
+    <h3>
+        Aparência do aplicativo
+    </h3>
+
+    <p style="
+        color:#8d9bb0;
+        font-size:10px;
+    ">
+        Os temas abaixo mudam as cores e
+        aparência do aplicativo. Eles não
+        alteram os filtros das fotos.
+    </p>
+
+    <div
+        class="themeList"
+        id="themeList">
+
+    </div>
+
+
+    <div style="
+        margin-top:20px;
+    ">
+
+        <button
+            class="settingButton"
+            id="clearGallery">
+
+            🗑️ Limpar galeria
+
+            <small>
+                Apaga os arquivos armazenados
+                localmente neste navegador.
+            </small>
+
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     CAMERA
+===================================================== -->
+
+<section
+    class="cameraScreen"
+    id="cameraScreen">
+
     <video
-      id="preview"
-      autoplay
-      muted
-      playsinline>
+        id="cameraVideo"
+        autoplay
+        muted
+        playsinline>
     </video>
 
 
-    <div class="actions">
+    <div class="cameraTop">
 
-      <button
-        class="action"
-        id="startCamera">
+        <button
+            class="cameraPill"
+            id="cameraClose">
 
-        📷 Ativar câmera
+            × VOLTAR
 
-      </button>
+        </button>
 
+        <div
+            class="cameraPill"
+            id="cameraStatus">
 
-      <button
-        class="action"
-        id="takePhoto">
+            FOTO
 
-        📸 Capturar 3D
-
-      </button>
-
-
-      <button
-        class="action"
-        id="importMedia">
-
-        📥 Trazer da galeria
-
-      </button>
-
-
-      <button
-        class="action"
-        id="openGallery2">
-
-        🖼️ Abrir galeria
-
-      </button>
+        </div>
 
     </div>
 
 
-    <p
-      style="
-      color:#9faaba;
-      font-size:10px;
-      line-height:1.5;
-      ">
+    <div
+        class="cameraTools"
+        id="cameraTools">
 
-      O efeito 3D é anáglifo digital.
-      Uma única câmera não captura
-      profundidade estéreo real.
+        <button
+            class="tool active"
+            data-filter="normal">
 
-    </p>
+            NORMAL
 
-  </div>
+        </button>
 
-</div>
+        <button
+            class="tool"
+            data-filter="cinema">
+
+            CINEMA
+
+        </button>
+
+        <button
+            class="tool"
+            data-filter="vintage">
+
+            VINTAGE
+
+        </button>
+
+        <button
+            class="tool"
+            data-filter="vivid">
+
+            VIVID
+
+        </button>
+
+        <button
+            class="tool"
+            data-filter="noir">
+
+            NOIR
+
+        </button>
+
+        <button
+            class="tool"
+            data-filter="cold">
+
+            ICE
+
+        </button>
+
+        <button
+            class="tool"
+            data-filter="warm">
+
+            WARM
+
+        </button>
+
+        <button
+            class="tool"
+            data-filter="3d">
+
+            3D
+
+        </button>
+
+    </div>
 
 
-<!-- =========================
-CONFIGURAÇÕES
-========================= -->
+    <div class="cameraBottom">
 
-<div
-  class="modal"
-  id="settingsModal">
+        <button
+            class="camBtn"
+            id="flipCamera">
 
-  <div class="sheet">
+            🔄
 
-    <div class="sheetHead">
+        </button>
 
-      <h2>
-        Configurações
-      </h2>
+        <button
+            class="camBtn capture"
+            id="captureButton">
 
-      <button
-        class="close"
-        data-close="settingsModal">
+        </button>
+
+        <button
+            class="camBtn"
+            id="videoToggle">
+
+            🎥
+
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     GALLERY
+===================================================== -->
+
+<section
+    class="galleryScreen"
+    id="galleryScreen">
+
+    <div class="galleryTop">
+
+        <h1>
+            Minha Galeria
+        </h1>
+
+        <div class="galleryActions">
+
+            <button
+                class="closeBtn"
+                id="importButton">
+
+                ＋
+
+            </button>
+
+            <button
+                class="closeBtn"
+                id="galleryClose">
+
+                ×
+
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <input
+        type="file"
+        id="fileInput"
+        accept="image/*,video/*"
+        multiple
+        hidden>
+
+
+    <div class="galleryTabs">
+
+        <button
+            class="galleryTab active"
+            data-gallery-filter="all">
+
+            Todos
+
+        </button>
+
+        <button
+            class="galleryTab"
+            data-gallery-filter="photo">
+
+            Fotos
+
+        </button>
+
+        <button
+            class="galleryTab"
+            data-gallery-filter="video">
+
+            Vídeos
+
+        </button>
+
+        <button
+            class="galleryTab"
+            data-gallery-filter="3d">
+
+            3D
+
+        </button>
+
+    </div>
+
+
+    <div
+        class="mediaGrid"
+        id="mediaGrid">
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     3D VIEWER
+===================================================== -->
+
+<section
+    class="viewer3D"
+    id="viewer3D">
+
+    <button
+        class="closeBtn"
+        id="viewerClose">
 
         ×
 
-      </button>
+    </button>
+
+    <img
+        id="viewerImage"
+        src=""
+        alt="Visualização 3D">
+
+
+    <div class="viewerControls">
+
+        <button id="anaglyphButton">
+            🥽 ANAGLIFO
+        </button>
+
+        <button id="normal3DButton">
+            ✨ 3D DIGITAL
+        </button>
+
+        <button id="depthButton">
+            ◈ PROFUNDIDADE
+        </button>
 
     </div>
 
-
-    <div class="actions">
-
-      <button
-        class="action"
-        id="themeToggle">
-
-        🎨 Tema azul / violeta
-
-      </button>
+</section>
 
 
-      <button
-        class="action"
-        id="nightToggle">
+<!-- =====================================================
+     TOAST
+===================================================== -->
 
-        🌙 Modo noturno
-
-      </button>
-
-
-      <button
-        class="action"
-        id="importMedia2">
-
-        📥 Importar fotos e vídeos
-
-      </button>
-
-
-      <button
-        class="action"
-        id="gallerySettings">
-
-        🖼️ Minha galeria
-
-      </button>
-
-    </div>
-
-  </div>
-
-</div>
-
-
-<input
-  type="file"
-  id="fileInput"
-  accept="image/*,video/*"
-  multiple>
-
-
-<div
-  class="toast"
-  id="toast">
-</div>
+<div id="toast"></div>
 
 
 <script>
 
-"use strict";
+/* =========================================================
+   ELEMENTOS
+========================================================= */
 
-
-/* ==========================================
-ELEMENTOS
-========================================== */
-
-const $ =
-  id =>
+const $ = id =>
     document.getElementById(id);
 
+const overlay =
+    $("overlay");
 
-let db =
-  null;
+const settingsSheet =
+    $("settingsSheet");
 
-let stream =
-  null;
+const cameraScreen =
+    $("cameraScreen");
 
+const galleryScreen =
+    $("galleryScreen");
 
-/* ==========================================
-TOAST
-========================================== */
+const cameraVideo =
+    $("cameraVideo");
 
-function toast(text){
+const captureButton =
+    $("captureButton");
 
-  const element =
+const videoToggle =
+    $("videoToggle");
+
+const flipCamera =
+    $("flipCamera");
+
+const cameraClose =
+    $("cameraClose");
+
+const cameraStatus =
+    $("cameraStatus");
+
+const mediaGrid =
+    $("mediaGrid");
+
+const fileInput =
+    $("fileInput");
+
+const viewer3D =
+    $("viewer3D");
+
+const viewerImage =
+    $("viewerImage");
+
+const toast =
     $("toast");
 
-  element.textContent =
-    text;
 
-  element.classList.add(
-    "show"
-  );
+/* =========================================================
+   ESTADO
+========================================================= */
 
-  clearTimeout(
-    window.__toast
-  );
+let stream = null;
 
-  window.__toast =
-    setTimeout(
-      () =>
-        element.classList.remove(
-          "show"
-        ),
-      2200
+let facingMode =
+    "environment";
+
+let cameraMode =
+    "photo";
+
+let recording =
+    false;
+
+let recorder = null;
+
+let chunks = [];
+
+let selectedFilter =
+    "normal";
+
+let nightMode =
+    false;
+
+let zoomLevel =
+    1;
+
+let galleryFilter =
+    "all";
+
+let currentViewerURL =
+    null;
+
+
+/* =========================================================
+   INDEXED DB
+========================================================= */
+
+const DB_NAME =
+    "RenatoVision3DPremium";
+
+const DB_VERSION =
+    1;
+
+const STORE =
+    "media";
+
+let db = null;
+
+
+function openDB(){
+
+    return new Promise(
+        (resolve,reject)=>{
+
+            const request =
+                indexedDB.open(
+                    DB_NAME,
+                    DB_VERSION
+                );
+
+            request.onupgradeneeded =
+                event => {
+
+                    const database =
+                        event.target.result;
+
+                    if(
+                        !database.objectStoreNames
+                            .contains(STORE)
+                    ){
+
+                        database.createObjectStore(
+                            STORE,
+                            {
+                                keyPath:"id"
+                            }
+                        );
+
+                    }
+
+                };
+
+            request.onsuccess =
+                event => {
+
+                    db =
+                        event.target.result;
+
+                    resolve(db);
+
+                };
+
+            request.onerror =
+                () =>
+                    reject(
+                        request.error
+                    );
+
+        }
     );
 
 }
 
 
-/* ==========================================
-MODAL
-========================================== */
+/* =========================================================
+   SAVE MEDIA
+========================================================= */
 
-function modal(
-  id,
-  open = true
-){
+function saveMedia(data){
 
-  const element =
-    $(id);
+    return new Promise(
+        (resolve,reject)=>{
 
-  if(!element){
-    return;
-  }
+            if(!db){
 
-  element.classList.toggle(
-    "open",
-    open
-  );
+                reject(
+                    new Error(
+                        "DB indisponível"
+                    )
+                );
+
+                return;
+
+            }
+
+            const transaction =
+                db.transaction(
+                    STORE,
+                    "readwrite"
+                );
+
+            transaction
+                .objectStore(STORE)
+                .put(data);
+
+            transaction.oncomplete =
+                () =>
+                    resolve();
+
+            transaction.onerror =
+                () =>
+                    reject(
+                        transaction.error
+                    );
+
+        }
+    );
 
 }
 
 
-/* ==========================================
-INDEXED DB
-========================================== */
+/* =========================================================
+   GET MEDIA
+========================================================= */
 
-async function openDB(){
+function getAllMedia(){
 
-  return new Promise(
-    (resolve,reject)=>{
+    return new Promise(
+        (resolve,reject)=>{
 
-      const request =
-        indexedDB.open(
-          "RenatoVision3D",
-          1
+            const transaction =
+                db.transaction(
+                    STORE,
+                    "readonly"
+                );
+
+            const request =
+                transaction
+                    .objectStore(STORE)
+                    .getAll();
+
+            request.onsuccess =
+                () => {
+
+                    const result =
+                        request.result || [];
+
+                    result.sort(
+                        (a,b)=>
+                            b.created -
+                            a.created
+                    );
+
+                    resolve(result);
+
+                };
+
+            request.onerror =
+                () =>
+                    reject(
+                        request.error
+                    );
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   DELETE MEDIA
+========================================================= */
+
+function deleteMedia(id){
+
+    return new Promise(
+        (resolve,reject)=>{
+
+            const transaction =
+                db.transaction(
+                    STORE,
+                    "readwrite"
+                );
+
+            transaction
+                .objectStore(STORE)
+                .delete(id);
+
+            transaction.oncomplete =
+                () =>
+                    resolve();
+
+            transaction.onerror =
+                () =>
+                    reject(
+                        transaction.error
+                    );
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+let toastTimeout;
+
+function showToast(message){
+
+    clearTimeout(
+        toastTimeout
+    );
+
+    toast.textContent =
+        message;
+
+    toast.classList.add(
+        "show"
+    );
+
+    toastTimeout =
+        setTimeout(
+            () =>
+                toast.classList.remove(
+                    "show"
+                ),
+            2300
+        );
+
+}
+
+
+/* =========================================================
+   SHEETS
+========================================================= */
+
+function openSheet(sheet){
+
+    overlay.classList.add(
+        "open"
+    );
+
+    sheet.classList.add(
+        "open"
+    );
+
+}
+
+function closeSheets(){
+
+    overlay.classList.remove(
+        "open"
+    );
+
+    document
+        .querySelectorAll(".sheet")
+        .forEach(
+            sheet =>
+                sheet.classList.remove(
+                    "open"
+                )
+        );
+
+}
+
+overlay.onclick =
+    closeSheets;
+
+document
+.querySelectorAll("[data-close]")
+.forEach(
+    button => {
+
+        button.onclick =
+            closeSheets;
+
+    }
+);
+
+
+/* =========================================================
+   SETTINGS
+========================================================= */
+
+$("settingsButton").onclick =
+    () =>
+        openSheet(
+            settingsSheet
+        );
+
+$("settingsButton2").onclick =
+    () =>
+        openSheet(
+            settingsSheet
         );
 
 
-      request.onupgradeneeded =
-        event => {
+/* =========================================================
+   TEMAS DO APP
+========================================================= */
 
-          const database =
-            event.target.result;
+const appThemes = [
+
+    {
+        name:"Ocean Blue",
+        bg:"#02050d",
+        card:"#071426",
+        blue:"#168cff",
+        blue2:"#5f65ff"
+    },
+
+    {
+        name:"Cyber Purple",
+        bg:"#08020f",
+        card:"#170925",
+        blue:"#a44cff",
+        blue2:"#5e55ff"
+    },
+
+    {
+        name:"Emerald",
+        bg:"#020c08",
+        card:"#071c15",
+        blue:"#19d88a",
+        blue2:"#00a98f"
+    },
+
+    {
+        name:"Ruby",
+        bg:"#0d0205",
+        card:"#21080d",
+        blue:"#ff315d",
+        blue2:"#b0003a"
+    },
+
+    {
+        name:"Gold Premium",
+        bg:"#0b0802",
+        card:"#201805",
+        blue:"#ffc43b",
+        blue2:"#d98218"
+    },
+
+    {
+        name:"Ice",
+        bg:"#020a10",
+        card:"#071b27",
+        blue:"#8fe8ff",
+        blue2:"#4a9dff"
+    },
+
+    {
+        name:"Midnight",
+        bg:"#000000",
+        card:"#101010",
+        blue:"#777fff",
+        blue2:"#444cff"
+    },
+
+    {
+        name:"Neon",
+        bg:"#020008",
+        card:"#100020",
+        blue:"#00fff0",
+        blue2:"#ff00f7"
+    },
+
+    {
+        name:"Titanium",
+        bg:"#08090c",
+        card:"#171a20",
+        blue:"#dbe5f3",
+        blue2:"#8494a8"
+    },
+
+    {
+        name:"Sunset",
+        bg:"#0e0503",
+        card:"#24100a",
+        blue:"#ff8b42",
+        blue2:"#ff3e74"
+    },
+
+    {
+        name:"Forest",
+        bg:"#020a04",
+        card:"#091a0d",
+        blue:"#5ddf73",
+        blue2:"#2aa66d"
+    },
+
+    {
+        name:"Galaxy",
+        bg:"#03020e",
+        card:"#100d28",
+        blue:"#746bff",
+        blue2:"#d447ff"
+    }
+
+];
 
 
-          if(
-            !database
-              .objectStoreNames
-              .contains(
-                "media"
-              )
-          ){
+const themeList =
+    $("themeList");
 
-            database.createObjectStore(
-              "media",
-              {
-                keyPath:"id"
-              }
+
+appThemes.forEach(
+    (theme,index)=>{
+
+        const button =
+            document.createElement(
+                "button"
             );
 
-          }
+        button.className =
+            "themeChoice";
 
-        };
+        button.textContent =
+            theme.name;
 
+        button.style.background =
+            `
+            linear-gradient(
+                135deg,
+                ${theme.bg},
+                ${theme.card}
+            )
+            `;
 
-      request.onsuccess =
-        event => {
+        button.style.boxShadow =
+            `
+            inset 0 0 30px
+            ${theme.blue}22
+            `;
 
-          db =
-            event.target.result;
+        button.onclick =
+            () =>
+                applyAppTheme(
+                    theme,
+                    button
+                );
 
-          resolve();
+        themeList.appendChild(
+            button
+        );
 
-        };
+        if(index === 0){
 
+            button.classList.add(
+                "active"
+            );
 
-      request.onerror =
-        () => {
-
-          reject(
-            request.error
-          );
-
-        };
+        }
 
     }
-  );
+);
+
+
+function applyAppTheme(
+    theme,
+    button
+){
+
+    document.documentElement
+        .style
+        .setProperty(
+            "--bg",
+            theme.bg
+        );
+
+    document.documentElement
+        .style
+        .setProperty(
+            "--card",
+            theme.card
+        );
+
+    document.documentElement
+        .style
+        .setProperty(
+            "--blue",
+            theme.blue
+        );
+
+    document.documentElement
+        .style
+        .setProperty(
+            "--blue2",
+            theme.blue2
+        );
+
+    document
+        .querySelectorAll(
+            ".themeChoice"
+        )
+        .forEach(
+            item =>
+                item.classList.remove(
+                    "active"
+                )
+        );
+
+    button.classList.add(
+        "active"
+    );
+
+    localStorage.setItem(
+        "renatoVisionTheme",
+        JSON.stringify(theme)
+    );
+
+    showToast(
+        "Tema aplicado ao aplicativo"
+    );
 
 }
 
 
-/* ==========================================
-SALVAR
-========================================== */
+/* =========================================================
+   LOAD THEME
+========================================================= */
 
-function saveMedia(
-  blob,
-  type
-){
+const savedTheme =
+    localStorage.getItem(
+        "renatoVisionTheme"
+    );
 
-  return new Promise(
-    (resolve,reject)=>{
+if(savedTheme){
 
-      if(!db){
+    try{
 
-        reject(
-          new Error(
-            "Banco indisponível"
-          )
+        const theme =
+            JSON.parse(
+                savedTheme
+            );
+
+        document.documentElement
+            .style
+            .setProperty(
+                "--bg",
+                theme.bg
+            );
+
+        document.documentElement
+            .style
+            .setProperty(
+                "--card",
+                theme.card
+            );
+
+        document.documentElement
+            .style
+            .setProperty(
+                "--blue",
+                theme.blue
+            );
+
+        document.documentElement
+            .style
+            .setProperty(
+                "--blue2",
+                theme.blue2
+            );
+
+    }catch(e){}
+
+}
+
+
+/* =========================================================
+   CAMERA FILTERS
+========================================================= */
+
+const filterMap = {
+
+    normal:
+        "none",
+
+    cinema:
+        "contrast(1.16) saturate(.88) brightness(.98)",
+
+    vintage:
+        "sepia(.35) contrast(1.05) saturate(.82)",
+
+    vivid:
+        "saturate(1.65) contrast(1.12)",
+
+    noir:
+        "grayscale(1) contrast(1.45)",
+
+    cold:
+        "saturate(.75) hue-rotate(160deg) contrast(1.1)",
+
+    warm:
+        "sepia(.18) saturate(1.25)",
+
+    "3d":
+        "contrast(1.12) saturate(1.1)"
+
+};
+
+
+function updateCameraFilter(){
+
+    let filter =
+        filterMap[
+            selectedFilter
+        ] ||
+        "none";
+
+    if(nightMode){
+
+        filter +=
+            " brightness(.65) contrast(1.25)";
+
+    }
+
+    cameraVideo.style.filter =
+        filter;
+
+}
+
+
+/* =========================================================
+   FILTER BUTTONS
+========================================================= */
+
+document
+.querySelectorAll(
+    ".tool"
+)
+.forEach(
+    button => {
+
+        button.onclick =
+            () => {
+
+                selectedFilter =
+                    button.dataset.filter;
+
+                document
+                    .querySelectorAll(
+                        ".tool"
+                    )
+                    .forEach(
+                        b =>
+                            b.classList.remove(
+                                "active"
+                            )
+                    );
+
+                button.classList.add(
+                    "active"
+                );
+
+                updateCameraFilter();
+
+            };
+
+    }
+);
+
+
+/* =========================================================
+   OPEN CAMERA
+========================================================= */
+
+$("cameraButton").onclick =
+    async () => {
+
+        cameraScreen.classList.add(
+            "open"
+        );
+
+        await startCamera();
+
+    };
+
+
+async function startCamera(){
+
+    try{
+
+        if(stream){
+
+            stream
+                .getTracks()
+                .forEach(
+                    track =>
+                        track.stop()
+                );
+
+        }
+
+        stream =
+            await navigator
+                .mediaDevices
+                .getUserMedia({
+
+                    video:{
+                        facingMode,
+                        width:{
+                            ideal:3840
+                        },
+                        height:{
+                            ideal:2160
+                        }
+                    },
+
+                    audio:true
+
+                });
+
+        cameraVideo.srcObject =
+            stream;
+
+        await cameraVideo.play();
+
+        updateCameraFilter();
+
+        showToast(
+            "Câmera pronta"
+        );
+
+    }catch(error){
+
+        console.error(
+            error
+        );
+
+        showToast(
+            "Permita o acesso à câmera"
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   CLOSE CAMERA
+========================================================= */
+
+cameraClose.onclick =
+    () => {
+
+        stopCamera();
+
+        cameraScreen.classList.remove(
+            "open"
+        );
+
+    };
+
+
+function stopCamera(){
+
+    if(stream){
+
+        stream
+            .getTracks()
+            .forEach(
+                track =>
+                    track.stop()
+            );
+
+        stream = null;
+
+    }
+
+}
+
+
+/* =========================================================
+   FLIP
+========================================================= */
+
+flipCamera.onclick =
+    async () => {
+
+        if(recording){
+            return;
+        }
+
+        facingMode =
+            facingMode ===
+            "environment"
+            ?
+            "user"
+            :
+            "environment";
+
+        await startCamera();
+
+    };
+
+
+/* =========================================================
+   CAMERA MODE
+========================================================= */
+
+videoToggle.onclick =
+    () => {
+
+        if(recording){
+
+            stopRecording();
+
+            return;
+
+        }
+
+        cameraMode =
+            cameraMode ===
+            "photo"
+            ?
+            "video"
+            :
+            "photo";
+
+        if(cameraMode === "video"){
+
+            cameraStatus.textContent =
+                "VÍDEO";
+
+            videoToggle.textContent =
+                "📷";
+
+            showToast(
+                "Modo vídeo"
+            );
+
+        }else{
+
+            cameraStatus.textContent =
+                "FOTO";
+
+            videoToggle.textContent =
+                "🎥";
+
+            showToast(
+                "Modo foto"
+            );
+
+        }
+
+    };
+
+
+/* =========================================================
+   CAPTURE
+========================================================= */
+
+captureButton.onclick =
+    async () => {
+
+        if(cameraMode === "video"){
+
+            if(recording){
+
+                stopRecording();
+
+            }else{
+
+                startRecording();
+
+            }
+
+            return;
+
+        }
+
+        await capturePhoto();
+
+    };
+
+
+/* =========================================================
+   CAPTURE PHOTO
+========================================================= */
+
+async function capturePhoto(){
+
+    if(!cameraVideo.videoWidth){
+
+        showToast(
+            "Câmera ainda não está pronta"
         );
 
         return;
 
-      }
+    }
+
+    const canvas =
+        document.createElement(
+            "canvas"
+        );
+
+    canvas.width =
+        cameraVideo.videoWidth;
+
+    canvas.height =
+        cameraVideo.videoHeight;
+
+    const ctx =
+        canvas.getContext(
+            "2d"
+        );
+
+    ctx.filter =
+        filterMap[
+            selectedFilter
+        ] || "none";
+
+    const zoom =
+        zoomLevel;
+
+    const width =
+        canvas.width * zoom;
+
+    const height =
+        canvas.height * zoom;
+
+    const x =
+        (
+            canvas.width -
+            width
+        ) / 2;
+
+    const y =
+        (
+            canvas.height -
+            height
+        ) / 2;
+
+    ctx.drawImage(
+        cameraVideo,
+        x,
+        y,
+        width,
+        height
+    );
 
 
-      const transaction =
-        db.transaction(
-          "media",
-          "readwrite"
+    let is3D =
+        selectedFilter === "3d";
+
+
+    if(is3D){
+
+        const image =
+            createAnaglyph(
+                canvas
+            );
+
+        await savePhoto(
+            image,
+            true
+        );
+
+        showToast(
+            "🥽 Foto 3D salva"
+        );
+
+        return;
+
+    }
+
+
+    canvas.toBlob(
+        async blob => {
+
+            await savePhoto(
+                blob,
+                false
+            );
+
+            showToast(
+                "📸 Foto salva na Galeria"
+            );
+
+        },
+        "image/jpeg",
+        .95
+    );
+
+}
+
+
+/* =========================================================
+   ANAGLYPH
+========================================================= */
+
+function createAnaglyph(
+    sourceCanvas
+){
+
+    const output =
+        document.createElement(
+            "canvas"
+        );
+
+    output.width =
+        sourceCanvas.width;
+
+    output.height =
+        sourceCanvas.height;
+
+    const ctx =
+        output.getContext(
+            "2d"
+        );
+
+    ctx.drawImage(
+        sourceCanvas,
+        0,
+        0
+    );
+
+    const base =
+        ctx.getImageData(
+            0,
+            0,
+            output.width,
+            output.height
+        );
+
+    const src =
+        base.data;
+
+    const result =
+        new Uint8ClampedArray(
+            src
+        );
+
+    const shift =
+        Math.max(
+            2,
+            Math.round(
+                output.width * .003
+            )
         );
 
 
-      transaction
-        .objectStore(
-          "media"
-        )
-        .put({
+    for(
+        let y=0;
+        y<output.height;
+        y++
+    ){
 
-          id:
+        for(
+            let x=0;
+            x<output.width;
+            x++
+        ){
+
+            const index =
+                (
+                    y *
+                    output.width +
+                    x
+                ) * 4;
+
+            const leftX =
+                Math.max(
+                    0,
+                    x-shift
+                );
+
+            const rightX =
+                Math.min(
+                    output.width-1,
+                    x+shift
+                );
+
+            const leftIndex =
+                (
+                    y *
+                    output.width +
+                    leftX
+                ) * 4;
+
+            const rightIndex =
+                (
+                    y *
+                    output.width +
+                    rightX
+                ) * 4;
+
+            result[index] =
+                src[leftIndex];
+
+            result[index+1] =
+                src[index+1];
+
+            result[index+2] =
+                src[rightIndex+2];
+
+            result[index+3] =
+                255;
+
+        }
+
+    }
+
+    const imageData =
+        new ImageData(
+            result,
+            output.width,
+            output.height
+        );
+
+    ctx.putImageData(
+        imageData,
+        0,
+        0
+    );
+
+    return new Promise(
+        resolve => {
+
+            output.toBlob(
+                blob =>
+                    resolve(blob),
+                "image/jpeg",
+                .95
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   SAVE PHOTO
+========================================================= */
+
+async function savePhoto(
+    blob,
+    is3D
+){
+
+    await saveMedia({
+
+        id:
             Date.now()
             +
             Math.random(),
 
-          blob,
+        blob,
 
-          type,
+        type:"photo",
 
-          date:
+        is3D,
+
+        favorite:false,
+
+        created:
             Date.now()
 
-        });
-
-
-      transaction.oncomplete =
-        resolve;
-
-
-      transaction.onerror =
-        () =>
-          reject(
-            transaction.error
-          );
-
-    }
-  );
+    });
 
 }
 
 
-/* ==========================================
-ABRIR CÂMERA
-========================================== */
+/* =========================================================
+   RECORD VIDEO
+========================================================= */
 
-async function startCamera(){
-
-  try{
+function startRecording(){
 
     if(
-      !navigator.mediaDevices
-      ||
-      !navigator
-        .mediaDevices
-        .getUserMedia
+        !stream ||
+        typeof MediaRecorder ===
+        "undefined"
     ){
 
-      toast(
-        "Seu navegador não suporta câmera"
-      );
-
-      return;
-
-    }
-
-
-    if(stream){
-
-      stream
-        .getTracks()
-        .forEach(
-          track =>
-            track.stop()
-        );
-
-    }
-
-
-    stream =
-      await navigator
-        .mediaDevices
-        .getUserMedia({
-
-          video:{
-
-            facingMode:
-              "environment",
-
-            width:{
-              ideal:3840
-            },
-
-            height:{
-              ideal:2160
-            }
-
-          },
-
-          audio:true
-
-        });
-
-
-    const preview =
-      $("preview");
-
-
-    preview.srcObject =
-      stream;
-
-
-    await preview.play();
-
-
-    toast(
-      "Câmera ativada"
-    );
-
-
-  }catch(error){
-
-    console.error(
-      error
-    );
-
-    toast(
-      "Permita o acesso à câmera e ao microfone"
-    );
-
-  }
-
-}
-
-
-/* ==========================================
-CAPTURA 3D
-========================================== */
-
-async function capture3D(){
-
-  const video =
-    $("preview");
-
-
-  if(
-    !video.videoWidth
-    ||
-    !video.videoHeight
-  ){
-
-    toast(
-      "Ative a câmera primeiro"
-    );
-
-    return;
-
-  }
-
-
-  toast(
-    "Processando foto 3D..."
-  );
-
-
-  const canvas =
-    document.createElement(
-      "canvas"
-    );
-
-
-  const context =
-    canvas.getContext(
-      "2d"
-    );
-
-
-  canvas.width =
-    video.videoWidth;
-
-
-  canvas.height =
-    video.videoHeight;
-
-
-  context.drawImage(
-    video,
-    0,
-    0,
-    canvas.width,
-    canvas.height
-  );
-
-
-  const image =
-    context.getImageData(
-      0,
-      0,
-      canvas.width,
-      canvas.height
-    );
-
-
-  const data =
-    image.data;
-
-
-  const output =
-    context.createImageData(
-      canvas.width,
-      canvas.height
-    );
-
-
-  const out =
-    output.data;
-
-
-  const shift =
-    Math.max(
-      3,
-      Math.round(
-        canvas.width * .004
-      )
-    );
-
-
-  for(
-    let y = 0;
-    y < canvas.height;
-    y++
-  ){
-
-    for(
-      let x = 0;
-      x < canvas.width;
-      x++
-    ){
-
-      const current =
-        (
-          y * canvas.width
-          +
-          x
-        ) * 4;
-
-
-      const left =
-        (
-          y * canvas.width
-          +
-          Math.max(
-            0,
-            x - shift
-          )
-        ) * 4;
-
-
-      const right =
-        (
-          y * canvas.width
-          +
-          Math.min(
-            canvas.width - 1,
-            x + shift
-          )
-        ) * 4;
-
-
-      /*
-        Canal vermelho
-        deslocado para a esquerda.
-      */
-
-      out[current] =
-        data[left];
-
-
-      /*
-        Verde central.
-      */
-
-      out[current + 1] =
-        data[current + 1];
-
-
-      /*
-        Azul deslocado
-        para a direita.
-      */
-
-      out[current + 2] =
-        data[right + 2];
-
-
-      out[current + 3] =
-        255;
-
-    }
-
-  }
-
-
-  context.putImageData(
-    output,
-    0,
-    0
-  );
-
-
-  canvas.toBlob(
-    async blob => {
-
-      if(!blob){
-
-        toast(
-          "Não foi possível criar a foto"
+        showToast(
+            "Gravação não disponível"
         );
 
         return;
 
-      }
+    }
 
+    try{
 
-      try{
+        recorder =
+            new MediaRecorder(
+                stream
+            );
 
-        await saveMedia(
-          blob,
-          "photo"
+        chunks = [];
+
+        recorder.ondataavailable =
+            event => {
+
+                if(
+                    event.data.size
+                ){
+
+                    chunks.push(
+                        event.data
+                    );
+
+                }
+
+            };
+
+        recorder.onstop =
+            async () => {
+
+                const blob =
+                    new Blob(
+                        chunks,
+                        {
+                            type:
+                                recorder.mimeType
+                                ||
+                                "video/webm"
+                        }
+                    );
+
+                await saveMedia({
+
+                    id:
+                        Date.now()
+                        +
+                        Math.random(),
+
+                    blob,
+
+                    type:"video",
+
+                    is3D:
+                        selectedFilter === "3d",
+
+                    favorite:false,
+
+                    created:
+                        Date.now()
+
+                });
+
+                showToast(
+                    "🎥 Vídeo salvo na Galeria"
+                );
+
+            };
+
+        recorder.start();
+
+        recording =
+            true;
+
+        cameraScreen.classList.add(
+            "recording"
         );
 
-
-        toast(
-          "📸 Foto 3D salva na galeria"
+        captureButton.classList.add(
+            "recording"
         );
 
+        cameraStatus.textContent =
+            "● REC";
 
-      }catch(error){
+        showToast(
+            "🔴 Gravando"
+        );
+
+    }catch(error){
 
         console.error(
-          error
+            error
         );
 
-        toast(
-          "Erro ao salvar foto"
+        showToast(
+            "Erro ao gravar"
         );
 
-      }
-
-    },
-    "image/jpeg",
-    .96
-  );
+    }
 
 }
 
 
-/* ==========================================
-BOTÕES
-========================================== */
+/* =========================================================
+   STOP RECORDING
+========================================================= */
 
-$("startCamera").onclick =
-  startCamera;
+function stopRecording(){
 
+    if(
+        recorder &&
+        recorder.state !==
+        "inactive"
+    ){
 
-$("takePhoto").onclick =
-  capture3D;
-
-
-$("permissionBtn").onclick =
-  async () => {
-
-    modal(
-      "cameraModal",
-      true
-    );
-
-    await startCamera();
-
-  };
-
-
-/* ==========================================
-MENU PRINCIPAL
-========================================== */
-
-document
-  .querySelectorAll(
-    "[data-open]"
-  )
-  .forEach(
-    button => {
-
-      button.onclick =
-        async () => {
-
-          const type =
-            button.dataset.open;
-
-
-          if(
-            type === "camera"
-            ||
-            type === "3d"
-            ||
-            type === "night"
-            ||
-            type === "filters"
-          ){
-
-            modal(
-              "cameraModal",
-              true
-            );
-
-          }
-
-
-          if(
-            type === "settings"
-          ){
-
-            modal(
-              "settingsModal",
-              true
-            );
-
-          }
-
-
-          if(
-            type === "gallery"
-          ){
-
-            modal(
-              "cameraModal",
-              true
-            );
-
-            toast(
-              "Use 'Trazer da galeria' para importar arquivos"
-            );
-
-          }
-
-
-          if(
-            type === "night"
-          ){
-
-            document.body
-              .classList.add(
-                "extraNight"
-              );
-
-            toast(
-              "Modo noturno digital ativado"
-            );
-
-          }
-
-        };
+        recorder.stop();
 
     }
-  );
 
+    recording =
+        false;
 
-/* ==========================================
-CONFIGURAÇÕES
-========================================== */
-
-$("settingsBtn").onclick =
-  () =>
-    modal(
-      "settingsModal",
-      true
+    cameraScreen.classList.remove(
+        "recording"
     );
 
-
-$("premiumBtn").onclick =
-  () =>
-    toast(
-      "Área Premium pronta para integração"
+    captureButton.classList.remove(
+        "recording"
     );
 
+    cameraStatus.textContent =
+        "VÍDEO";
 
-/* ==========================================
-TROCAR TEMA
-========================================== */
-
-$("themeToggle").onclick =
-  () => {
-
-    const root =
-      document.documentElement;
+}
 
 
-    const current =
-      getComputedStyle(
-        root
-      )
-      .getPropertyValue(
-        "--blue"
-      )
-      .trim();
+/* =========================================================
+   GALLERY
+========================================================= */
+
+$("galleryButton").onclick =
+    openGallery;
+
+$("seeAll").onclick =
+    openGallery;
+
+
+async function openGallery(){
+
+    galleryScreen.classList.add(
+        "open"
+    );
+
+    await renderGallery();
+
+}
+
+
+$("galleryClose").onclick =
+    () => {
+
+        galleryScreen.classList.remove(
+            "open"
+        );
+
+    };
+
+
+/* =========================================================
+   IMPORT
+========================================================= */
+
+$("importButton").onclick =
+    () =>
+        fileInput.click();
+
+
+fileInput.onchange =
+    async event => {
+
+        const files =
+            Array.from(
+                event.target.files
+            );
+
+        for(
+            const file
+            of files
+        ){
+
+            const type =
+                file.type.startsWith(
+                    "video/"
+                )
+                ?
+                "video"
+                :
+                "photo";
+
+            await saveMedia({
+
+                id:
+                    Date.now()
+                    +
+                    Math.random(),
+
+                blob:file,
+
+                type,
+
+                is3D:false,
+
+                favorite:false,
+
+                created:
+                    Date.now()
+
+            });
+
+        }
+
+        fileInput.value =
+            "";
+
+        await renderGallery();
+
+        showToast(
+            files.length +
+            " arquivo(s) importado(s)"
+        );
+
+    };
+
+
+/* =========================================================
+   GALLERY FILTER
+========================================================= */
+
+document
+.querySelectorAll(
+    "[data-gallery-filter]"
+)
+.forEach(
+    button => {
+
+        button.onclick =
+            async () => {
+
+                galleryFilter =
+                    button.dataset.galleryFilter;
+
+                document
+                    .querySelectorAll(
+                        ".galleryTab"
+                    )
+                    .forEach(
+                        b =>
+                            b.classList.remove(
+                                "active"
+                            )
+                    );
+
+                button.classList.add(
+                    "active"
+                );
+
+                await renderGallery();
+
+            };
+
+    }
+);
+
+
+/* =========================================================
+   RENDER GALLERY
+========================================================= */
+
+async function renderGallery(){
+
+    mediaGrid.innerHTML =
+        "";
+
+    let items =
+        await getAllMedia();
+
+    if(
+        galleryFilter ===
+        "photo"
+    ){
+
+        items =
+            items.filter(
+                item =>
+                    item.type ===
+                    "photo"
+            );
+
+    }
+
+    if(
+        galleryFilter ===
+        "video"
+    ){
+
+        items =
+            items.filter(
+                item =>
+                    item.type ===
+                    "video"
+            );
+
+    }
+
+    if(
+        galleryFilter ===
+        "3d"
+    ){
+
+        items =
+            items.filter(
+                item =>
+                    item.is3D
+            );
+
+    }
 
 
     if(
-      current === "#19aaff"
-      ||
-      current === "rgb(25, 170, 255)"
+        items.length ===
+        0
     ){
 
-      root.style.setProperty(
-        "--blue",
-        "#8d5cff"
-      );
+        mediaGrid.innerHTML =
 
-      root.style.setProperty(
-        "--violet",
-        "#18baff"
-      );
+            `
+            <div style="
+                grid-column:1/-1;
+                padding:70px 20px;
+                text-align:center;
+                color:#7f8ca1;
+                font-size:12px;
+            ">
 
-      toast(
-        "Tema violeta ativado"
-      );
+                🖼️<br><br>
+
+                Sua galeria está vazia.
+
+                <br><br>
+
+                Toque em + para
+                trazer fotos ou vídeos
+                do iPhone.
+
+            </div>
+            `;
+
+        return;
+
+    }
+
+
+    items.forEach(
+        item => {
+
+            const element =
+                document.createElement(
+                    "div"
+                );
+
+            element.className =
+                "mediaItem";
+
+            const url =
+                URL.createObjectURL(
+                    item.blob
+                );
+
+            let media;
+
+            if(
+                item.type ===
+                "video"
+            ){
+
+                media =
+                    document.createElement(
+                        "video"
+                    );
+
+                media.muted =
+                    true;
+
+                media.playsInline =
+                    true;
+
+            }else{
+
+                media =
+                    document.createElement(
+                        "img"
+                    );
+
+            }
+
+            media.src =
+                url;
+
+            element.appendChild(
+                media
+            );
+
+
+            const badge =
+                document.createElement(
+                    "div"
+                );
+
+            badge.className =
+                "mediaBadge";
+
+            badge.textContent =
+                item.is3D
+                ?
+                "3D"
+                :
+                item.type ===
+                "video"
+                ?
+                "VÍDEO"
+                :
+                "FOTO";
+
+            element.appendChild(
+                badge
+            );
+
+
+            const deleteButton =
+                document.createElement(
+                    "button"
+                );
+
+            deleteButton.className =
+                "mediaDelete";
+
+            deleteButton.textContent =
+                "×";
+
+            deleteButton.onclick =
+                async event => {
+
+                    event.stopPropagation();
+
+                    await deleteMedia(
+                        item.id
+                    );
+
+                    URL.revokeObjectURL(
+                        url
+                    );
+
+                    await renderGallery();
+
+                };
+
+            element.appendChild(
+                deleteButton
+            );
+
+
+            element.onclick =
+                () => {
+
+                    if(
+                        item.type ===
+                        "photo"
+                    ){
+
+                        open3DViewer(
+                            url,
+                            item.is3D
+                        );
+
+                    }else{
+
+                        const video =
+                            document.createElement(
+                                "video"
+                            );
+
+                        video.src =
+                            url;
+
+                        video.controls =
+                            true;
+
+                        video.autoplay =
+                            true;
+
+                        video.playsInline =
+                            true;
+
+                        video.style.position =
+                            "fixed";
+
+                        video.style.inset =
+                            "0";
+
+                        video.style.width =
+                            "100%";
+
+                        video.style.height =
+                            "100%";
+
+                        video.style.objectFit =
+                            "contain";
+
+                        video.style.background =
+                            "#000";
+
+                        video.style.zIndex =
+                            "4000";
+
+                        document.body.appendChild(
+                            video
+                        );
+
+                        video.onclick =
+                            () => {
+
+                                video.remove();
+
+                                URL.revokeObjectURL(
+                                    url
+                                );
+
+                            };
+
+                    }
+
+                };
+
+
+            mediaGrid.appendChild(
+                element
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   3D VIEWER
+========================================================= */
+
+function open3DViewer(
+    url,
+    is3D
+){
+
+    currentViewerURL =
+        url;
+
+    viewerImage.src =
+        url;
+
+    viewer3D.classList.add(
+        "open"
+    );
+
+    if(is3D){
+
+        viewerImage.style.filter =
+            `
+            drop-shadow(
+                -6px 0
+                rgba(255,0,0,.65)
+            )
+            drop-shadow(
+                6px 0
+                rgba(0,255,255,.65)
+            )
+            `;
 
     }else{
 
-      root.style.setProperty(
-        "--blue",
-        "#19aaff"
-      );
-
-      root.style.setProperty(
-        "--violet",
-        "#725cff"
-      );
-
-      toast(
-        "Tema azul ativado"
-      );
+        viewerImage.style.filter =
+            "none";
 
     }
-
-  };
-
-
-/* ==========================================
-MODO NOTURNO
-========================================== */
-
-$("nightToggle").onclick =
-  () => {
-
-    document.body
-      .classList.toggle(
-        "extraNight"
-      );
-
-
-    toast(
-      document.body
-        .classList
-        .contains(
-          "extraNight"
-        )
-        ?
-        "Modo noturno ativado"
-        :
-        "Modo noturno desativado"
-    );
-
-  };
-
-
-/* ==========================================
-IMPORTAR ARQUIVOS
-========================================== */
-
-function openFilePicker(){
-
-  $("fileInput").click();
 
 }
 
 
-$("importMedia").onclick =
-  openFilePicker;
+$("viewerClose").onclick =
+    () => {
+
+        viewer3D.classList.remove(
+            "open"
+        );
+
+        viewerImage.src =
+            "";
+
+    };
 
 
-$("importMedia2").onclick =
-  openFilePicker;
+$("anaglyphButton").onclick =
+    () => {
+
+        viewerImage.style.filter =
+            `
+            drop-shadow(
+                -7px 0
+                rgba(255,0,0,.7)
+            )
+            drop-shadow(
+                7px 0
+                rgba(0,255,255,.7)
+            )
+            `;
+
+    };
 
 
-$("fileInput").onchange =
-  async event => {
+$("normal3DButton").onclick =
+    () => {
 
-    const files =
-      Array.from(
-        event.target.files
-      );
+        viewerImage.style.filter =
+            `
+            drop-shadow(
+                -4px 0
+                rgba(0,90,255,.45)
+            )
+            drop-shadow(
+                4px 0
+                rgba(0,220,255,.45)
+            )
+            `;
+
+    };
 
 
-    if(
-      files.length === 0
-    ){
+$("depthButton").onclick =
+    () => {
 
-      return;
+        viewerImage.style.transform =
+            "perspective(800px) rotateY(-5deg) scale(1.03)";
 
+        setTimeout(
+            () => {
+
+                viewerImage.style.transform =
+                    "none";
+
+            },
+            700
+        );
+
+    };
+
+
+/* =========================================================
+   MODE 3D
+========================================================= */
+
+$("mode3DButton").onclick =
+    () => {
+
+        cameraMode =
+            "photo";
+
+        selectedFilter =
+            "3d";
+
+        cameraScreen.classList.add(
+            "open"
+        );
+
+        startCamera();
+
+        document
+            .querySelectorAll(
+                ".tool"
+            )
+            .forEach(
+                button => {
+
+                    button.classList.toggle(
+                        "active",
+                        button.dataset.filter ===
+                        "3d"
+                    );
+
+                }
+            );
+
+    };
+
+
+/* =========================================================
+   NIGHT
+========================================================= */
+
+$("nightButton").onclick =
+    () => {
+
+        nightMode =
+            !nightMode;
+
+        if(cameraScreen.classList.contains("open")){
+
+            updateCameraFilter();
+
+        }
+
+        showToast(
+            nightMode
+            ?
+            "🌙 Modo noturno ativado"
+            :
+            "☀️ Modo noturno desativado"
+        );
+
+    };
+
+
+$("featureNight").onclick =
+    () =>
+        $("nightButton").click();
+
+
+/* =========================================================
+   FILTERS
+========================================================= */
+
+$("filtersButton").onclick =
+    () => {
+
+        cameraMode =
+            "photo";
+
+        cameraScreen.classList.add(
+            "open"
+        );
+
+        startCamera();
+
+        showToast(
+            "Deslize os filtros para escolher"
+        );
+
+    };
+
+
+/* =========================================================
+   FEATURE 3D
+========================================================= */
+
+$("feature3D").onclick =
+    () =>
+        $("mode3DButton").click();
+
+
+$("featureVideo").onclick =
+    () => {
+
+        cameraMode =
+            "video";
+
+        cameraScreen.classList.add(
+            "open"
+        );
+
+        startCamera();
+
+    };
+
+
+/* =========================================================
+   SUPER ZOOM
+========================================================= */
+
+cameraScreen.addEventListener(
+    "wheel",
+    event => {
+
+        event.preventDefault();
+
+        zoomLevel +=
+            event.deltaY < 0
+            ?
+            .15
+            :
+            -.15;
+
+        zoomLevel =
+            Math.max(
+                1,
+                Math.min(
+                    8,
+                    zoomLevel
+                )
+            );
+
+        cameraVideo.style.transform =
+            `scale(${zoomLevel})`;
+
+    },
+    {
+        passive:false
     }
+);
 
 
-    let count =
-      0;
+/* =========================================================
+   PINCH ZOOM
+========================================================= */
+
+let pinchStart =
+    0;
+
+let pinchZoom =
+    1;
 
 
-    for(
-      const file
-      of files
-    ){
+cameraScreen.addEventListener(
+    "touchstart",
+    event => {
 
-      if(
-        file.type.startsWith(
-          "image/"
-        )
-        ||
-        file.type.startsWith(
-          "video/"
-        )
-      ){
+        if(
+            event.touches.length === 2
+        ){
+
+            const dx =
+                event.touches[0].clientX -
+                event.touches[1].clientX;
+
+            const dy =
+                event.touches[0].clientY -
+                event.touches[1].clientY;
+
+            pinchStart =
+                Math.hypot(
+                    dx,
+                    dy
+                );
+
+            pinchZoom =
+                zoomLevel;
+
+        }
+
+    },
+    {
+        passive:true
+    }
+);
+
+
+cameraScreen.addEventListener(
+    "touchmove",
+    event => {
+
+        if(
+            event.touches.length !== 2
+        ){
+
+            return;
+
+        }
+
+        const dx =
+            event.touches[0].clientX -
+            event.touches[1].clientX;
+
+        const dy =
+            event.touches[0].clientY -
+            event.touches[1].clientY;
+
+        const distance =
+            Math.hypot(
+                dx,
+                dy
+            );
+
+        if(!pinchStart){
+            return;
+        }
+
+        zoomLevel =
+            pinchZoom *
+            (
+                distance /
+                pinchStart
+            );
+
+        zoomLevel =
+            Math.max(
+                1,
+                Math.min(
+                    8,
+                    zoomLevel
+                )
+            );
+
+        cameraVideo.style.transform =
+            `scale(${zoomLevel})`;
+
+    },
+    {
+        passive:true
+    }
+);
+
+
+/* =========================================================
+   SWIPE FILTERS
+========================================================= */
+
+let touchStartX =
+    0;
+
+
+cameraScreen.addEventListener(
+    "touchstart",
+    event => {
+
+        if(
+            event.touches.length === 1
+        ){
+
+            touchStartX =
+                event.touches[0].clientX;
+
+        }
+
+    },
+    {
+        passive:true
+    }
+);
+
+
+cameraScreen.addEventListener(
+    "touchend",
+    event => {
+
+        const endX =
+            event.changedTouches[0].clientX;
+
+        const difference =
+            endX -
+            touchStartX;
+
+        if(
+            Math.abs(difference)
+            < 50
+        ){
+
+            return;
+
+        }
+
+        const buttons =
+            Array.from(
+                document.querySelectorAll(
+                    ".tool"
+                )
+            );
+
+        let index =
+            buttons.findIndex(
+                button =>
+                    button.dataset.filter ===
+                    selectedFilter
+            );
+
+        if(index < 0){
+            index = 0;
+        }
+
+        if(difference < 0){
+
+            index =
+                Math.min(
+                    buttons.length-1,
+                    index+1
+                );
+
+        }else{
+
+            index =
+                Math.max(
+                    0,
+                    index-1
+                );
+
+        }
+
+        buttons[index].click();
+
+    },
+    {
+        passive:true
+    }
+);
+
+
+/* =========================================================
+   PERMISSIONS
+========================================================= */
+
+$("permissionButton").onclick =
+    async () => {
 
         try{
 
-          await saveMedia(
-            file,
-            file.type.startsWith(
-              "image/"
-            )
-            ?
-            "photo"
-            :
-            "video"
-          );
+            const media =
+                await navigator
+                    .mediaDevices
+                    .getUserMedia({
 
-          count++;
+                        video:true,
+                        audio:true
+
+                    });
+
+            media
+                .getTracks()
+                .forEach(
+                    track =>
+                        track.stop()
+                );
+
+            showToast(
+                "✓ Câmera e microfone autorizados"
+            );
 
         }catch(error){
 
-          console.error(
-            error
-          );
-
-        }
-
-      }
-
-    }
-
-
-    toast(
-      count +
-      " arquivo(s) importado(s)"
-    );
-
-
-    event.target.value =
-      "";
-
-  };
-
-
-/* ==========================================
-GALERIA
-========================================== */
-
-$("openGallery2").onclick =
-  () => {
-
-    toast(
-      "Arquivos ficam armazenados localmente neste navegador"
-    );
-
-  };
-
-
-$("gallerySettings").onclick =
-  () => {
-
-    toast(
-      "Galeria local ativa"
-    );
-
-  };
-
-
-$("seeGallery").onclick =
-  () => {
-
-    toast(
-      "Use 'Trazer da galeria' para adicionar suas fotos e vídeos"
-    );
-
-  };
-
-
-/* ==========================================
-FECHAR MODAIS
-========================================== */
-
-document
-  .querySelectorAll(
-    "[data-close]"
-  )
-  .forEach(
-    button => {
-
-      button.onclick =
-        () => {
-
-          modal(
-            button.dataset.close,
-            false
-          );
-
-        };
-
-    }
-  );
-
-
-/* ==========================================
-FECHAR CLICANDO FORA
-========================================== */
-
-document
-  .querySelectorAll(
-    ".modal"
-  )
-  .forEach(
-    modalElement => {
-
-      modalElement.addEventListener(
-        "click",
-        event => {
-
-          if(
-            event.target ===
-            modalElement
-          ){
-
-            modalElement.classList.remove(
-              "open"
+            showToast(
+                "Permissão não concedida"
             );
 
-          }
+        }
+
+    };
+
+
+/* =========================================================
+   CLEAR GALLERY
+========================================================= */
+
+$("clearGallery").onclick =
+    async () => {
+
+        if(
+            !confirm(
+                "Apagar toda a galeria local?"
+            )
+        ){
+
+            return;
 
         }
-      );
 
-    }
-  );
+        const transaction =
+            db.transaction(
+                STORE,
+                "readwrite"
+            );
+
+        transaction
+            .objectStore(STORE)
+            .clear();
+
+        transaction.oncomplete =
+            () => {
+
+                showToast(
+                    "Galeria limpa"
+                );
+
+                closeSheets();
+
+            };
+
+    };
 
 
-/* ==========================================
-INICIALIZAÇÃO
-========================================== */
+/* =========================================================
+   PREMIUM
+========================================================= */
+
+$("premiumButton").onclick =
+    () => {
+
+        showToast(
+            "✨ Recursos Premium disponíveis neste aplicativo"
+        );
+
+    };
+
+
+/* =========================================================
+   START
+========================================================= */
 
 async function init(){
 
-  try{
+    try{
 
-    await openDB();
+        await openDB();
 
-  }catch(error){
+    }catch(error){
 
-    console.error(
-      error
+        console.error(
+            error
+        );
+
+    }
+
+    showToast(
+        "RENATO VISION 3D pronto"
     );
-
-    toast(
-      "Armazenamento local indisponível"
-    );
-
-  }
 
 }
 
