@@ -2,5181 +2,2486 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-
 <meta name="viewport"
-      content="width=device-width,
-      initial-scale=1,
-      maximum-scale=1,
-      user-scalable=no,
-      viewport-fit=cover">
-
-<meta name="theme-color" content="#02050d">
-
-<title>RENATO VISION 3D</title>
-
+content="width=device-width,
+initial-scale=1,
+maximum-scale=1,
+user-scalable=no,
+viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#080808">
+<title>RENATO VISION AI</title>
 <style>
-
-/* =========================================================
-   RESET
-========================================================= */
-
 *{
     box-sizing:border-box;
     -webkit-tap-highlight-color:transparent;
 }
-
 html,
 body{
     margin:0;
-    padding:0;
     width:100%;
-    min-height:100%;
-    background:#02050d;
+    height:100%;
+    overflow:hidden;
+    background:#000;
     color:#fff;
     font-family:
-        -apple-system,
-        BlinkMacSystemFont,
-        "SF Pro Display",
-        "Segoe UI",
-        Arial,
-        sans-serif;
+    -apple-system,
+    BlinkMacSystemFont,
+    "SF Pro Display",
+    "Segoe UI",
+    Arial,
+    sans-serif;
 }
-
-body{
-    overflow-x:hidden;
-}
-
 button,
-input,
-select{
+select,
+input{
     font-family:inherit;
 }
-
 button{
     cursor:pointer;
 }
-
-img,
-video{
-    max-width:100%;
-}
-
-/* =========================================================
-   APP
-========================================================= */
-
-:root{
-
-    --bg:#02050d;
-    --bg2:#050b18;
-
-    --card:rgba(8,17,31,.78);
-
-    --line:rgba(74,145,255,.25);
-
-    --blue:#168cff;
-    --blue2:#5f65ff;
-    --cyan:#00d9ff;
-
-    --text:#f7f9ff;
-    --muted:#9ba9c2;
-
-    --success:#28d86f;
-
-    --radius:24px;
-}
-
-body{
-    background:
-        radial-gradient(
-            circle at 50% -10%,
-            rgba(0,119,255,.25),
-            transparent 42%
-        ),
-        linear-gradient(
-            180deg,
-            #02050d,
-            #02040a 70%,
-            #010207
-        );
-}
-
-/* =========================================================
-   BACKGROUND
-========================================================= */
-
 #app{
-    min-height:100vh;
-    position:relative;
-    overflow:hidden;
-}
-
-.bgGlow{
-    position:fixed;
-    width:350px;
-    height:350px;
-    border-radius:50%;
-    filter:blur(100px);
-    opacity:.22;
-    pointer-events:none;
-    z-index:0;
-}
-
-.glow1{
-    top:50px;
-    left:-180px;
-    background:#006eff;
-}
-
-.glow2{
-    top:480px;
-    right:-180px;
-    background:#5200ff;
-}
-
-.glow3{
-    bottom:-200px;
-    left:30%;
-    background:#00c8ff;
-}
-
-/* =========================================================
-   HEADER
-========================================================= */
-
-.header{
-    position:relative;
-    z-index:10;
-
-    padding:
-        calc(18px + env(safe-area-inset-top))
-        24px
-        10px;
-
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:15px;
-}
-
-.brand{
-    display:flex;
-    align-items:center;
-    gap:12px;
-}
-
-.logoEye{
-    width:76px;
-    height:45px;
-
-    position:relative;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    font-size:38px;
-
-    filter:
-        drop-shadow(
-            0 0 13px
-            rgba(0,145,255,.75)
-        );
-}
-
-.logoEye::before{
-    content:"";
-    position:absolute;
-    width:65px;
-    height:30px;
-    border-radius:50% 8px 50% 8px;
-    border:
-        3px solid
-        rgba(225,238,255,.85);
-    transform:rotate(-5deg);
-}
-
-.brandText h1{
-    margin:0;
-    font-size:29px;
-    line-height:1;
-    font-weight:950;
-    letter-spacing:-1px;
-}
-
-.brandText h1 span{
-    color:#3f9cff;
-    text-shadow:
-        0 0 12px
-        rgba(0,145,255,.7);
-}
-
-.brandText p{
-    margin:5px 0 0;
-    color:#d8dfef;
-    font-size:12px;
-}
-
-/* PREMIUM */
-
-.premium{
-    border:1px solid #a77928;
-    background:
-        linear-gradient(
-            135deg,
-            rgba(79,48,8,.45),
-            rgba(18,13,3,.8)
-        );
-
-    color:#ffd66b;
-
-    border-radius:17px;
-
-    padding:10px 16px;
-
-    font-size:11px;
-    font-weight:900;
-
-    box-shadow:
-        0 0 25px
-        rgba(255,185,45,.08);
-}
-
-.premium small{
-    display:block;
-    font-size:8px;
-    opacity:.8;
-    margin-top:2px;
-}
-
-/* SETTINGS */
-
-.settingsTop{
-    width:42px;
-    height:42px;
-
-    border-radius:50%;
-
-    background:
-        rgba(255,255,255,.04);
-
-    border:
-        1px solid
-        rgba(255,255,255,.12);
-
-    color:#fff;
-
-    font-size:21px;
-}
-
-/* =========================================================
-   HERO
-========================================================= */
-
-.hero{
-    position:relative;
-    z-index:5;
-
-    margin:15px 24px 20px;
-
-    min-height:330px;
-
-    border-radius:30px;
-
-    overflow:hidden;
-
-    border:
-        1px solid
-        rgba(57,145,255,.25);
-
-    background:
-        radial-gradient(
-            circle at 78% 50%,
-            rgba(0,125,255,.32),
-            transparent 35%
-        ),
-        linear-gradient(
-            110deg,
-            #030712 10%,
-            #071225 60%,
-            #020711
-        );
-
-    box-shadow:
-        0 25px 80px
-        rgba(0,0,0,.55);
-}
-
-.hero::before{
-    content:"";
-
-    position:absolute;
-    inset:0;
-
-    background:
-        linear-gradient(
-            90deg,
-            rgba(0,0,0,.9),
-            rgba(0,0,0,.35),
-            transparent
-        );
-}
-
-.heroText{
-    position:relative;
-    z-index:4;
-
-    width:48%;
-
-    padding:
-        45px 0 40px 32px;
-}
-
-.heroText h2{
-    margin:0;
-
-    font-size:
-        clamp(
-            28px,
-            5vw,
-            50px
-        );
-
-    line-height:1.05;
-
-    font-weight:950;
-}
-
-.heroText h2 span{
-    color:#368dff;
-
-    text-shadow:
-        0 0 20px
-        rgba(0,132,255,.8);
-}
-
-.heroText p{
-    margin:18px 0 0;
-
-    color:#d7dfed;
-
-    line-height:1.55;
-
-    font-size:14px;
-
-    max-width:440px;
-}
-
-.heroVisual{
-    position:absolute;
-
-    right:2%;
-    top:8%;
-
-    width:53%;
-    height:84%;
-
-    border-radius:35px;
-
-    border:
-        3px solid
-        rgba(0,184,255,.65);
-
-    background:
-        linear-gradient(
-            135deg,
-            rgba(0,119,255,.18),
-            rgba(0,0,0,.4)
-        );
-
-    transform:
-        perspective(900px)
-        rotateY(-7deg)
-        rotateX(2deg);
-
-    box-shadow:
-        0 0 35px
-        rgba(0,119,255,.18),
-        inset 0 0 40px
-        rgba(0,0,0,.7);
-
-    overflow:hidden;
-}
-
-.heroVisual::before,
-.heroVisual::after{
-    content:"";
-
-    position:absolute;
-    inset:0;
-
-    background:
-        linear-gradient(
-            135deg,
-            #0d2d55,
-            #122e42 45%,
-            #05111d
-        );
-}
-
-.heroVisual::after{
-    background:
-        radial-gradient(
-            circle at 60% 38%,
-            rgba(0,205,255,.7),
-            transparent 5%
-        ),
-        radial-gradient(
-            circle at 30% 65%,
-            rgba(40,100,255,.6),
-            transparent 10%
-        );
-    mix-blend-mode:screen;
-}
-
-.heroPhone{
-    position:absolute;
-
-    left:17%;
-    top:12%;
-
-    width:70%;
-    height:75%;
-
-    border-radius:28px;
-
-    border:
-        2px solid
-        rgba(0,210,255,.7);
-
-    background:
-        linear-gradient(
-            135deg,
-            #102a4d,
-            #06111f
-        );
-
-    z-index:4;
-
-    transform:
-        rotate(-5deg);
-
-    box-shadow:
-        0 20px 50px
-        rgba(0,0,0,.8);
-}
-
-.fakeLandscape{
-    position:absolute;
-    inset:8px;
-
-    border-radius:21px;
-
-    overflow:hidden;
-
-    background:
-        linear-gradient(
-            160deg,
-            #123a68,
-            #0c5b70 42%,
-            #061323
-        );
-}
-
-.fakeLandscape::before{
-    content:"";
-
-    position:absolute;
-    left:-5%;
-    bottom:25%;
-
-    width:110%;
-    height:40%;
-
-    background:
-        linear-gradient(
-            145deg,
-            transparent 0 18%,
-            #152c42 19% 36%,
-            #0a1b2c 37% 52%,
-            transparent 53%
-        );
-
-    filter:
-        drop-shadow(
-            0 5px 5px
-            rgba(0,0,0,.6)
-        );
-}
-
-.fakeLandscape::after{
-    content:"3D";
-
-    position:absolute;
-
-    right:12px;
-    bottom:12px;
-
-    padding:8px 12px;
-
-    border-radius:20px;
-
-    border:
-        1px solid
-        #008cff;
-
-    background:
-        rgba(0,20,50,.75);
-
-    color:#36a5ff;
-
-    font-weight:950;
-
-    font-size:20px;
-}
-
-.divider3d{
-    position:absolute;
-
-    left:50%;
-    top:0;
-    bottom:0;
-
-    width:3px;
-
-    background:
-        linear-gradient(
-            transparent,
-            #00e5ff,
-            transparent
-        );
-
-    box-shadow:
-        0 0 15px
-        #00dfff;
-
-    z-index:10;
-}
-
-/* =========================================================
-   ACTION GRID
-========================================================= */
-
-.actionGrid{
-    position:relative;
-    z-index:10;
-
-    margin:
-        0 24px
-        28px;
-
-    display:grid;
-
-    grid-template-columns:
-        repeat(6,1fr);
-
-    gap:13px;
-}
-
-.actionCard{
-    min-height:145px;
-
-    border-radius:22px;
-
-    border:
-        1px solid
-        rgba(73,139,226,.28);
-
-    background:
-        linear-gradient(
-            145deg,
-            rgba(9,20,37,.9),
-            rgba(3,9,18,.9)
-        );
-
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-
-    text-align:center;
-
-    color:#fff;
-
-    transition:
-        transform .2s,
-        border-color .2s,
-        box-shadow .2s;
-}
-
-.actionCard:active{
-    transform:scale(.96);
-}
-
-.actionIcon{
-    width:58px;
-    height:58px;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    font-size:31px;
-
-    margin-bottom:10px;
-
-    color:#55aaff;
-
-    filter:
-        drop-shadow(
-            0 0 12px
-            rgba(0,132,255,.65)
-        );
-}
-
-.actionCard strong{
-    font-size:15px;
-}
-
-.actionCard small{
-    margin-top:5px;
-
-    color:#91a0b9;
-
-    font-size:9px;
-}
-
-/* =========================================================
-   FEATURE CARDS
-========================================================= */
-
-.features{
-    position:relative;
-    z-index:5;
-
-    margin:
-        0 24px
-        28px;
-
-    display:grid;
-
-    grid-template-columns:
-        repeat(3,1fr);
-
-    gap:16px;
-}
-
-.feature{
-    min-height:300px;
-
-    border-radius:23px;
-
-    overflow:hidden;
-
-    position:relative;
-
-    border:
-        1px solid
-        rgba(62,132,225,.25);
-
-    background:#07101d;
-
-    box-shadow:
-        0 15px 45px
-        rgba(0,0,0,.4);
-}
-
-.featureVisual{
-    position:absolute;
-    inset:0;
-
-    background:
-        radial-gradient(
-            circle at 50% 40%,
-            rgba(0,140,255,.35),
-            transparent 30%
-        ),
-        linear-gradient(
-            150deg,
-            #1d3152,
-            #07111e 70%
-        );
-}
-
-.featureVisual.tiger{
-    background:
-        radial-gradient(
-            circle at 50% 40%,
-            #ff8b00,
-            transparent 9%
-        ),
-        repeating-linear-gradient(
-            125deg,
-            #151515 0 8px,
-            #e87500 9px 20px,
-            #171717 21px 28px
-        );
-}
-
-.featureVisual.city{
-    background:
-        linear-gradient(
-            180deg,
-            #161f65,
-            #100b26 50%,
-            #03070e
-        );
-}
-
-.featureVisual.moon{
-    background:
-        radial-gradient(
-            circle at 65% 30%,
-            #dce8ff 0 7%,
-            transparent 8%
-        ),
-        linear-gradient(
-            180deg,
-            #131a3b,
-            #030711
-        );
-}
-
-.featureOverlay{
-    position:absolute;
-    inset:0;
-
-    background:
-        linear-gradient(
-            transparent 25%,
-            rgba(0,0,0,.85) 80%
-        );
-}
-
-.featureText{
-    position:absolute;
-
-    left:18px;
-    right:18px;
-    bottom:18px;
-
-    z-index:3;
-}
-
-.featureText h3{
-    margin:0 0 5px;
-
-    font-size:19px;
-}
-
-.featureText p{
-    margin:0;
-
-    color:#9da9be;
-
-    font-size:10px;
-}
-
-.badge3d{
-    position:absolute;
-
-    right:15px;
-    bottom:16px;
-
-    z-index:4;
-
-    border:
-        1px solid
-        #007dff;
-
-    color:#2da0ff;
-
-    background:
-        rgba(0,25,60,.75);
-
-    border-radius:20px;
-
-    padding:5px 9px;
-
-    font-size:10px;
-    font-weight:950;
-}
-
-/* =========================================================
-   GALLERY SECTION
-========================================================= */
-
-.sectionWrap{
-    position:relative;
-    z-index:5;
-
-    margin:
-        0 24px
-        30px;
-}
-
-.sectionHead{
-    display:flex;
-
-    align-items:center;
-    justify-content:space-between;
-
-    margin-bottom:14px;
-}
-
-.sectionHead h2{
-    margin:0;
-
-    font-size:22px;
-}
-
-.sectionHead h2 span{
-    color:#ffd04f;
-}
-
-.sectionHead button{
-    background:none;
-    border:0;
-    color:#d9e6ff;
-    font-size:12px;
-}
-
-.galleryCategories{
-    display:grid;
-
-    grid-template-columns:
-        repeat(6,1fr);
-
-    gap:10px;
-}
-
-.category{
-    background:
-        #091426;
-
-    border:
-        1px solid
-        rgba(70,130,220,.2);
-
-    border-radius:15px;
-
-    overflow:hidden;
-
-    color:#fff;
-
-    text-align:left;
-}
-
-.categoryVisual{
-    height:105px;
-
-    background:
-        linear-gradient(
-            145deg,
-            #0d4c87,
-            #101728
-        );
-}
-
-.category:nth-child(2)
-.categoryVisual{
-    background:
-        linear-gradient(
-            145deg,
-            #462a8e,
-            #08152d
-        );
-}
-
-.categoryName{
-    padding:9px;
-
-    font-size:11px;
-}
-
-/* =========================================================
-   PERMISSIONS
-========================================================= */
-
-.permissions{
-    position:relative;
-    z-index:5;
-
-    margin:
-        0 24px
-        25px;
-
-    padding:25px;
-
-    border-radius:22px;
-
-    border:
-        1px solid
-        rgba(51,123,216,.3);
-
-    background:
-        linear-gradient(
-            135deg,
-            rgba(8,26,48,.95),
-            rgba(3,10,20,.95)
-        );
-
-    display:grid;
-
-    grid-template-columns:
-        1.5fr
-        1fr;
-
-    gap:25px;
-}
-
-.permissionTitle{
-    display:flex;
-    gap:13px;
-    align-items:flex-start;
-}
-
-.permissionShield{
-    font-size:35px;
-}
-
-.permissionTitle h2{
-    margin:0;
-    font-size:18px;
-}
-
-.permissionTitle p{
-    color:#9caac0;
-    font-size:10px;
-    line-height:1.5;
-}
-
-.permissionList{
-    list-style:none;
-    padding:0;
-    margin:15px 0 0;
-}
-
-.permissionList li{
-    margin:8px 0;
-    font-size:11px;
-    color:#d5deed;
-}
-
-.permissionList li::before{
-    content:"✓";
-    color:#2ee477;
-    font-weight:900;
-    margin-right:8px;
-}
-
-.permissionAction{
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-}
-
-.primary{
-    width:100%;
-
-    min-height:54px;
-
-    border:0;
-
-    border-radius:15px;
-
-    color:white;
-
-    font-weight:900;
-
-    background:
-        linear-gradient(
-            135deg,
-            #167cff,
-            #615dff
-        );
-
-    box-shadow:
-        0 10px 30px
-        rgba(48,109,255,.28);
-}
-
-.permissionAction small{
-    margin-top:12px;
-    color:#8997ac;
-    font-size:9px;
-    text-align:center;
-}
-
-/* =========================================================
-   FOOTER
-========================================================= */
-
-.footer{
-    position:relative;
-    z-index:5;
-
-    text-align:center;
-
-    padding:
-        20px
-        20px
-        calc(
-            35px +
-            env(safe-area-inset-bottom)
-        );
-
-    color:#8995aa;
-}
-
-.footerLogo{
-    color:#2ba1ff;
-
-    font-size:12px;
-
-    letter-spacing:5px;
-
-    font-weight:900;
-}
-
-.footer p{
-    font-size:10px;
-}
-
-/* =========================================================
-   OVERLAY / PANELS
-========================================================= */
-
-.overlay{
     position:fixed;
     inset:0;
-
-    z-index:1000;
-
-    display:none;
-
-    background:
-        rgba(0,0,0,.72);
-
-    backdrop-filter:
-        blur(10px);
-}
-
-.overlay.open{
-    display:block;
-}
-
-.sheet{
-    position:fixed;
-
-    left:0;
-    right:0;
-    bottom:0;
-
-    z-index:1100;
-
-    max-height:
-        90vh;
-
-    overflow:auto;
-
-    border-radius:
-        28px
-        28px
-        0
-        0;
-
-    background:
-        #07101c;
-
-    border:
-        1px solid
-        rgba(81,147,236,.25);
-
-    box-shadow:
-        0 -20px 80px
-        rgba(0,0,0,.75);
-
-    transform:
-        translateY(110%);
-
-    transition:
-        transform .3s ease;
-
-    padding:
-        20px
-        20px
-        calc(
-            25px +
-            env(safe-area-inset-bottom)
-        );
-}
-
-.sheet.open{
-    transform:
-        translateY(0);
-}
-
-.sheetHeader{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-
-    margin-bottom:20px;
-}
-
-.sheetHeader h2{
-    margin:0;
-    font-size:19px;
-}
-
-.closeBtn{
-    width:42px;
-    height:42px;
-
-    border-radius:50%;
-
-    border:
-        1px solid
-        rgba(255,255,255,.13);
-
-    background:
-        rgba(255,255,255,.05);
-
-    color:#fff;
-
-    font-size:25px;
-}
-
-/* =========================================================
-   CAMERA
-========================================================= */
-
-.cameraScreen{
-    position:fixed;
-    inset:0;
-
-    z-index:2000;
-
-    display:none;
-
+    overflow:hidden;
     background:#000;
 }
-
-.cameraScreen.open{
-    display:block;
-}
-
-#cameraVideo{
+/* =====================================================
+   CÂMERA
+===================================================== */
+#camera{
+    position:absolute;
+    inset:0;
     width:100%;
     height:100%;
-
     object-fit:cover;
-
     background:#000;
-
     transition:
-        filter .15s,
-        transform .15s;
+    filter .15s ease,
+    transform .15s ease;
 }
-
-.cameraTop{
+/* =====================================================
+   TOPO
+===================================================== */
+#top{
     position:absolute;
-
     top:
-        calc(
-            15px +
-            env(safe-area-inset-top)
-        );
-
-    left:15px;
-    right:15px;
-
+    calc(
+        env(safe-area-inset-top,0px)
+        + 13px
+    );
+    left:14px;
+    right:14px;
     display:flex;
     justify-content:space-between;
-
-    z-index:10;
+    align-items:center;
+    z-index:20;
+    pointer-events:none;
 }
-
-.cameraPill{
-    padding:9px 12px;
-
-    border-radius:16px;
-
+.glass{
     background:
-        rgba(0,0,0,.5);
-
-    border:
-        1px solid
-        rgba(255,255,255,.14);
-
+    rgba(10,10,12,.62);
     backdrop-filter:
-        blur(15px);
-
+    blur(20px);
+    -webkit-backdrop-filter:
+    blur(20px);
+    border:
+    1px solid
+    rgba(255,255,255,.13);
+    box-shadow:
+    0 8px 30px
+    rgba(0,0,0,.3);
+}
+.brand{
+    padding:8px 11px;
+    border-radius:13px;
     font-size:10px;
     font-weight:900;
+    letter-spacing:2px;
 }
-
-.cameraBottom{
+#modeLabel{
+    padding:8px 11px;
+    border-radius:13px;
+    font-size:9px;
+    font-weight:900;
+    letter-spacing:1px;
+}
+/* =====================================================
+   GRAVAÇÃO
+===================================================== */
+#recording{
+    display:none;
     position:absolute;
-
+    top:
+    calc(
+        env(safe-area-inset-top,0px)
+        + 65px
+    );
+    left:50%;
+    transform:translateX(-50%);
+    z-index:50;
+    padding:8px 14px;
+    border-radius:20px;
+    background:
+    rgba(130,0,0,.9);
+    border:
+    1px solid
+    rgba(255,255,255,.15);
+    font-size:11px;
+    font-weight:900;
+}
+.recDot{
+    display:inline-block;
+    width:8px;
+    height:8px;
+    margin-right:6px;
+    border-radius:50%;
+    background:red;
+    animation:
+    blink .8s infinite;
+}
+@keyframes blink{
+    50%{
+        opacity:.2;
+    }
+}
+/* =====================================================
+   BARRA INFERIOR
+===================================================== */
+#bottom{
+    position:absolute;
     left:0;
     right:0;
     bottom:0;
-
-    z-index:10;
-
-    padding:
-        20px
-        20px
-        calc(
-            30px +
-            env(safe-area-inset-bottom)
-        );
-
-    background:
-        linear-gradient(
-            transparent,
-            rgba(0,0,0,.85)
-        );
-
+    z-index:60;
     display:flex;
-
     justify-content:center;
     align-items:center;
-
-    gap:25px;
+    gap:23px;
+    padding:
+    15px
+    16px
+    calc(
+        18px +
+        env(safe-area-inset-bottom,0px)
+    );
+    background:
+    linear-gradient(
+        transparent,
+        rgba(0,0,0,.78)
+    );
 }
-
-.camBtn{
+.circle{
+    width:54px;
+    height:54px;
+    border-radius:50%;
+    border:
+    1px solid
+    rgba(255,255,255,.18);
+    background:
+    rgba(15,15,17,.78);
+    color:#fff;
+    backdrop-filter:
+    blur(18px);
+    font-size:20px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition:.15s;
+}
+.circle:active{
+    transform:scale(.91);
+}
+#photo{
+    width:80px;
+    height:80px;
+    border:
+    5px solid
+    rgba(255,255,255,.95);
+    background:
+    rgba(255,255,255,.08);
+}
+#photo span{
     width:62px;
     height:62px;
-
     border-radius:50%;
-
-    border:
-        2px solid
-        rgba(255,255,255,.6);
-
-    background:
-        rgba(255,255,255,.1);
-
-    color:white;
-
-    font-size:23px;
+    background:#fff;
 }
-
-.capture{
-    width:84px;
-    height:84px;
-
-    border:
-        5px solid
-        white;
-
-    background:
-        rgba(255,255,255,.1);
+#photo.recording span{
+    width:32px;
+    height:32px;
+    border-radius:7px;
+    background:#ff1f1f;
 }
-
-.capture::after{
-    content:"";
-
-    display:block;
-
-    width:65px;
-    height:65px;
-
-    margin:auto;
-
-    border-radius:50%;
-
-    background:white;
-}
-
-.recording .capture::after{
-    width:30px;
-    height:30px;
-
-    border-radius:8px;
-
-    background:#ff2638;
-}
-
-.cameraTools{
+/* =====================================================
+   BOTÃO MENU
+===================================================== */
+#menuButton{
     position:absolute;
-
-    left:15px;
     right:15px;
-
     bottom:
-        calc(
-            130px +
-            env(safe-area-inset-bottom)
-        );
-
-    z-index:20;
-
-    display:flex;
-
-    gap:8px;
-
-    overflow-x:auto;
-
-    scrollbar-width:none;
-}
-
-.cameraTools::-webkit-scrollbar{
-    display:none;
-}
-
-.tool{
-    flex:none;
-
-    padding:9px 13px;
-
-    border-radius:16px;
-
+    calc(
+        125px +
+        env(safe-area-inset-bottom,0px)
+    );
+    z-index:80;
+    padding:12px 16px;
+    border-radius:18px;
     border:
-        1px solid
-        rgba(255,255,255,.14);
-
+    1px solid
+    rgba(255,255,255,.17);
     background:
-        rgba(0,0,0,.5);
-
-    color:white;
-
-    font-size:9px;
-    font-weight:900;
-
+    rgba(8,8,10,.78);
+    color:#fff;
     backdrop-filter:
-        blur(15px);
+    blur(20px);
+    font-size:10px;
+    font-weight:900;
+    letter-spacing:1px;
 }
-
-.tool.active{
-    background:
-        #176fff;
-}
-
-/* =========================================================
-   FILTER STRIP
-========================================================= */
-
-.filterStrip{
-    display:flex;
-
-    gap:8px;
-
-    overflow-x:auto;
-
-    scrollbar-width:none;
-
-    padding-bottom:5px;
-}
-
-.filterStrip::-webkit-scrollbar{
-    display:none;
-}
-
-.filterBtn{
-    flex:none;
-
-    border-radius:15px;
-
-    border:
-        1px solid
-        rgba(255,255,255,.12);
-
-    background:#101a2a;
-
-    color:white;
-
-    padding:9px 13px;
-
-    font-size:9px;
-}
-
-.filterBtn.active{
-    border-color:#268fff;
-    background:#0e4081;
-}
-
-/* =========================================================
-   GALLERY APP
-========================================================= */
-
-.galleryScreen{
-    position:fixed;
-    inset:0;
-
-    z-index:1900;
-
-    display:none;
-
-    background:
-        #02050d;
-
+/* =====================================================
+   PAINÉIS
+===================================================== */
+.panel{
+    position:absolute;
+    left:8px;
+    right:8px;
+    bottom:8px;
+    z-index:200;
+    max-height:88vh;
+    padding:15px;
     overflow:auto;
-
-    padding:
-        calc(
-            15px +
-            env(safe-area-inset-top)
-        )
-        15px
-        calc(
-            30px +
-            env(safe-area-inset-bottom)
-        );
+    border-radius:27px;
+    background:
+    rgba(9,9,11,.97);
+    backdrop-filter:
+    blur(30px);
+    -webkit-backdrop-filter:
+    blur(30px);
+    border:
+    1px solid
+    rgba(255,255,255,.13);
+    box-shadow:
+    0 25px 100px
+    rgba(0,0,0,.85);
+    transform:translateY(120%);
+    opacity:0;
+    pointer-events:none;
+    transition:.3s ease;
 }
-
-.galleryScreen.open{
-    display:block;
+.panel.open{
+    transform:translateY(0);
+    opacity:1;
+    pointer-events:auto;
 }
-
-.galleryTop{
+.panelHeader{
+    position:sticky;
+    top:-15px;
+    z-index:20;
+    margin:
+    -15px
+    -15px
+    14px
+    -15px;
+    padding:14px 15px;
     display:flex;
     align-items:center;
     justify-content:space-between;
-
+    background:
+    rgba(9,9,11,.97);
+    border-bottom:
+    1px solid
+    rgba(255,255,255,.07);
+}
+.panelTitle{
+    font-size:16px;
+    font-weight:950;
+    letter-spacing:1px;
+}
+.close{
+    width:43px;
+    height:43px;
+    border-radius:50%;
+    border:
+    1px solid
+    rgba(255,255,255,.2);
+    background:
+    rgba(255,255,255,.08);
+    color:#fff;
+    font-size:27px;
+}
+/* =====================================================
+   SEÇÕES
+===================================================== */
+.section{
+    margin-top:16px;
+}
+.sectionTitle{
+    margin-bottom:8px;
+    color:#999;
+    font-size:9px;
+    font-weight:900;
+    letter-spacing:1.5px;
+}
+.grid{
+    display:grid;
+    grid-template-columns:
+    repeat(2,1fr);
+    gap:8px;
+}
+.option{
+    min-height:48px;
+    border-radius:14px;
+    border:
+    1px solid
+    rgba(255,255,255,.1);
+    background:#171719;
+    color:#fff;
+    font-size:10px;
+    font-weight:800;
+    transition:.2s;
+}
+.option.active{
+    background:
+    var(--accent);
+    border-color:
+    var(--accent);
+    color:#fff;
+    box-shadow:
+    0 5px 25px
+    var(--accent-shadow);
+}
+.mainSelect{
+    width:100%;
+    min-height:52px;
+    border-radius:15px;
+    border:
+    1px solid
+    rgba(255,255,255,.14);
+    background:
+    linear-gradient(
+        135deg,
+        #202024,
+        #101012
+    );
+    color:#fff;
+    font-size:12px;
+    font-weight:900;
+    letter-spacing:.5px;
+}
+select{
+    width:100%;
+    min-height:48px;
+    padding:10px;
+    border-radius:14px;
+    border:
+    1px solid
+    rgba(255,255,255,.12);
+    background:#171719;
+    color:#fff;
+    outline:none;
+}
+/* =====================================================
+   CONTROLES
+===================================================== */
+.control{
+    display:grid;
+    grid-template-columns:
+    80px
+    1fr
+    50px;
+    align-items:center;
+    gap:8px;
+    margin:10px 0;
+}
+.control label{
+    font-size:10px;
+    color:#ccc;
+}
+.control input{
+    width:100%;
+    accent-color:var(--accent);
+}
+.value{
+    color:#999;
+    text-align:right;
+    font-size:9px;
+}
+/* =====================================================
+   GALERIA
+===================================================== */
+#galleryPanel{
+    position:absolute;
+    inset:0;
+    z-index:300;
+    background:
+    #050505;
+    transform:translateX(100%);
+    transition:
+    transform .3s ease;
+    overflow:auto;
+    padding:
+    calc(
+        14px +
+        env(safe-area-inset-top,0px)
+    )
+    12px
+    calc(
+        20px +
+        env(safe-area-inset-bottom,0px)
+    );
+}
+#galleryPanel.open{
+    transform:translateX(0);
+}
+.galleryHeader{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
     margin-bottom:15px;
 }
-
-.galleryTop h1{
-    margin:0;
+.galleryTitle{
+    font-size:20px;
+    font-weight:950;
+}
+.galleryClose{
+    width:44px;
+    height:44px;
+    border-radius:50%;
+    background:#18181b;
+    border:
+    1px solid
+    rgba(255,255,255,.14);
+    color:#fff;
     font-size:25px;
 }
-
-.galleryActions{
-    display:flex;
-    gap:7px;
-}
-
-.galleryTabs{
-    display:flex;
-    gap:8px;
-
-    overflow-x:auto;
-
-    margin-bottom:15px;
-}
-
-.galleryTab{
-    flex:none;
-
-    border:1px solid
-        rgba(255,255,255,.12);
-
-    background:#0b1423;
-
-    color:#cbd7ea;
-
-    padding:9px 14px;
-
-    border-radius:15px;
-
-    font-size:10px;
-}
-
-.galleryTab.active{
-    background:#176fff;
-    color:white;
-}
-
-.mediaGrid{
+.galleryGrid{
     display:grid;
-
     grid-template-columns:
-        repeat(3,1fr);
-
+    repeat(3,1fr);
     gap:5px;
 }
-
-.mediaItem{
+.galleryItem{
     position:relative;
-
     aspect-ratio:1;
-
-    border-radius:10px;
-
     overflow:hidden;
-
-    background:#0b111b;
-
+    border-radius:8px;
+    background:#111;
     border:
-        1px solid
-        rgba(255,255,255,.08);
+    1px solid
+    rgba(255,255,255,.06);
 }
-
-.mediaItem img,
-.mediaItem video{
+.galleryItem img,
+.galleryItem video{
     width:100%;
     height:100%;
     object-fit:cover;
 }
-
 .mediaBadge{
     position:absolute;
-
     left:5px;
     bottom:5px;
-
-    padding:4px 7px;
-
-    border-radius:7px;
-
+    padding:3px 5px;
+    border-radius:6px;
     background:
-        rgba(0,0,0,.75);
-
+    rgba(0,0,0,.7);
     font-size:8px;
     font-weight:900;
 }
-
-.mediaDelete{
+.deleteMedia{
     position:absolute;
-
     top:5px;
     right:5px;
-
-    width:25px;
-    height:25px;
-
+    width:27px;
+    height:27px;
     border-radius:50%;
-
     border:0;
-
     background:
-        rgba(0,0,0,.75);
-
-    color:white;
+    rgba(0,0,0,.72);
+    color:#fff;
 }
-
-/* =========================================================
-   SETTINGS
-========================================================= */
-
-.settingGrid{
-    display:grid;
-
-    grid-template-columns:
-        repeat(2,1fr);
-
-    gap:10px;
-}
-
-.settingButton{
-    min-height:70px;
-
-    border-radius:17px;
-
-    border:
-        1px solid
-        rgba(255,255,255,.1);
-
-    background:
-        #0d1828;
-
-    color:white;
-
-    text-align:left;
-
-    padding:15px;
-
-    font-weight:800;
-}
-
-.settingButton small{
-    display:block;
-
-    color:#8390a6;
-
-    font-size:8px;
-
-    margin-top:4px;
-}
-
-/* =========================================================
-   THEME COLORS
-========================================================= */
-
-.themeList{
-    display:grid;
-
-    grid-template-columns:
-        repeat(3,1fr);
-
-    gap:9px;
-}
-
-.themeChoice{
-    height:72px;
-
-    border-radius:17px;
-
-    border:
-        1px solid
-        rgba(255,255,255,.12);
-
-    color:white;
-
-    font-size:9px;
-    font-weight:900;
-}
-
-.themeChoice.active{
-    border:
-        2px solid
-        white;
-}
-
-/* =========================================================
-   3D VIEWER
-========================================================= */
-
-.viewer3D{
+/* =====================================================
+   VISUALIZADOR
+===================================================== */
+#viewer{
     position:fixed;
     inset:0;
-
-    z-index:3000;
-
+    z-index:500;
     display:none;
-
     align-items:center;
     justify-content:center;
-
     background:
-        rgba(0,0,0,.96);
+    rgba(0,0,0,.97);
 }
-
-.viewer3D.open{
+#viewer.open{
     display:flex;
 }
-
-.viewer3D img{
-    max-width:94%;
-    max-height:82%;
-
+#viewer img,
+#viewer video{
+    max-width:100%;
+    max-height:90%;
     object-fit:contain;
-
-    filter:
-        drop-shadow(
-            -7px 0 rgba(255,0,0,.55)
-        )
-        drop-shadow(
-            7px 0 rgba(0,255,255,.55)
-        );
 }
-
-.viewer3D .closeBtn{
+.viewerClose{
     position:absolute;
-
     top:
-        calc(
-            15px +
-            env(safe-area-inset-top)
-        );
-
+    calc(
+        15px +
+        env(safe-area-inset-top,0px)
+    );
     right:15px;
-}
-
-.viewerControls{
-    position:absolute;
-
-    left:15px;
-    right:15px;
-    bottom:
-        calc(
-            25px +
-            env(safe-area-inset-bottom)
-        );
-
-    display:flex;
-    justify-content:center;
-    gap:8px;
-}
-
-.viewerControls button{
-    padding:11px 15px;
-
-    border-radius:15px;
-
+    width:44px;
+    height:44px;
+    border-radius:50%;
+    background:#202024;
     border:
-        1px solid
-        rgba(255,255,255,.15);
-
-    background:
-        rgba(20,25,35,.9);
-
-    color:white;
-
-    font-size:9px;
-    font-weight:900;
+    1px solid
+    rgba(255,255,255,.16);
+    color:#fff;
+    font-size:25px;
 }
-
-/* =========================================================
+/* =====================================================
    TOAST
-========================================================= */
-
+===================================================== */
 #toast{
-    position:fixed;
-
+    position:absolute;
     left:50%;
-
     bottom:
-        calc(
-            25px +
-            env(safe-area-inset-bottom)
-        );
-
+    calc(
+        112px +
+        env(safe-area-inset-bottom,0px)
+    );
     transform:
-        translate(-50%,20px);
-
-    z-index:5000;
-
-    opacity:0;
-
-    pointer-events:none;
-
-    padding:
-        11px 16px;
-
-    border-radius:16px;
-
+    translate(-50%,20px);
+    z-index:600;
+    padding:10px 14px;
+    border-radius:14px;
     background:
-        rgba(7,12,20,.94);
-
+    rgba(0,0,0,.84);
     border:
-        1px solid
-        rgba(70,145,255,.35);
-
+    1px solid
+    rgba(255,255,255,.12);
+    color:#fff;
     font-size:10px;
-
+    opacity:0;
     transition:.25s;
-
+    pointer-events:none;
     white-space:nowrap;
 }
-
 #toast.show{
     opacity:1;
-
     transform:
-        translate(-50%,0);
+    translate(-50%,0);
 }
-
-/* =========================================================
-   RESPONSIVE
-========================================================= */
-
-@media(max-width:850px){
-
-    .header{
-        padding-left:16px;
-        padding-right:16px;
-    }
-
-    .brandText h1{
-        font-size:21px;
-    }
-
-    .logoEye{
-        width:53px;
-        font-size:27px;
-    }
-
-    .premium{
-        display:none;
-    }
-
-    .hero{
-        margin-left:15px;
-        margin-right:15px;
-        min-height:430px;
-    }
-
-    .heroText{
-        width:100%;
-        padding:
-            30px
-            25px;
-    }
-
-    .heroText h2{
-        font-size:31px;
-    }
-
-    .heroText p{
-        font-size:12px;
-        max-width:310px;
-    }
-
-    .heroVisual{
-        top:auto;
-        bottom:15px;
-        right:8%;
-        width:84%;
-        height:45%;
-    }
-
-    .actionGrid{
-        margin-left:15px;
-        margin-right:15px;
-
-        grid-template-columns:
-            repeat(3,1fr);
-
-        gap:8px;
-    }
-
-    .actionCard{
-        min-height:110px;
-        border-radius:17px;
-    }
-
-    .actionIcon{
-        font-size:25px;
-        width:45px;
-        height:45px;
-    }
-
-    .actionCard strong{
-        font-size:11px;
-    }
-
-    .features{
-        margin-left:15px;
-        margin-right:15px;
-
-        grid-template-columns:
-            1fr;
-
-        gap:10px;
-    }
-
-    .feature{
-        min-height:260px;
-    }
-
-    .sectionWrap,
-    .permissions{
-        margin-left:15px;
-        margin-right:15px;
-    }
-
-    .galleryCategories{
-        grid-template-columns:
-            repeat(3,1fr);
-    }
-
-    .categoryVisual{
-        height:80px;
-    }
-
-    .permissions{
-        grid-template-columns:1fr;
-    }
-
-    .permissionAction{
-        align-items:stretch;
-    }
-
+/* =====================================================
+   LOADING
+===================================================== */
+#loading{
+    position:absolute;
+    inset:0;
+    z-index:1000;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:12px;
+    background:#000;
 }
-
-@media(min-width:1000px){
-
-    .hero{
-        min-height:390px;
+.loader{
+    width:42px;
+    height:42px;
+    border:
+    3px solid
+    rgba(255,255,255,.12);
+    border-top-color:
+    var(--accent);
+    border-radius:50%;
+    animation:
+    spin .8s linear infinite;
+}
+@keyframes spin{
+    to{
+        transform:rotate(360deg);
     }
-
-    .actionGrid{
-        max-width:1500px;
-        margin-left:auto;
-        margin-right:auto;
-        padding-left:24px;
-        padding-right:24px;
+}
+/* =====================================================
+   90 TEMAS DA INTERFACE
+===================================================== */
+:root{
+    --accent:#e50914;
+    --accent-shadow:
+    rgba(229,9,20,.35);
+}
+body.theme-red{
+    --accent:#e50914;
+    --accent-shadow:rgba(229,9,20,.35);
+}
+body.theme-blue{
+    --accent:#1687ff;
+    --accent-shadow:rgba(22,135,255,.35);
+}
+body.theme-cyan{
+    --accent:#00d9ff;
+    --accent-shadow:rgba(0,217,255,.35);
+}
+body.theme-green{
+    --accent:#19d66b;
+    --accent-shadow:rgba(25,214,107,.35);
+}
+body.theme-purple{
+    --accent:#9b5cff;
+    --accent-shadow:rgba(155,92,255,.35);
+}
+body.theme-pink{
+    --accent:#ff3b9d;
+    --accent-shadow:rgba(255,59,157,.35);
+}
+body.theme-orange{
+    --accent:#ff7800;
+    --accent-shadow:rgba(255,120,0,.35);
+}
+body.theme-yellow{
+    --accent:#ffd400;
+    --accent-shadow:rgba(255,212,0,.35);
+}
+body.theme-gold{
+    --accent:#d8a82d;
+    --accent-shadow:rgba(216,168,45,.35);
+}
+body.theme-white{
+    --accent:#ffffff;
+    --accent-shadow:rgba(255,255,255,.3);
+}
+body.theme-silver{
+    --accent:#bfc7d5;
+    --accent-shadow:rgba(191,199,213,.3);
+}
+body.theme-rose{
+    --accent:#e85d9e;
+    --accent-shadow:rgba(232,93,158,.35);
+}
+body.theme-violet{
+    --accent:#7347ff;
+    --accent-shadow:rgba(115,71,255,.35);
+}
+body.theme-indigo{
+    --accent:#4b65ff;
+    --accent-shadow:rgba(75,101,255,.35);
+}
+body.theme-lime{
+    --accent:#a8ff00;
+    --accent-shadow:rgba(168,255,0,.3);
+}
+body.theme-mint{
+    --accent:#5fffd0;
+    --accent-shadow:rgba(95,255,208,.3);
+}
+body.theme-aqua{
+    --accent:#00ffe1;
+    --accent-shadow:rgba(0,255,225,.3);
+}
+body.theme-blood{
+    --accent:#990000;
+    --accent-shadow:rgba(153,0,0,.4);
+}
+body.theme-crimson{
+    --accent:#c1121f;
+    --accent-shadow:rgba(193,18,31,.4);
+}
+body.theme-maroon{
+    --accent:#7f1d1d;
+    --accent-shadow:rgba(127,29,29,.4);
+}
+body.theme-coffee{
+    --accent:#9a6b45;
+    --accent-shadow:rgba(154,107,69,.35);
+}
+body.theme-bronze{
+    --accent:#b87333;
+    --accent-shadow:rgba(184,115,51,.35);
+}
+body.theme-copper{
+    --accent:#c46b43;
+    --accent-shadow:rgba(196,107,67,.35);
+}
+body.theme-platinum{
+    --accent:#aeb6c3;
+    --accent-shadow:rgba(174,182,195,.3);
+}
+body.theme-darkblue{
+    --accent:#164b9b;
+    --accent-shadow:rgba(22,75,155,.4);
+}
+body.theme-navy{
+    --accent:#193a6a;
+    --accent-shadow:rgba(25,58,106,.4);
+}
+body.theme-ocean{
+    --accent:#087ea4;
+    --accent-shadow:rgba(8,126,164,.4);
+}
+body.theme-sky{
+    --accent:#3da9ff;
+    --accent-shadow:rgba(61,169,255,.35);
+}
+body.theme-forest{
+    --accent:#24733c;
+    --accent-shadow:rgba(36,115,60,.4);
+}
+body.theme-emerald{
+    --accent:#00a878;
+    --accent-shadow:rgba(0,168,120,.35);
+}
+body.theme-jade{
+    --accent:#00a86b;
+    --accent-shadow:rgba(0,168,107,.35);
+}
+body.theme-neonred{
+    --accent:#ff003c;
+    --accent-shadow:rgba(255,0,60,.5);
+}
+body.theme-neonblue{
+    --accent:#00aaff;
+    --accent-shadow:rgba(0,170,255,.5);
+}
+body.theme-neongreen{
+    --accent:#00ff66;
+    --accent-shadow:rgba(0,255,102,.5);
+}
+body.theme-neonpurple{
+    --accent:#b000ff;
+    --accent-shadow:rgba(176,0,255,.5);
+}
+body.theme-neonpink{
+    --accent:#ff00a8;
+    --accent-shadow:rgba(255,0,168,.5);
+}
+body.theme-neonyellow{
+    --accent:#eaff00;
+    --accent-shadow:rgba(234,255,0,.5);
+}
+body.theme-cyber{
+    --accent:#00f0ff;
+    --accent-shadow:rgba(0,240,255,.5);
+}
+body.theme-matrix{
+    --accent:#00ff41;
+    --accent-shadow:rgba(0,255,65,.45);
+}
+body.theme-hacker{
+    --accent:#39ff14;
+    --accent-shadow:rgba(57,255,20,.45);
+}
+body.theme-vintage{
+    --accent:#b98b5e;
+    --accent-shadow:rgba(185,139,94,.35);
+}
+body.theme-retro{
+    --accent:#d85c38;
+    --accent-shadow:rgba(216,92,56,.35);
+}
+body.theme-film{
+    --accent:#f2c14e;
+    --accent-shadow:rgba(242,193,78,.35);
+}
+body.theme-cinema{
+    --accent:#c7a64b;
+    --accent-shadow:rgba(199,166,75,.35);
+}
+body.theme-hollywood{
+    --accent:#e7c15a;
+    --accent-shadow:rgba(231,193,90,.4);
+}
+body.theme-luxury{
+    --accent:#c9a227;
+    --accent-shadow:rgba(201,162,39,.45);
+}
+body.theme-diamond{
+    --accent:#d9f3ff;
+    --accent-shadow:rgba(217,243,255,.4);
+}
+body.theme-carbon{
+    --accent:#777;
+    --accent-shadow:rgba(119,119,119,.35);
+}
+body.theme-steel{
+    --accent:#708090;
+    --accent-shadow:rgba(112,128,144,.35);
+}
+body.theme-graphite{
+    --accent:#8c8c8c;
+    --accent-shadow:rgba(140,140,140,.35);
+}
+body.theme-minimal{
+    --accent:#ffffff;
+    --accent-shadow:rgba(255,255,255,.25);
+}
+body.theme-clean{
+    --accent:#f5f5f5;
+    --accent-shadow:rgba(245,245,245,.25);
+}
+body.theme-frost{
+    --accent:#bde9ff;
+    --accent-shadow:rgba(189,233,255,.35);
+}
+body.theme-ice{
+    --accent:#78d8ff;
+    --accent-shadow:rgba(120,216,255,.4);
+}
+body.theme-arctic{
+    --accent:#8ddcff;
+    --accent-shadow:rgba(141,220,255,.4);
+}
+body.theme-sunset{
+    --accent:#ff6b35;
+    --accent-shadow:rgba(255,107,53,.4);
+}
+body.theme-sunrise{
+    --accent:#ffb703;
+    --accent-shadow:rgba(255,183,3,.4);
+}
+body.theme-fire{
+    --accent:#ff3d00;
+    --accent-shadow:rgba(255,61,0,.45);
+}
+body.theme-volcano{
+    --accent:#ff4b1f;
+    --accent-shadow:rgba(255,75,31,.45);
+}
+body.theme-ruby{
+    --accent:#d90429;
+    --accent-shadow:rgba(217,4,41,.45);
+}
+body.theme-sapphire{
+    --accent:#1464f4;
+    --accent-shadow:rgba(20,100,244,.4);
+}
+body.theme-amethyst{
+    --accent:#8e44ad;
+    --accent-shadow:rgba(142,68,173,.4);
+}
+body.theme-emeraldlux{
+    --accent:#10b981;
+    --accent-shadow:rgba(16,185,129,.4);
+}
+body.theme-royal{
+    --accent:#4169e1;
+    --accent-shadow:rgba(65,105,225,.4);
+}
+body.theme-regal{
+    --accent:#8a2be2;
+    --accent-shadow:rgba(138,43,226,.4);
+}
+body.theme-velvet{
+    --accent:#8b174f;
+    --accent-shadow:rgba(139,23,79,.4);
+}
+body.theme-champagne{
+    --accent:#f7e7ce;
+    --accent-shadow:rgba(247,231,206,.4);
+}
+body.theme-sand{
+    --accent:#c2b280;
+    --accent-shadow:rgba(194,178,128,.35);
+}
+body.theme-desert{
+    --accent:#d99a52;
+    --accent-shadow:rgba(217,154,82,.4);
+}
+body.theme-moss{
+    --accent:#687d3c;
+    --accent-shadow:rgba(104,125,60,.35);
+}
+body.theme-leaf{
+    --accent:#5ca904;
+    --accent-shadow:rgba(92,169,4,.35);
+}
+body.theme-teal{
+    --accent:#008f8c;
+    --accent-shadow:rgba(0,143,140,.4);
+}
+body.theme-turquoise{
+    --accent:#20c4c7;
+    --accent-shadow:rgba(32,196,199,.4);
+}
+body.theme-lavender{
+    --accent:#a78bfa;
+    --accent-shadow:rgba(167,139,250,.4);
+}
+body.theme-orchid{
+    --accent:#da70d6;
+    --accent-shadow:rgba(218,112,214,.4);
+}
+body.theme-magenta{
+    --accent:#d00070;
+    --accent-shadow:rgba(208,0,112,.4);
+}
+body.theme-coral{
+    --accent:#ff6f61;
+    --accent-shadow:rgba(255,111,97,.4);
+}
+body.theme-peach{
+    --accent:#ffb07c;
+    --accent-shadow:rgba(255,176,124,.4);
+}
+body.theme-amber{
+    --accent:#ffbf00;
+    --accent-shadow:rgba(255,191,0,.4);
+}
+body.theme-bright{
+    --accent:#ffffff;
+    --accent-shadow:rgba(255,255,255,.35);
+}
+body.theme-shadow{
+    --accent:#555;
+    --accent-shadow:rgba(85,85,85,.4);
+}
+body.theme-midnight{
+    --accent:#3949ab;
+    --accent-shadow:rgba(57,73,171,.45);
+}
+body.theme-space{
+    --accent:#536dfe;
+    --accent-shadow:rgba(83,109,254,.45);
+}
+body.theme-galaxy{
+    --accent:#7c4dff;
+    --accent-shadow:rgba(124,77,255,.45);
+}
+body.theme-cosmic{
+    --accent:#e040fb;
+    --accent-shadow:rgba(224,64,251,.45);
+}
+body.theme-starlight{
+    --accent:#ffe082;
+    --accent-shadow:rgba(255,224,130,.4);
+}
+body.theme-digital{
+    --accent:#00b8d4;
+    --accent-shadow:rgba(0,184,212,.4);
+}
+body.theme-tech{
+    --accent:#2979ff;
+    --accent-shadow:rgba(41,121,255,.4);
+}
+body.theme-pro{
+    --accent:#efefef;
+    --accent-shadow:rgba(239,239,239,.3);
+}
+body.theme-studio{
+    --accent:#ff1744;
+    --accent-shadow:rgba(255,23,68,.4);
+}
+body.theme-photo{
+    --accent:#ff5252;
+    --accent-shadow:rgba(255,82,82,.4);
+}
+body.theme-creator{
+    --accent:#00e676;
+    --accent-shadow:rgba(0,230,118,.4);
+}
+body.theme-master{
+    --accent:#ffca28;
+    --accent-shadow:rgba(255,202,40,.4);
+}
+body.theme-ultimate{
+    --accent:#e040fb;
+    --accent-shadow:rgba(224,64,251,.4);
+}
+/* =====================================================
+   MENU TEMAS
+===================================================== */
+#themePanel{
+    z-index:250;
+}
+/* =====================================================
+   RESPONSIVO
+===================================================== */
+@media(min-width:700px){
+    .panel{
+        left:auto;
+        right:20px;
+        width:450px;
     }
-
-    .features,
-    .sectionWrap,
-    .permissions{
-        max-width:1500px;
-        margin-left:auto;
-        margin-right:auto;
-    }
-
-    .mediaGrid{
+    .galleryGrid{
         grid-template-columns:
-            repeat(6,1fr);
+        repeat(5,1fr);
     }
-
 }
-
-/* =========================================================
-   HIDE SCROLLBARS
-========================================================= */
-
-::-webkit-scrollbar{
-    width:0;
-    height:0;
+.hidden{
+    opacity:0!important;
+    pointer-events:none!important;
 }
-
 </style>
 </head>
-
 <body>
-
 <div id="app">
-
-<div class="bgGlow glow1"></div>
-<div class="bgGlow glow2"></div>
-<div class="bgGlow glow3"></div>
-
-<!-- =====================================================
-     HEADER
-===================================================== -->
-
-<header class="header">
-
-    <div class="brand">
-
-        <div class="logoEye">
-            👁️
-        </div>
-
-        <div class="brandText">
-
-            <h1>
-                RENATO VISION
-                <span>3D</span>
-            </h1>
-
-            <p>
-                Veja o mundo em outra dimensão
-            </p>
-
-        </div>
-
+<video
+id="camera"
+autoplay
+muted
+playsinline
+webkit-playsinline>
+</video>
+<div id="top">
+    <div class="brand glass">
+        RENATO VISION AI
     </div>
-
-    <button
-        class="premium"
-        id="premiumButton">
-
-        👑 PREMIUM
-
-        <small>
-            Versão Completa
-        </small>
-
-    </button>
-
-    <button
-        class="settingsTop"
-        id="settingsButton">
-
-        ⚙️
-
-    </button>
-
-</header>
-
-
-<!-- =====================================================
-     HERO
-===================================================== -->
-
-<section class="hero">
-
-    <div class="heroText">
-
-        <h2>
-            Fotos e vídeos em
-            <span>3D REAL</span>
-        </h2>
-
-        <p>
-            Transforme seus momentos em
-            experiências visuais incríveis.
-            Com tecnologia avançada, o
-            Renato Vision 3D leva suas fotos
-            e vídeos para um novo nível
-            de realidade.
-        </p>
-
+    <div
+    id="modeLabel"
+    class="glass">
+        NORMAL
     </div>
-
-    <div class="heroVisual">
-
-        <div class="heroPhone">
-
-            <div class="fakeLandscape"></div>
-
-            <div class="divider3d"></div>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- =====================================================
-     ACTIONS
-===================================================== -->
-
-<section class="actionGrid">
-
-    <button
-        class="actionCard"
-        id="cameraButton">
-
-        <div class="actionIcon">
-            📷
-        </div>
-
-        <strong>
-            Câmera
-        </strong>
-
-        <small>
-            Foto / Vídeo
-        </small>
-
-    </button>
-
-
-    <button
-        class="actionCard"
-        id="galleryButton">
-
-        <div class="actionIcon">
-            🖼️
-        </div>
-
-        <strong>
-            Galeria
-        </strong>
-
-        <small>
-            Do seu iPhone
-        </small>
-
-    </button>
-
-
-    <button
-        class="actionCard"
-        id="mode3DButton">
-
-        <div class="actionIcon">
-            ◈
-        </div>
-
-        <strong>
-            Modo 3D
-        </strong>
-
-        <small>
-            Anaglifo / Realidade
-        </small>
-
-    </button>
-
-
-    <button
-        class="actionCard"
-        id="nightButton">
-
-        <div class="actionIcon">
-            🌙
-        </div>
-
-        <strong>
-            Modo Noturno
-        </strong>
-
-        <small>
-            Visão Digital
-        </small>
-
-    </button>
-
-
-    <button
-        class="actionCard"
-        id="filtersButton">
-
-        <div class="actionIcon">
-            🎚️
-        </div>
-
-        <strong>
-            Filtros
-        </strong>
-
-        <small>
-            Deslize e escolha
-        </small>
-
-    </button>
-
-
-    <button
-        class="actionCard"
-        id="settingsButton2">
-
-        <div class="actionIcon">
-            ⚙️
-        </div>
-
-        <strong>
-            Configurações
-        </strong>
-
-        <small>
-            Personalize sua experiência
-        </small>
-
-    </button>
-
-</section>
-
-
-<!-- =====================================================
-     FEATURES
-===================================================== -->
-
-<section class="features">
-
-    <article
-        class="feature"
-        id="feature3D">
-
-        <div class="featureVisual tiger"></div>
-
-        <div class="featureOverlay"></div>
-
-        <div class="featureText">
-
-            <h3>
-                Fotos em 3D
-            </h3>
-
-            <p>
-                Transforme suas fotos em
-                anaglifo 3D
-            </p>
-
-        </div>
-
-        <span class="badge3d">
-            3D
-        </span>
-
-    </article>
-
-
-    <article
-        class="feature"
-        id="featureVideo">
-
-        <div class="featureVisual city"></div>
-
-        <div class="featureOverlay"></div>
-
-        <div class="featureText">
-
-            <h3>
-                Vídeos em 3D
-            </h3>
-
-            <p>
-                Grave e assista em terceira
-                dimensão
-            </p>
-
-        </div>
-
-        <span class="badge3d">
-            ▶
-        </span>
-
-    </article>
-
-
-    <article
-        class="feature"
-        id="featureNight">
-
-        <div class="featureVisual moon"></div>
-
-        <div class="featureOverlay"></div>
-
-        <div class="featureText">
-
-            <h3>
-                Modo Noturno
-            </h3>
-
-            <p>
-                Fotos incríveis mesmo
-                no escuro
-            </p>
-
-        </div>
-
-        <span class="badge3d">
-            🌙
-        </span>
-
-    </article>
-
-</section>
-
-
-<!-- =====================================================
-     GALLERY CATEGORIES
-===================================================== -->
-
-<section class="sectionWrap">
-
-    <div class="sectionHead">
-
-        <h2>
-            👑 Galeria Premium
-        </h2>
-
-        <button id="seeAll">
-            Ver todas ›
-        </button>
-
-    </div>
-
-    <div class="galleryCategories">
-
-        <button class="category" data-filter="photo">
-
-            <div class="categoryVisual"></div>
-
-            <div class="categoryName">
-                Fotos
-            </div>
-
-        </button>
-
-
-        <button class="category" data-filter="video">
-
-            <div class="categoryVisual"></div>
-
-            <div class="categoryName">
-                Vídeos
-            </div>
-
-        </button>
-
-
-        <button class="category" data-filter="favorite">
-
-            <div class="categoryVisual"></div>
-
-            <div class="categoryName">
-                Favoritos
-            </div>
-
-        </button>
-
-
-        <button class="category" data-filter="3d">
-
-            <div class="categoryVisual"></div>
-
-            <div class="categoryName">
-                3D
-            </div>
-
-        </button>
-
-
-        <button class="category" data-filter="pets">
-
-            <div class="categoryVisual"></div>
-
-            <div class="categoryName">
-                Pets
-            </div>
-
-        </button>
-
-
-        <button class="category" data-filter="landscape">
-
-            <div class="categoryVisual"></div>
-
-            <div class="categoryName">
-                Paisagens
-            </div>
-
-        </button>
-
-    </div>
-
-</section>
-
-
-<!-- =====================================================
-     PERMISSIONS
-===================================================== -->
-
-<section class="permissions">
-
-    <div>
-
-        <div class="permissionTitle">
-
-            <div class="permissionShield">
-                🛡️
-            </div>
-
-            <div>
-
-                <h2>
-                    Permissões necessárias
-                </h2>
-
-                <p>
-                    Para oferecer a melhor experiência,
-                    o Renato Vision 3D precisa de algumas
-                    permissões do seu iPhone.
-                </p>
-
-            </div>
-
-        </div>
-
-        <ul class="permissionList">
-
-            <li>
-                Câmera — fotos e vídeos
-            </li>
-
-            <li>
-                Fotos — acesso à galeria
-            </li>
-
-            <li>
-                Microfone — vídeos com áudio
-            </li>
-
-            <li>
-                Armazenamento — conteúdos locais
-            </li>
-
-        </ul>
-
-    </div>
-
-    <div class="permissionAction">
-
-        <button
-            class="primary"
-            id="permissionButton">
-
-            🔒 CONCEDER PERMISSÕES
-
-        </button>
-
-        <small>
-            Mais privacidade, mais qualidade,
-            mais 3D.
-        </small>
-
-    </div>
-
-</section>
-
-
-<!-- =====================================================
-     FOOTER
-===================================================== -->
-
-<footer class="footer">
-
-    <div class="footerLogo">
-        RENATO VISION 3D
-    </div>
-
-    <p>
-        Mais que um app, uma nova forma
-        de ver o mundo.
-    </p>
-
-</footer>
-
 </div>
-
-
-<!-- =====================================================
-     OVERLAY
-===================================================== -->
-
+<div id="recording">
+    <span class="recDot"></span>
+    REC
+    <span id="recordTimer">
+        00:00
+    </span>
+</div>
+<div id="bottom">
+    <button
+    class="circle"
+    id="flip">
+        🔄
+    </button>
+    <button
+    id="photo"
+    class="circle">
+        <span></span>
+    </button>
+    <button
+    class="circle"
+    id="videoMode">
+        🎥
+    </button>
+</div>
+<button id="menuButton">
+    ☰ MENU
+</button>
+<!-- =================================================
+     MENU PRINCIPAL
+================================================= -->
 <div
-    class="overlay"
-    id="overlay">
-</div>
-
-
-<!-- =====================================================
-     SETTINGS SHEET
-===================================================== -->
-
-<section
-    class="sheet"
-    id="settingsSheet">
-
-    <div class="sheetHeader">
-
-        <h2>
-            ⚙️ Configurações
-        </h2>
-
+id="mainPanel"
+class="panel">
+    <div class="panelHeader">
+        <div class="panelTitle">
+            RENATO VISION AI
+        </div>
         <button
-            class="closeBtn"
-            data-close="settingsSheet">
-
+        id="closeMenu"
+        class="close">
             ×
-
         </button>
-
     </div>
-
-
-    <h3>
-        Aparência do aplicativo
-    </h3>
-
-    <p style="
-        color:#8d9bb0;
-        font-size:10px;
-    ">
-        Os temas abaixo mudam as cores e
-        aparência do aplicativo. Eles não
-        alteram os filtros das fotos.
-    </p>
-
-    <div
-        class="themeList"
-        id="themeList">
-
+    <!-- TEMAS DO APLICATIVO -->
+    <div class="section">
+        <div class="sectionTitle">
+            🎨 APARÊNCIA DO APLICATIVO
+        </div>
+        <button
+        id="themeSelector"
+        class="mainSelect">
+            🎨 ESCOLHER TEMA
+        </button>
     </div>
-
-
+    <!-- FILTROS DA CÂMERA -->
+    <div class="section">
+        <div class="sectionTitle">
+            🎞️ FILTRO DA CÂMERA
+        </div>
+        <button
+        id="filterSelector"
+        class="mainSelect">
+            🎞️ ESCOLHER FILTRO
+        </button>
+    </div>
+    <!-- QUALIDADE -->
+    <div class="section">
+        <div class="sectionTitle">
+            📸 QUALIDADE DA FOTO
+        </div>
+        <select id="photoQuality">
+            <option value="native">
+                ORIGINAL / NATIVA
+            </option>
+            <option value="1920x1080">
+                HD — 1920 × 1080
+            </option>
+            <option value="3840x2160">
+                4K UHD — 3840 × 2160
+            </option>
+            <option value="7680x4320">
+                8K UPSCALE
+            </option>
+            <option value="15360x8640">
+                16K UPSCALE
+            </option>
+        </select>
+    </div>
+    <!-- VÍDEO -->
+    <div class="section">
+        <div class="sectionTitle">
+            🎥 VÍDEO
+        </div>
+        <select id="videoResolution">
+            <option value="native">
+                RESOLUÇÃO DA CÂMERA
+            </option>
+            <option value="1920x1080">
+                FULL HD
+            </option>
+            <option value="3840x2160">
+                4K UHD
+            </option>
+        </select>
+        <br><br>
+        <select id="fps">
+            <option value="24">
+                24 FPS — CINEMA
+            </option>
+            <option value="25">
+                25 FPS
+            </option>
+            <option value="30"
+            selected>
+                30 FPS
+            </option>
+            <option value="50">
+                50 FPS
+            </option>
+            <option value="60">
+                60 FPS
+            </option>
+        </select>
+    </div>
+    <!-- IA -->
+    <div class="section">
+        <div class="sectionTitle">
+            🧠 PROCESSAMENTO
+        </div>
+        <div class="grid">
+            <button
+            class="option active"
+            id="aiButton">
+                🧠 AI PHOTO ENGINE
+            </button>
+            <button
+            class="option"
+            id="nightButton">
+                🌙 MODO NOTURNO
+            </button>
+        </div>
+    </div>
+    <!-- CONTROLES -->
+    <div class="section">
+        <div class="sectionTitle">
+            ⚙️ CONTROLE DE IMAGEM
+        </div>
+        <div class="control">
+            <label>
+                Brilho
+            </label>
+            <input
+            id="brightness"
+            type="range"
+            min=".4"
+            max="2"
+            value="1"
+            step=".01">
+            <span
+            class="value"
+            id="brightnessValue">
+                1.00
+            </span>
+        </div>
+        <div class="control">
+            <label>
+                Contraste
+            </label>
+            <input
+            id="contrast"
+            type="range"
+            min=".4"
+            max="2.5"
+            value="1"
+            step=".01">
+            <span
+            class="value"
+            id="contrastValue">
+                1.00
+            </span>
+        </div>
+        <div class="control">
+            <label>
+                Saturação
+            </label>
+            <input
+            id="saturation"
+            type="range"
+            min="0"
+            max="3"
+            value="1"
+            step=".01">
+            <span
+            class="value"
+            id="saturationValue">
+                1.00
+            </span>
+        </div>
+        <div class="control">
+            <label>
+                Zoom
+            </label>
+            <input
+            id="zoom"
+            type="range"
+            min="1"
+            max="8"
+            value="1"
+            step=".05">
+            <span
+            class="value"
+            id="zoomValue">
+                1.00x
+            </span>
+        </div>
+    </div>
+    <!-- GALERIA -->
+    <div class="section">
+        <div class="sectionTitle">
+            🖼️ ARQUIVOS
+        </div>
+        <button
+        class="mainSelect"
+        id="openGallery">
+            🖼️ ABRIR GALERIA
+        </button>
+    </div>
+    <!-- RESET -->
+    <div class="section">
+        <button
+        class="mainSelect"
+        id="reset">
+            ↺ RESTAURAR CÂMERA
+        </button>
+    </div>
     <div style="
-        margin-top:20px;
+    margin-top:15px;
+    padding:12px;
+    border-radius:13px;
+    background:rgba(255,170,0,.06);
+    border:1px solid rgba(255,170,0,.14);
+    color:#cfc29d;
+    font-size:9px;
+    line-height:1.5;
     ">
-
-        <button
-            class="settingButton"
-            id="clearGallery">
-
-            🗑️ Limpar galeria
-
-            <small>
-                Apaga os arquivos armazenados
-                localmente neste navegador.
-            </small>
-
-        </button>
-
+        <b>RENATO VISION AI</b><br><br>
+        Os <b>90 temas</b> alteram somente a
+        aparência do aplicativo: cores, botões,
+        menus e elementos da interface.
+        <br><br>
+        Os <b>filtros</b> da câmera são independentes
+        dos temas.
+        <br><br>
+        O processamento AI é realizado localmente.
+        4K depende do hardware/navegador.
+        8K e 16K são modos de upscale.
     </div>
-
-</section>
-
-
-<!-- =====================================================
-     CAMERA
-===================================================== -->
-
-<section
-    class="cameraScreen"
-    id="cameraScreen">
-
-    <video
-        id="cameraVideo"
-        autoplay
-        muted
-        playsinline>
-    </video>
-
-
-    <div class="cameraTop">
-
-        <button
-            class="cameraPill"
-            id="cameraClose">
-
-            × VOLTAR
-
-        </button>
-
-        <div
-            class="cameraPill"
-            id="cameraStatus">
-
-            FOTO
-
+</div>
+<!-- =================================================
+     PAINEL DE TEMAS
+================================================= -->
+<div
+id="themePanel"
+class="panel">
+    <div class="panelHeader">
+        <div class="panelTitle">
+            🎨 TEMAS DO APLICATIVO
         </div>
-
+        <button
+        id="closeThemes"
+        class="close">
+            ×
+        </button>
     </div>
-
-
     <div
-        class="cameraTools"
-        id="cameraTools">
-
-        <button
-            class="tool active"
-            data-filter="normal">
-
-            NORMAL
-
-        </button>
-
-        <button
-            class="tool"
-            data-filter="cinema">
-
-            CINEMA
-
-        </button>
-
-        <button
-            class="tool"
-            data-filter="vintage">
-
-            VINTAGE
-
-        </button>
-
-        <button
-            class="tool"
-            data-filter="vivid">
-
-            VIVID
-
-        </button>
-
-        <button
-            class="tool"
-            data-filter="noir">
-
-            NOIR
-
-        </button>
-
-        <button
-            class="tool"
-            data-filter="cold">
-
-            ICE
-
-        </button>
-
-        <button
-            class="tool"
-            data-filter="warm">
-
-            WARM
-
-        </button>
-
-        <button
-            class="tool"
-            data-filter="3d">
-
-            3D
-
-        </button>
-
+    id="themeGrid"
+    class="grid">
     </div>
-
-
-    <div class="cameraBottom">
-
-        <button
-            class="camBtn"
-            id="flipCamera">
-
-            🔄
-
-        </button>
-
-        <button
-            class="camBtn capture"
-            id="captureButton">
-
-        </button>
-
-        <button
-            class="camBtn"
-            id="videoToggle">
-
-            🎥
-
-        </button>
-
-    </div>
-
-</section>
-
-
-<!-- =====================================================
-     GALLERY
-===================================================== -->
-
-<section
-    class="galleryScreen"
-    id="galleryScreen">
-
-    <div class="galleryTop">
-
-        <h1>
-            Minha Galeria
-        </h1>
-
-        <div class="galleryActions">
-
-            <button
-                class="closeBtn"
-                id="importButton">
-
-                ＋
-
-            </button>
-
-            <button
-                class="closeBtn"
-                id="galleryClose">
-
-                ×
-
-            </button>
-
+</div>
+<!-- =================================================
+     PAINEL DE FILTROS
+================================================= -->
+<div
+id="filterPanel"
+class="panel">
+    <div class="panelHeader">
+        <div class="panelTitle">
+            🎞️ FILTROS DA CÂMERA
         </div>
-
+        <button
+        id="closeFilters"
+        class="close">
+            ×
+        </button>
     </div>
-
-
-    <input
-        type="file"
-        id="fileInput"
-        accept="image/*,video/*"
-        multiple
-        hidden>
-
-
-    <div class="galleryTabs">
-
-        <button
-            class="galleryTab active"
-            data-gallery-filter="all">
-
-            Todos
-
-        </button>
-
-        <button
-            class="galleryTab"
-            data-gallery-filter="photo">
-
-            Fotos
-
-        </button>
-
-        <button
-            class="galleryTab"
-            data-gallery-filter="video">
-
-            Vídeos
-
-        </button>
-
-        <button
-            class="galleryTab"
-            data-gallery-filter="3d">
-
-            3D
-
-        </button>
-
-    </div>
-
-
     <div
-        class="mediaGrid"
-        id="mediaGrid">
-
+    id="filterGrid"
+    class="grid">
     </div>
-
-</section>
-
-
-<!-- =====================================================
-     3D VIEWER
-===================================================== -->
-
-<section
-    class="viewer3D"
-    id="viewer3D">
-
+</div>
+<!-- =================================================
+     GALERIA
+================================================= -->
+<div id="galleryPanel">
+    <div class="galleryHeader">
+        <div class="galleryTitle">
+            GALERIA
+        </div>
+        <button
+        class="galleryClose"
+        id="closeGallery">
+            ×
+        </button>
+    </div>
+    <div
+    id="galleryGrid"
+    class="galleryGrid">
+    </div>
+</div>
+<!-- =================================================
+     VISUALIZADOR
+================================================= -->
+<div id="viewer">
     <button
-        class="closeBtn"
-        id="viewerClose">
-
+    class="viewerClose"
+    id="closeViewer">
         ×
-
     </button>
-
-    <img
-        id="viewerImage"
-        src=""
-        alt="Visualização 3D">
-
-
-    <div class="viewerControls">
-
-        <button id="anaglyphButton">
-            🥽 ANAGLIFO
-        </button>
-
-        <button id="normal3DButton">
-            ✨ 3D DIGITAL
-        </button>
-
-        <button id="depthButton">
-            ◈ PROFUNDIDADE
-        </button>
-
-    </div>
-
-</section>
-
-
-<!-- =====================================================
-     TOAST
-===================================================== -->
-
+    <div id="viewerContent"></div>
+</div>
 <div id="toast"></div>
-
-
+<div id="loading">
+    <div class="loader"></div>
+    <div
+    id="loadingText"
+    style="
+    font-size:10px;
+    color:#999;
+    font-weight:800;
+    letter-spacing:1px;
+    ">
+        INICIANDO RENATO VISION AI...
+    </div>
+</div>
 <script>
-
-/* =========================================================
+/* =====================================================
    ELEMENTOS
-========================================================= */
-
-const $ = id =>
-    document.getElementById(id);
-
-const overlay =
-    $("overlay");
-
-const settingsSheet =
-    $("settingsSheet");
-
-const cameraScreen =
-    $("cameraScreen");
-
-const galleryScreen =
-    $("galleryScreen");
-
-const cameraVideo =
-    $("cameraVideo");
-
-const captureButton =
-    $("captureButton");
-
-const videoToggle =
-    $("videoToggle");
-
-const flipCamera =
-    $("flipCamera");
-
-const cameraClose =
-    $("cameraClose");
-
-const cameraStatus =
-    $("cameraStatus");
-
-const mediaGrid =
-    $("mediaGrid");
-
-const fileInput =
-    $("fileInput");
-
-const viewer3D =
-    $("viewer3D");
-
-const viewerImage =
-    $("viewerImage");
-
+===================================================== */
+const video =
+document.getElementById("camera");
+const mainPanel =
+document.getElementById("mainPanel");
+const themePanel =
+document.getElementById("themePanel");
+const filterPanel =
+document.getElementById("filterPanel");
+const menuButton =
+document.getElementById("menuButton");
+const closeMenu =
+document.getElementById("closeMenu");
+const themeSelector =
+document.getElementById("themeSelector");
+const filterSelector =
+document.getElementById("filterSelector");
+const closeThemes =
+document.getElementById("closeThemes");
+const closeFilters =
+document.getElementById("closeFilters");
+const themeGrid =
+document.getElementById("themeGrid");
+const filterGrid =
+document.getElementById("filterGrid");
+const photo =
+document.getElementById("photo");
+const videoMode =
+document.getElementById("videoMode");
+const flip =
+document.getElementById("flip");
+const recording =
+document.getElementById("recording");
+const recordTimer =
+document.getElementById("recordTimer");
+const modeLabel =
+document.getElementById("modeLabel");
+const loading =
+document.getElementById("loading");
+const loadingText =
+document.getElementById("loadingText");
 const toast =
-    $("toast");
-
-
-/* =========================================================
+document.getElementById("toast");
+const galleryPanel =
+document.getElementById("galleryPanel");
+const galleryGrid =
+document.getElementById("galleryGrid");
+const openGallery =
+document.getElementById("openGallery");
+const closeGallery =
+document.getElementById("closeGallery");
+const viewer =
+document.getElementById("viewer");
+const viewerContent =
+document.getElementById("viewerContent");
+const closeViewer =
+document.getElementById("closeViewer");
+const aiButton =
+document.getElementById("aiButton");
+const nightButton =
+document.getElementById("nightButton");
+const brightness =
+document.getElementById("brightness");
+const contrast =
+document.getElementById("contrast");
+const saturation =
+document.getElementById("saturation");
+const zoom =
+document.getElementById("zoom");
+/* =====================================================
    ESTADO
-========================================================= */
-
+===================================================== */
 let stream = null;
-
-let facingMode =
-    "environment";
-
-let cameraMode =
-    "photo";
-
-let recording =
-    false;
-
+let facing = "environment";
+let currentTheme = "red";
+let currentFilter = "normal";
+let aiEnabled = true;
+let nightEnabled = false;
 let recorder = null;
-
 let chunks = [];
-
-let selectedFilter =
-    "normal";
-
-let nightMode =
-    false;
-
-let zoomLevel =
-    1;
-
-let galleryFilter =
-    "all";
-
-let currentViewerURL =
-    null;
-
-
-/* =========================================================
-   INDEXED DB
-========================================================= */
-
-const DB_NAME =
-    "RenatoVision3DPremium";
-
-const DB_VERSION =
-    1;
-
-const STORE =
-    "media";
-
-let db = null;
-
-
-function openDB(){
-
-    return new Promise(
-        (resolve,reject)=>{
-
-            const request =
-                indexedDB.open(
-                    DB_NAME,
-                    DB_VERSION
-                );
-
-            request.onupgradeneeded =
-                event => {
-
-                    const database =
-                        event.target.result;
-
-                    if(
-                        !database.objectStoreNames
-                            .contains(STORE)
-                    ){
-
-                        database.createObjectStore(
-                            STORE,
-                            {
-                                keyPath:"id"
-                            }
-                        );
-
-                    }
-
-                };
-
-            request.onsuccess =
-                event => {
-
-                    db =
-                        event.target.result;
-
-                    resolve(db);
-
-                };
-
-            request.onerror =
-                () =>
-                    reject(
-                        request.error
-                    );
-
-        }
-    );
-
-}
-
-
-/* =========================================================
-   SAVE MEDIA
-========================================================= */
-
-function saveMedia(data){
-
-    return new Promise(
-        (resolve,reject)=>{
-
-            if(!db){
-
-                reject(
-                    new Error(
-                        "DB indisponível"
-                    )
-                );
-
-                return;
-
-            }
-
-            const transaction =
-                db.transaction(
-                    STORE,
-                    "readwrite"
-                );
-
-            transaction
-                .objectStore(STORE)
-                .put(data);
-
-            transaction.oncomplete =
-                () =>
-                    resolve();
-
-            transaction.onerror =
-                () =>
-                    reject(
-                        transaction.error
-                    );
-
-        }
-    );
-
-}
-
-
-/* =========================================================
-   GET MEDIA
-========================================================= */
-
-function getAllMedia(){
-
-    return new Promise(
-        (resolve,reject)=>{
-
-            const transaction =
-                db.transaction(
-                    STORE,
-                    "readonly"
-                );
-
-            const request =
-                transaction
-                    .objectStore(STORE)
-                    .getAll();
-
-            request.onsuccess =
-                () => {
-
-                    const result =
-                        request.result || [];
-
-                    result.sort(
-                        (a,b)=>
-                            b.created -
-                            a.created
-                    );
-
-                    resolve(result);
-
-                };
-
-            request.onerror =
-                () =>
-                    reject(
-                        request.error
-                    );
-
-        }
-    );
-
-}
-
-
-/* =========================================================
-   DELETE MEDIA
-========================================================= */
-
-function deleteMedia(id){
-
-    return new Promise(
-        (resolve,reject)=>{
-
-            const transaction =
-                db.transaction(
-                    STORE,
-                    "readwrite"
-                );
-
-            transaction
-                .objectStore(STORE)
-                .delete(id);
-
-            transaction.oncomplete =
-                () =>
-                    resolve();
-
-            transaction.onerror =
-                () =>
-                    reject(
-                        transaction.error
-                    );
-
-        }
-    );
-
-}
-
-
-/* =========================================================
-   TOAST
-========================================================= */
-
-let toastTimeout;
-
-function showToast(message){
-
-    clearTimeout(
-        toastTimeout
-    );
-
-    toast.textContent =
-        message;
-
-    toast.classList.add(
-        "show"
-    );
-
-    toastTimeout =
-        setTimeout(
-            () =>
-                toast.classList.remove(
-                    "show"
-                ),
-            2300
-        );
-
-}
-
-
-/* =========================================================
-   SHEETS
-========================================================= */
-
-function openSheet(sheet){
-
-    overlay.classList.add(
-        "open"
-    );
-
-    sheet.classList.add(
-        "open"
-    );
-
-}
-
-function closeSheets(){
-
-    overlay.classList.remove(
-        "open"
-    );
-
-    document
-        .querySelectorAll(".sheet")
-        .forEach(
-            sheet =>
-                sheet.classList.remove(
-                    "open"
-                )
-        );
-
-}
-
-overlay.onclick =
-    closeSheets;
-
-document
-.querySelectorAll("[data-close]")
-.forEach(
-    button => {
-
-        button.onclick =
-            closeSheets;
-
+let recordingNow = false;
+let recordingStarted = 0;
+let timerInterval = null;
+let canvas =
+document.createElement("canvas");
+let ctx =
+canvas.getContext(
+    "2d",
+    {
+        willReadFrequently:true
     }
 );
-
-
-/* =========================================================
-   SETTINGS
-========================================================= */
-
-$("settingsButton").onclick =
-    () =>
-        openSheet(
-            settingsSheet
-        );
-
-$("settingsButton2").onclick =
-    () =>
-        openSheet(
-            settingsSheet
-        );
-
-
-/* =========================================================
-   TEMAS DO APP
-========================================================= */
-
-const appThemes = [
-
-    {
-        name:"Ocean Blue",
-        bg:"#02050d",
-        card:"#071426",
-        blue:"#168cff",
-        blue2:"#5f65ff"
-    },
-
-    {
-        name:"Cyber Purple",
-        bg:"#08020f",
-        card:"#170925",
-        blue:"#a44cff",
-        blue2:"#5e55ff"
-    },
-
-    {
-        name:"Emerald",
-        bg:"#020c08",
-        card:"#071c15",
-        blue:"#19d88a",
-        blue2:"#00a98f"
-    },
-
-    {
-        name:"Ruby",
-        bg:"#0d0205",
-        card:"#21080d",
-        blue:"#ff315d",
-        blue2:"#b0003a"
-    },
-
-    {
-        name:"Gold Premium",
-        bg:"#0b0802",
-        card:"#201805",
-        blue:"#ffc43b",
-        blue2:"#d98218"
-    },
-
-    {
-        name:"Ice",
-        bg:"#020a10",
-        card:"#071b27",
-        blue:"#8fe8ff",
-        blue2:"#4a9dff"
-    },
-
-    {
-        name:"Midnight",
-        bg:"#000000",
-        card:"#101010",
-        blue:"#777fff",
-        blue2:"#444cff"
-    },
-
-    {
-        name:"Neon",
-        bg:"#020008",
-        card:"#100020",
-        blue:"#00fff0",
-        blue2:"#ff00f7"
-    },
-
-    {
-        name:"Titanium",
-        bg:"#08090c",
-        card:"#171a20",
-        blue:"#dbe5f3",
-        blue2:"#8494a8"
-    },
-
-    {
-        name:"Sunset",
-        bg:"#0e0503",
-        card:"#24100a",
-        blue:"#ff8b42",
-        blue2:"#ff3e74"
-    },
-
-    {
-        name:"Forest",
-        bg:"#020a04",
-        card:"#091a0d",
-        blue:"#5ddf73",
-        blue2:"#2aa66d"
-    },
-
-    {
-        name:"Galaxy",
-        bg:"#03020e",
-        card:"#100d28",
-        blue:"#746bff",
-        blue2:"#d447ff"
-    }
-
+/* =====================================================
+   90 TEMAS DA INTERFACE
+===================================================== */
+const themes = [
+["red","🔴 Vermelho"],
+["blue","🔵 Azul"],
+["cyan","💠 Ciano"],
+["green","🟢 Verde"],
+["purple","🟣 Roxo"],
+["pink","🌸 Rosa"],
+["orange","🟠 Laranja"],
+["yellow","🟡 Amarelo"],
+["gold","🏆 Gold"],
+["white","⚪ Branco"],
+["silver","🥈 Prata"],
+["rose","🌹 Rose"],
+["violet","🟪 Violeta"],
+["indigo","🔷 Índigo"],
+["lime","🟢 Lime"],
+["mint","🌿 Mint"],
+["aqua","🌊 Aqua"],
+["blood","🩸 Blood"],
+["crimson","🔴 Crimson"],
+["maroon","🍷 Maroon"],
+["coffee","☕ Café"],
+["bronze","🥉 Bronze"],
+["copper","🟤 Cobre"],
+["platinum","💎 Platinum"],
+["darkblue","🌌 Azul Escuro"],
+["navy","⚓ Navy"],
+["ocean","🌊 Ocean"],
+["sky","☁️ Sky"],
+["forest","🌲 Forest"],
+["emerald","💚 Emerald"],
+["jade","🟢 Jade"],
+["neonred","🔴 Neon Red"],
+["neonblue","🔵 Neon Blue"],
+["neongreen","🟢 Neon Green"],
+["neonpurple","🟣 Neon Purple"],
+["neonpink","💗 Neon Pink"],
+["neonyellow","💛 Neon Yellow"],
+["cyber","⚡ Cyber"],
+["matrix","💻 Matrix"],
+["hacker","🟩 Hacker"],
+["vintage","📻 Vintage"],
+["retro","📼 Retro"],
+["film","🎞️ Film"],
+["cinema","🎬 Cinema"],
+["hollywood","⭐ Hollywood"],
+["luxury","👑 Luxury"],
+["diamond","💎 Diamond"],
+["carbon","⬛ Carbon"],
+["steel","⚙️ Steel"],
+["graphite","◼️ Graphite"],
+["minimal","◻️ Minimal"],
+["clean","✨ Clean"],
+["frost","❄️ Frost"],
+["ice","🧊 Ice"],
+["arctic","🏔️ Arctic"],
+["sunset","🌅 Sunset"],
+["sunrise","🌄 Sunrise"],
+["fire","🔥 Fire"],
+["volcano","🌋 Volcano"],
+["ruby","♦️ Ruby"],
+["sapphire","🔷 Sapphire"],
+["amethyst","🔮 Amethyst"],
+["emeraldlux","💚 Emerald Lux"],
+["royal","👑 Royal"],
+["regal","👑 Regal"],
+["velvet","🎀 Velvet"],
+["champagne","🥂 Champagne"],
+["sand","🏜️ Sand"],
+["desert","🌵 Desert"],
+["moss","🌿 Moss"],
+["leaf","🍃 Leaf"],
+["teal","🟦 Teal"],
+["turquoise","💎 Turquoise"],
+["lavender","🪻 Lavender"],
+["orchid","🌺 Orchid"],
+["magenta","🟣 Magenta"],
+["coral","🪸 Coral"],
+["peach","🍑 Peach"],
+["amber","🟠 Amber"],
+["bright","☀️ Bright"],
+["shadow","🌑 Shadow"],
+["midnight","🌙 Midnight"],
+["space","🚀 Space"],
+["galaxy","🌌 Galaxy"],
+["cosmic","✨ Cosmic"],
+["starlight","⭐ Starlight"],
+["digital","💠 Digital"],
+["tech","⚙️ Tech"],
+["pro","📷 Pro"],
+["studio","🎥 Studio"],
+["photo","📸 Photo"],
+["creator","🎨 Creator"],
+["master","🏆 Master"],
+["ultimate","💫 Ultimate"]
 ];
-
-
-const themeList =
-    $("themeList");
-
-
-appThemes.forEach(
-    (theme,index)=>{
-
-        const button =
-            document.createElement(
-                "button"
-            );
-
-        button.className =
-            "themeChoice";
-
-        button.textContent =
-            theme.name;
-
-        button.style.background =
-            `
-            linear-gradient(
-                135deg,
-                ${theme.bg},
-                ${theme.card}
-            )
-            `;
-
-        button.style.boxShadow =
-            `
-            inset 0 0 30px
-            ${theme.blue}22
-            `;
-
-        button.onclick =
-            () =>
-                applyAppTheme(
-                    theme,
-                    button
-                );
-
-        themeList.appendChild(
-            button
-        );
-
-        if(index === 0){
-
-            button.classList.add(
-                "active"
-            );
-
-        }
-
-    }
-);
-
-
-function applyAppTheme(
-    theme,
-    button
-){
-
-    document.documentElement
-        .style
-        .setProperty(
-            "--bg",
-            theme.bg
-        );
-
-    document.documentElement
-        .style
-        .setProperty(
-            "--card",
-            theme.card
-        );
-
-    document.documentElement
-        .style
-        .setProperty(
-            "--blue",
-            theme.blue
-        );
-
-    document.documentElement
-        .style
-        .setProperty(
-            "--blue2",
-            theme.blue2
-        );
-
-    document
-        .querySelectorAll(
-            ".themeChoice"
-        )
-        .forEach(
-            item =>
-                item.classList.remove(
-                    "active"
-                )
-        );
-
-    button.classList.add(
-        "active"
-    );
-
-    localStorage.setItem(
-        "renatoVisionTheme",
-        JSON.stringify(theme)
-    );
-
-    showToast(
-        "Tema aplicado ao aplicativo"
-    );
-
-}
-
-
-/* =========================================================
-   LOAD THEME
-========================================================= */
-
-const savedTheme =
-    localStorage.getItem(
-        "renatoVisionTheme"
-    );
-
-if(savedTheme){
-
-    try{
-
-        const theme =
-            JSON.parse(
-                savedTheme
-            );
-
-        document.documentElement
-            .style
-            .setProperty(
-                "--bg",
-                theme.bg
-            );
-
-        document.documentElement
-            .style
-            .setProperty(
-                "--card",
-                theme.card
-            );
-
-        document.documentElement
-            .style
-            .setProperty(
-                "--blue",
-                theme.blue
-            );
-
-        document.documentElement
-            .style
-            .setProperty(
-                "--blue2",
-                theme.blue2
-            );
-
-    }catch(e){}
-
-}
-
-
-/* =========================================================
-   CAMERA FILTERS
-========================================================= */
-
-const filterMap = {
-
-    normal:
-        "none",
-
-    cinema:
-        "contrast(1.16) saturate(.88) brightness(.98)",
-
-    vintage:
-        "sepia(.35) contrast(1.05) saturate(.82)",
-
-    vivid:
-        "saturate(1.65) contrast(1.12)",
-
-    noir:
-        "grayscale(1) contrast(1.45)",
-
-    cold:
-        "saturate(.75) hue-rotate(160deg) contrast(1.1)",
-
-    warm:
-        "sepia(.18) saturate(1.25)",
-
-    "3d":
-        "contrast(1.12) saturate(1.1)"
-
-};
-
-
-function updateCameraFilter(){
-
-    let filter =
-        filterMap[
-            selectedFilter
-        ] ||
-        "none";
-
-    if(nightMode){
-
-        filter +=
-            " brightness(.65) contrast(1.25)";
-
-    }
-
-    cameraVideo.style.filter =
-        filter;
-
-}
-
-
-/* =========================================================
-   FILTER BUTTONS
-========================================================= */
-
-document
-.querySelectorAll(
-    ".tool"
-)
-.forEach(
-    button => {
-
-        button.onclick =
-            () => {
-
-                selectedFilter =
-                    button.dataset.filter;
-
-                document
-                    .querySelectorAll(
-                        ".tool"
-                    )
-                    .forEach(
-                        b =>
-                            b.classList.remove(
-                                "active"
-                            )
-                    );
-
-                button.classList.add(
-                    "active"
-                );
-
-                updateCameraFilter();
-
-            };
-
-    }
-);
-
-
-/* =========================================================
-   OPEN CAMERA
-========================================================= */
-
-$("cameraButton").onclick =
-    async () => {
-
-        cameraScreen.classList.add(
-            "open"
-        );
-
-        await startCamera();
-
-    };
-
-
-async function startCamera(){
-
-    try{
-
-        if(stream){
-
-            stream
-                .getTracks()
-                .forEach(
-                    track =>
-                        track.stop()
-                );
-
-        }
-
-        stream =
-            await navigator
-                .mediaDevices
-                .getUserMedia({
-
-                    video:{
-                        facingMode,
-                        width:{
-                            ideal:3840
-                        },
-                        height:{
-                            ideal:2160
-                        }
-                    },
-
-                    audio:true
-
-                });
-
-        cameraVideo.srcObject =
-            stream;
-
-        await cameraVideo.play();
-
-        updateCameraFilter();
-
-        showToast(
-            "Câmera pronta"
-        );
-
-    }catch(error){
-
-        console.error(
-            error
-        );
-
-        showToast(
-            "Permita o acesso à câmera"
-        );
-
-    }
-
-}
-
-
-/* =========================================================
-   CLOSE CAMERA
-========================================================= */
-
-cameraClose.onclick =
-    () => {
-
-        stopCamera();
-
-        cameraScreen.classList.remove(
-            "open"
-        );
-
-    };
-
-
-function stopCamera(){
-
-    if(stream){
-
-        stream
-            .getTracks()
-            .forEach(
-                track =>
-                    track.stop()
-            );
-
-        stream = null;
-
-    }
-
-}
-
-
-/* =========================================================
-   FLIP
-========================================================= */
-
-flipCamera.onclick =
-    async () => {
-
-        if(recording){
-            return;
-        }
-
-        facingMode =
-            facingMode ===
-            "environment"
-            ?
-            "user"
-            :
-            "environment";
-
-        await startCamera();
-
-    };
-
-
-/* =========================================================
-   CAMERA MODE
-========================================================= */
-
-videoToggle.onclick =
-    () => {
-
-        if(recording){
-
-            stopRecording();
-
-            return;
-
-        }
-
-        cameraMode =
-            cameraMode ===
-            "photo"
-            ?
-            "video"
-            :
-            "photo";
-
-        if(cameraMode === "video"){
-
-            cameraStatus.textContent =
-                "VÍDEO";
-
-            videoToggle.textContent =
-                "📷";
-
-            showToast(
-                "Modo vídeo"
-            );
-
-        }else{
-
-            cameraStatus.textContent =
-                "FOTO";
-
-            videoToggle.textContent =
-                "🎥";
-
-            showToast(
-                "Modo foto"
-            );
-
-        }
-
-    };
-
-
-/* =========================================================
-   CAPTURE
-========================================================= */
-
-captureButton.onclick =
-    async () => {
-
-        if(cameraMode === "video"){
-
-            if(recording){
-
-                stopRecording();
-
-            }else{
-
-                startRecording();
-
-            }
-
-            return;
-
-        }
-
-        await capturePhoto();
-
-    };
-
-
-/* =========================================================
-   CAPTURE PHOTO
-========================================================= */
-
-async function capturePhoto(){
-
-    if(!cameraVideo.videoWidth){
-
-        showToast(
-            "Câmera ainda não está pronta"
-        );
-
-        return;
-
-    }
-
-    const canvas =
-        document.createElement(
-            "canvas"
-        );
-
-    canvas.width =
-        cameraVideo.videoWidth;
-
-    canvas.height =
-        cameraVideo.videoHeight;
-
-    const ctx =
-        canvas.getContext(
-            "2d"
-        );
-
-    ctx.filter =
-        filterMap[
-            selectedFilter
-        ] || "none";
-
-    const zoom =
-        zoomLevel;
-
-    const width =
-        canvas.width * zoom;
-
-    const height =
-        canvas.height * zoom;
-
-    const x =
-        (
-            canvas.width -
-            width
-        ) / 2;
-
-    const y =
-        (
-            canvas.height -
-            height
-        ) / 2;
-
-    ctx.drawImage(
-        cameraVideo,
-        x,
-        y,
-        width,
-        height
-    );
-
-
-    let is3D =
-        selectedFilter === "3d";
-
-
-    if(is3D){
-
-        const image =
-            createAnaglyph(
-                canvas
-            );
-
-        await savePhoto(
-            image,
-            true
-        );
-
-        showToast(
-            "🥽 Foto 3D salva"
-        );
-
-        return;
-
-    }
-
-
-    canvas.toBlob(
-        async blob => {
-
-            await savePhoto(
-                blob,
-                false
-            );
-
-            showToast(
-                "📸 Foto salva na Galeria"
-            );
-
-        },
-        "image/jpeg",
-        .95
-    );
-
-}
-
-
-/* =========================================================
-   ANAGLYPH
-========================================================= */
-
-function createAnaglyph(
-    sourceCanvas
-){
-
-    const output =
-        document.createElement(
-            "canvas"
-        );
-
-    output.width =
-        sourceCanvas.width;
-
-    output.height =
-        sourceCanvas.height;
-
-    const ctx =
-        output.getContext(
-            "2d"
-        );
-
-    ctx.drawImage(
-        sourceCanvas,
-        0,
-        0
-    );
-
-    const base =
-        ctx.getImageData(
-            0,
-            0,
-            output.width,
-            output.height
-        );
-
-    const src =
-        base.data;
-
-    const result =
-        new Uint8ClampedArray(
-            src
-        );
-
-    const shift =
-        Math.max(
-            2,
-            Math.round(
-                output.width * .003
-            )
-        );
-
-
-    for(
-        let y=0;
-        y<output.height;
-        y++
-    ){
-
-        for(
-            let x=0;
-            x<output.width;
-            x++
-        ){
-
-            const index =
-                (
-                    y *
-                    output.width +
-                    x
-                ) * 4;
-
-            const leftX =
-                Math.max(
-                    0,
-                    x-shift
-                );
-
-            const rightX =
-                Math.min(
-                    output.width-1,
-                    x+shift
-                );
-
-            const leftIndex =
-                (
-                    y *
-                    output.width +
-                    leftX
-                ) * 4;
-
-            const rightIndex =
-                (
-                    y *
-                    output.width +
-                    rightX
-                ) * 4;
-
-            result[index] =
-                src[leftIndex];
-
-            result[index+1] =
-                src[index+1];
-
-            result[index+2] =
-                src[rightIndex+2];
-
-            result[index+3] =
-                255;
-
-        }
-
-    }
-
-    const imageData =
-        new ImageData(
-            result,
-            output.width,
-            output.height
-        );
-
-    ctx.putImageData(
-        imageData,
-        0,
-        0
-    );
-
+/* =====================================================
+   FILTROS DA CÂMERA
+===================================================== */
+const filters = [
+["normal","NORMAL"],
+["night","NOTURNO"],
+["nightgreen","NIGHT VISION"],
+["nightred","RED NIGHT"],
+["infrared","IR SIMULADO"],
+["thermal","TÉRMICO"],
+["noir","NOIR"],
+["cinema","CINEMA"],
+["vivid","VIVID"],
+["negative","NEGATIVO"],
+["kodak","KODAK"],
+["kodakgold","KODAK GOLD"],
+["portra","PORTRA"],
+["fuji","FUJI"],
+["velvia","VELVIA"],
+["cinestill","CINESTILL"],
+["teal","TEAL ORANGE"],
+["bleach","BLEACH BYPASS"],
+["cross","CROSS PROCESS"],
+["vintage","VINTAGE"],
+["retro","RETRO"],
+["dream","DREAM"],
+["matte","MATTE"],
+["faded","FADED"],
+["warm","WARM"],
+["cold","COLD"],
+["sunset","SUNSET"],
+["golden","GOLDEN HOUR"],
+["moon","MOONLIGHT"],
+["neon","NEON"],
+["cyber","CYBERPUNK"],
+["matrix","MATRIX"],
+["documentary","DOCUMENTARY"],
+["street","STREET"],
+["fashion","FASHION"],
+["portrait","PORTRAIT"],
+["softskin","SOFT SKIN"],
+["vhs","VHS"],
+["analog","ANALOG"],
+["monochrome","MONOCHROME"],
+["sepia","SEPIA"],
+["arctic","ARCTIC"],
+["desert","DESERT"],
+["fire","FIRE"],
+["ocean","OCEAN"],
+["emerald","EMERALD"],
+["ruby","RUBY"],
+["sapphire","SAPPHIRE"],
+["purple","PURPLE"],
+["amber","AMBER"],
+["silver","SILVER"],
+["platinum","PLATINUM"],
+["copper","COPPER"],
+["rose","ROSE"],
+["lavender","LAVENDER"],
+["mint","MINT"],
+["crystal","CRYSTAL"],
+["storm","STORM"],
+["rain","RAIN"],
+["fog","FOG"],
+["mist","MIST"],
+["shadow","SHADOW"],
+["highkey","HIGH KEY"],
+["lowkey","LOW KEY"],
+["urban","URBAN"],
+["grunge","GRUNGE"],
+["luxury","LUXURY"],
+["classic","CLASSIC"],
+["editorial","EDITORIAL"],
+["sports","SPORTS"],
+["action","ACTION"],
+["travel","TRAVEL"],
+["food","FOOD"],
+["nature","NATURE"],
+["architecture","ARCHITECTURE"],
+["sunrise","SUNRISE"],
+["twilight","TWILIGHT"],
+["deepblue","DEEP BLUE"],
+["finalcut","FINAL CUT"]
+];
+/* =====================================================
+   BANCO LOCAL
+===================================================== */
+const DB_NAME =
+"RenatoVisionGallery";
+const DB_VERSION = 1;
+const STORE = "media";
+let db = null;
+/* =====================================================
+   INDEXED DB
+===================================================== */
+function openDB(){
     return new Promise(
-        resolve => {
-
-            output.toBlob(
-                blob =>
-                    resolve(blob),
-                "image/jpeg",
-                .95
+        (resolve,reject)=>{
+            const request =
+            indexedDB.open(
+                DB_NAME,
+                DB_VERSION
             );
-
-        }
-    );
-
-}
-
-
-/* =========================================================
-   SAVE PHOTO
-========================================================= */
-
-async function savePhoto(
-    blob,
-    is3D
-){
-
-    await saveMedia({
-
-        id:
-            Date.now()
-            +
-            Math.random(),
-
-        blob,
-
-        type:"photo",
-
-        is3D,
-
-        favorite:false,
-
-        created:
-            Date.now()
-
-    });
-
-}
-
-
-/* =========================================================
-   RECORD VIDEO
-========================================================= */
-
-function startRecording(){
-
-    if(
-        !stream ||
-        typeof MediaRecorder ===
-        "undefined"
-    ){
-
-        showToast(
-            "Gravação não disponível"
-        );
-
-        return;
-
-    }
-
-    try{
-
-        recorder =
-            new MediaRecorder(
-                stream
-            );
-
-        chunks = [];
-
-        recorder.ondataavailable =
+            request.onupgradeneeded =
             event => {
-
+                const database =
+                event.target.result;
                 if(
-                    event.data.size
+                    !database.objectStoreNames
+                    .contains(STORE)
                 ){
-
-                    chunks.push(
-                        event.data
-                    );
-
-                }
-
-            };
-
-        recorder.onstop =
-            async () => {
-
-                const blob =
-                    new Blob(
-                        chunks,
+                    database.createObjectStore(
+                        STORE,
                         {
-                            type:
-                                recorder.mimeType
-                                ||
-                                "video/webm"
+                            keyPath:"id"
                         }
                     );
-
-                await saveMedia({
-
-                    id:
-                        Date.now()
-                        +
-                        Math.random(),
-
-                    blob,
-
-                    type:"video",
-
-                    is3D:
-                        selectedFilter === "3d",
-
-                    favorite:false,
-
-                    created:
-                        Date.now()
-
-                });
-
-                showToast(
-                    "🎥 Vídeo salvo na Galeria"
-                );
-
-            };
-
-        recorder.start();
-
-        recording =
-            true;
-
-        cameraScreen.classList.add(
-            "recording"
-        );
-
-        captureButton.classList.add(
-            "recording"
-        );
-
-        cameraStatus.textContent =
-            "● REC";
-
-        showToast(
-            "🔴 Gravando"
-        );
-
-    }catch(error){
-
-        console.error(
-            error
-        );
-
-        showToast(
-            "Erro ao gravar"
-        );
-
-    }
-
-}
-
-
-/* =========================================================
-   STOP RECORDING
-========================================================= */
-
-function stopRecording(){
-
-    if(
-        recorder &&
-        recorder.state !==
-        "inactive"
-    ){
-
-        recorder.stop();
-
-    }
-
-    recording =
-        false;
-
-    cameraScreen.classList.remove(
-        "recording"
-    );
-
-    captureButton.classList.remove(
-        "recording"
-    );
-
-    cameraStatus.textContent =
-        "VÍDEO";
-
-}
-
-
-/* =========================================================
-   GALLERY
-========================================================= */
-
-$("galleryButton").onclick =
-    openGallery;
-
-$("seeAll").onclick =
-    openGallery;
-
-
-async function openGallery(){
-
-    galleryScreen.classList.add(
-        "open"
-    );
-
-    await renderGallery();
-
-}
-
-
-$("galleryClose").onclick =
-    () => {
-
-        galleryScreen.classList.remove(
-            "open"
-        );
-
-    };
-
-
-/* =========================================================
-   IMPORT
-========================================================= */
-
-$("importButton").onclick =
-    () =>
-        fileInput.click();
-
-
-fileInput.onchange =
-    async event => {
-
-        const files =
-            Array.from(
-                event.target.files
-            );
-
-        for(
-            const file
-            of files
-        ){
-
-            const type =
-                file.type.startsWith(
-                    "video/"
-                )
-                ?
-                "video"
-                :
-                "photo";
-
-            await saveMedia({
-
-                id:
-                    Date.now()
-                    +
-                    Math.random(),
-
-                blob:file,
-
-                type,
-
-                is3D:false,
-
-                favorite:false,
-
-                created:
-                    Date.now()
-
-            });
-
-        }
-
-        fileInput.value =
-            "";
-
-        await renderGallery();
-
-        showToast(
-            files.length +
-            " arquivo(s) importado(s)"
-        );
-
-    };
-
-
-/* =========================================================
-   GALLERY FILTER
-========================================================= */
-
-document
-.querySelectorAll(
-    "[data-gallery-filter]"
-)
-.forEach(
-    button => {
-
-        button.onclick =
-            async () => {
-
-                galleryFilter =
-                    button.dataset.galleryFilter;
-
-                document
-                    .querySelectorAll(
-                        ".galleryTab"
-                    )
-                    .forEach(
-                        b =>
-                            b.classList.remove(
-                                "active"
-                            )
-                    );
-
-                button.classList.add(
-                    "active"
-                );
-
-                await renderGallery();
-
-            };
-
-    }
-);
-
-
-/* =========================================================
-   RENDER GALLERY
-========================================================= */
-
-async function renderGallery(){
-
-    mediaGrid.innerHTML =
-        "";
-
-    let items =
-        await getAllMedia();
-
-    if(
-        galleryFilter ===
-        "photo"
-    ){
-
-        items =
-            items.filter(
-                item =>
-                    item.type ===
-                    "photo"
-            );
-
-    }
-
-    if(
-        galleryFilter ===
-        "video"
-    ){
-
-        items =
-            items.filter(
-                item =>
-                    item.type ===
-                    "video"
-            );
-
-    }
-
-    if(
-        galleryFilter ===
-        "3d"
-    ){
-
-        items =
-            items.filter(
-                item =>
-                    item.is3D
-            );
-
-    }
-
-
-    if(
-        items.length ===
-        0
-    ){
-
-        mediaGrid.innerHTML =
-
-            `
-            <div style="
-                grid-column:1/-1;
-                padding:70px 20px;
-                text-align:center;
-                color:#7f8ca1;
-                font-size:12px;
-            ">
-
-                🖼️<br><br>
-
-                Sua galeria está vazia.
-
-                <br><br>
-
-                Toque em + para
-                trazer fotos ou vídeos
-                do iPhone.
-
-            </div>
-            `;
-
-        return;
-
-    }
-
-
-    items.forEach(
-        item => {
-
-            const element =
-                document.createElement(
-                    "div"
-                );
-
-            element.className =
-                "mediaItem";
-
-            const url =
-                URL.createObjectURL(
-                    item.blob
-                );
-
-            let media;
-
-            if(
-                item.type ===
-                "video"
-            ){
-
-                media =
-                    document.createElement(
-                        "video"
-                    );
-
-                media.muted =
-                    true;
-
-                media.playsInline =
-                    true;
-
-            }else{
-
-                media =
-                    document.createElement(
-                        "img"
-                    );
-
-            }
-
-            media.src =
-                url;
-
-            element.appendChild(
-                media
-            );
-
-
-            const badge =
-                document.createElement(
-                    "div"
-                );
-
-            badge.className =
-                "mediaBadge";
-
-            badge.textContent =
-                item.is3D
-                ?
-                "3D"
-                :
-                item.type ===
-                "video"
-                ?
-                "VÍDEO"
-                :
-                "FOTO";
-
-            element.appendChild(
-                badge
-            );
-
-
-            const deleteButton =
-                document.createElement(
-                    "button"
-                );
-
-            deleteButton.className =
-                "mediaDelete";
-
-            deleteButton.textContent =
-                "×";
-
-            deleteButton.onclick =
-                async event => {
-
-                    event.stopPropagation();
-
-                    await deleteMedia(
-                        item.id
-                    );
-
-                    URL.revokeObjectURL(
-                        url
-                    );
-
-                    await renderGallery();
-
-                };
-
-            element.appendChild(
-                deleteButton
-            );
-
-
-            element.onclick =
-                () => {
-
-                    if(
-                        item.type ===
-                        "photo"
-                    ){
-
-                        open3DViewer(
-                            url,
-                            item.is3D
-                        );
-
-                    }else{
-
-                        const video =
-                            document.createElement(
-                                "video"
-                            );
-
-                        video.src =
-                            url;
-
-                        video.controls =
-                            true;
-
-                        video.autoplay =
-                            true;
-
-                        video.playsInline =
-                            true;
-
-                        video.style.position =
-                            "fixed";
-
-                        video.style.inset =
-                            "0";
-
-                        video.style.width =
-                            "100%";
-
-                        video.style.height =
-                            "100%";
-
-                        video.style.objectFit =
-                            "contain";
-
-                        video.style.background =
-                            "#000";
-
-                        video.style.zIndex =
-                            "4000";
-
-                        document.body.appendChild(
-                            video
-                        );
-
-                        video.onclick =
-                            () => {
-
-                                video.remove();
-
-                                URL.revokeObjectURL(
-                                    url
-                                );
-
-                            };
-
-                    }
-
-                };
-
-
-            mediaGrid.appendChild(
-                element
-            );
-
-        }
-    );
-
-}
-
-
-/* =========================================================
-   3D VIEWER
-========================================================= */
-
-function open3DViewer(
-    url,
-    is3D
-){
-
-    currentViewerURL =
-        url;
-
-    viewerImage.src =
-        url;
-
-    viewer3D.classList.add(
-        "open"
-    );
-
-    if(is3D){
-
-        viewerImage.style.filter =
-            `
-            drop-shadow(
-                -6px 0
-                rgba(255,0,0,.65)
-            )
-            drop-shadow(
-                6px 0
-                rgba(0,255,255,.65)
-            )
-            `;
-
-    }else{
-
-        viewerImage.style.filter =
-            "none";
-
-    }
-
-}
-
-
-$("viewerClose").onclick =
-    () => {
-
-        viewer3D.classList.remove(
-            "open"
-        );
-
-        viewerImage.src =
-            "";
-
-    };
-
-
-$("anaglyphButton").onclick =
-    () => {
-
-        viewerImage.style.filter =
-            `
-            drop-shadow(
-                -7px 0
-                rgba(255,0,0,.7)
-            )
-            drop-shadow(
-                7px 0
-                rgba(0,255,255,.7)
-            )
-            `;
-
-    };
-
-
-$("normal3DButton").onclick =
-    () => {
-
-        viewerImage.style.filter =
-            `
-            drop-shadow(
-                -4px 0
-                rgba(0,90,255,.45)
-            )
-            drop-shadow(
-                4px 0
-                rgba(0,220,255,.45)
-            )
-            `;
-
-    };
-
-
-$("depthButton").onclick =
-    () => {
-
-        viewerImage.style.transform =
-            "perspective(800px) rotateY(-5deg) scale(1.03)";
-
-        setTimeout(
-            () => {
-
-                viewerImage.style.transform =
-                    "none";
-
-            },
-            700
-        );
-
-    };
-
-
-/* =========================================================
-   MODE 3D
-========================================================= */
-
-$("mode3DButton").onclick =
-    () => {
-
-        cameraMode =
-            "photo";
-
-        selectedFilter =
-            "3d";
-
-        cameraScreen.classList.add(
-            "open"
-        );
-
-        startCamera();
-
-        document
-            .querySelectorAll(
-                ".tool"
-            )
-            .forEach(
-                button => {
-
-                    button.classList.toggle(
-                        "active",
-                        button.dataset.filter ===
-                        "3d"
-                    );
-
                 }
+            };
+            request.onsuccess =
+            event => {
+                db =
+                event.target.result;
+                resolve(db);
+            };
+            request.onerror =
+            () =>
+            reject(
+                request.error
             );
-
-    };
-
-
-/* =========================================================
-   NIGHT
-========================================================= */
-
-$("nightButton").onclick =
-    () => {
-
-        nightMode =
-            !nightMode;
-
-        if(cameraScreen.classList.contains("open")){
-
-            updateCameraFilter();
-
         }
-
-        showToast(
-            nightMode
-            ?
-            "🌙 Modo noturno ativado"
-            :
-            "☀️ Modo noturno desativado"
-        );
-
-    };
-
-
-$("featureNight").onclick =
-    () =>
-        $("nightButton").click();
-
-
-/* =========================================================
-   FILTERS
-========================================================= */
-
-$("filtersButton").onclick =
-    () => {
-
-        cameraMode =
-            "photo";
-
-        cameraScreen.classList.add(
-            "open"
-        );
-
-        startCamera();
-
-        showToast(
-            "Deslize os filtros para escolher"
-        );
-
-    };
-
-
-/* =========================================================
-   FEATURE 3D
-========================================================= */
-
-$("feature3D").onclick =
-    () =>
-        $("mode3DButton").click();
-
-
-$("featureVideo").onclick =
-    () => {
-
-        cameraMode =
-            "video";
-
-        cameraScreen.classList.add(
-            "open"
-        );
-
-        startCamera();
-
-    };
-
-
-/* =========================================================
-   SUPER ZOOM
-========================================================= */
-
-cameraScreen.addEventListener(
-    "wheel",
-    event => {
-
-        event.preventDefault();
-
-        zoomLevel +=
-            event.deltaY < 0
-            ?
-            .15
-            :
-            -.15;
-
-        zoomLevel =
-            Math.max(
-                1,
-                Math.min(
-                    8,
-                    zoomLevel
-                )
-            );
-
-        cameraVideo.style.transform =
-            `scale(${zoomLevel})`;
-
-    },
-    {
-        passive:false
-    }
-);
-
-
-/* =========================================================
-   PINCH ZOOM
-========================================================= */
-
-let pinchStart =
-    0;
-
-let pinchZoom =
-    1;
-
-
-cameraScreen.addEventListener(
-    "touchstart",
-    event => {
-
-        if(
-            event.touches.length === 2
-        ){
-
-            const dx =
-                event.touches[0].clientX -
-                event.touches[1].clientX;
-
-            const dy =
-                event.touches[0].clientY -
-                event.touches[1].clientY;
-
-            pinchStart =
-                Math.hypot(
-                    dx,
-                    dy
-                );
-
-            pinchZoom =
-                zoomLevel;
-
-        }
-
-    },
-    {
-        passive:true
-    }
-);
-
-
-cameraScreen.addEventListener(
-    "touchmove",
-    event => {
-
-        if(
-            event.touches.length !== 2
-        ){
-
-            return;
-
-        }
-
-        const dx =
-            event.touches[0].clientX -
-            event.touches[1].clientX;
-
-        const dy =
-            event.touches[0].clientY -
-            event.touches[1].clientY;
-
-        const distance =
-            Math.hypot(
-                dx,
-                dy
-            );
-
-        if(!pinchStart){
-            return;
-        }
-
-        zoomLevel =
-            pinchZoom *
-            (
-                distance /
-                pinchStart
-            );
-
-        zoomLevel =
-            Math.max(
-                1,
-                Math.min(
-                    8,
-                    zoomLevel
-                )
-            );
-
-        cameraVideo.style.transform =
-            `scale(${zoomLevel})`;
-
-    },
-    {
-        passive:true
-    }
-);
-
-
-/* =========================================================
-   SWIPE FILTERS
-========================================================= */
-
-let touchStartX =
-    0;
-
-
-cameraScreen.addEventListener(
-    "touchstart",
-    event => {
-
-        if(
-            event.touches.length === 1
-        ){
-
-            touchStartX =
-                event.touches[0].clientX;
-
-        }
-
-    },
-    {
-        passive:true
-    }
-);
-
-
-cameraScreen.addEventListener(
-    "touchend",
-    event => {
-
-        const endX =
-            event.changedTouches[0].clientX;
-
-        const difference =
-            endX -
-            touchStartX;
-
-        if(
-            Math.abs(difference)
-            < 50
-        ){
-
-            return;
-
-        }
-
-        const buttons =
-            Array.from(
-                document.querySelectorAll(
-                    ".tool"
-                )
-            );
-
-        let index =
-            buttons.findIndex(
-                button =>
-                    button.dataset.filter ===
-                    selectedFilter
-            );
-
-        if(index < 0){
-            index = 0;
-        }
-
-        if(difference < 0){
-
-            index =
-                Math.min(
-                    buttons.length-1,
-                    index+1
-                );
-
-        }else{
-
-            index =
-                Math.max(
-                    0,
-                    index-1
-                );
-
-        }
-
-        buttons[index].click();
-
-    },
-    {
-        passive:true
-    }
-);
-
-
-/* =========================================================
-   PERMISSIONS
-========================================================= */
-
-$("permissionButton").onclick =
-    async () => {
-
-        try{
-
-            const media =
-                await navigator
-                    .mediaDevices
-                    .getUserMedia({
-
-                        video:true,
-                        audio:true
-
-                    });
-
-            media
-                .getTracks()
-                .forEach(
-                    track =>
-                        track.stop()
-                );
-
-            showToast(
-                "✓ Câmera e microfone autorizados"
-            );
-
-        }catch(error){
-
-            showToast(
-                "Permissão não concedida"
-            );
-
-        }
-
-    };
-
-
-/* =========================================================
-   CLEAR GALLERY
-========================================================= */
-
-$("clearGallery").onclick =
-    async () => {
-
-        if(
-            !confirm(
-                "Apagar toda a galeria local?"
-            )
-        ){
-
-            return;
-
-        }
-
-        const transaction =
+    );
+}
+/* =====================================================
+   SALVAR
+===================================================== */
+function saveMedia(
+    blob,
+    type
+){
+    return new Promise(
+        (resolve,reject)=>{
+            const transaction =
             db.transaction(
                 STORE,
                 "readwrite"
             );
-
-        transaction
+            transaction
             .objectStore(STORE)
-            .clear();
-
-        transaction.oncomplete =
+            .put({
+                id:
+                Date.now()
+                +
+                Math.random(),
+                blob:blob,
+                type:type,
+                theme:currentTheme,
+                filter:currentFilter,
+                date:
+                new Date()
+                .toISOString()
+            });
+            transaction.oncomplete =
+            resolve;
+            transaction.onerror =
+            () =>
+            reject(
+                transaction.error
+            );
+        }
+    );
+}
+/* =====================================================
+   LISTAR
+===================================================== */
+function getMedia(){
+    return new Promise(
+        (resolve,reject)=>{
+            const transaction =
+            db.transaction(
+                STORE,
+                "readonly"
+            );
+            const request =
+            transaction
+            .objectStore(STORE)
+            .getAll();
+            request.onsuccess =
             () => {
-
-                showToast(
-                    "Galeria limpa"
+                const data =
+                request.result || [];
+                data.sort(
+                    (a,b) =>
+                    b.id-a.id
                 );
-
-                closeSheets();
-
+                resolve(data);
             };
-
-    };
-
-
-/* =========================================================
-   PREMIUM
-========================================================= */
-
-$("premiumButton").onclick =
-    () => {
-
-        showToast(
-            "✨ Recursos Premium disponíveis neste aplicativo"
+            request.onerror =
+            () =>
+            reject(
+                request.error
+            );
+        }
+    );
+}
+/* =====================================================
+   DELETE
+===================================================== */
+function deleteMedia(id){
+    return new Promise(
+        (resolve,reject)=>{
+            const transaction =
+            db.transaction(
+                STORE,
+                "readwrite"
+            );
+            transaction
+            .objectStore(STORE)
+            .delete(id);
+            transaction.oncomplete =
+            resolve;
+            transaction.onerror =
+            () =>
+            reject(
+                transaction.error
+            );
+        }
+    );
+}
+/* =====================================================
+   TOAST
+===================================================== */
+let toastTimer;
+function showToast(text){
+    clearTimeout(
+        toastTimer
+    );
+    toast.textContent =
+    text;
+    toast.classList.add(
+        "show"
+    );
+    toastTimer =
+    setTimeout(
+        () =>
+        toast.classList.remove(
+            "show"
+        ),
+        2200
+    );
+}
+/* =====================================================
+   MENU
+===================================================== */
+menuButton.onclick =
+() => {
+    mainPanel.classList.add(
+        "open"
+    );
+};
+closeMenu.onclick =
+() => {
+    mainPanel.classList.remove(
+        "open"
+    );
+};
+/* =====================================================
+   TEMAS
+===================================================== */
+themeSelector.onclick =
+() => {
+    mainPanel.classList.remove(
+        "open"
+    );
+    filterPanel.classList.remove(
+        "open"
+    );
+    themePanel.classList.add(
+        "open"
+    );
+};
+closeThemes.onclick =
+() => {
+    themePanel.classList.remove(
+        "open"
+    );
+};
+/* =====================================================
+   FILTROS
+===================================================== */
+filterSelector.onclick =
+() => {
+    mainPanel.classList.remove(
+        "open"
+    );
+    themePanel.classList.remove(
+        "open"
+    );
+    filterPanel.classList.add(
+        "open"
+    );
+};
+closeFilters.onclick =
+() => {
+    filterPanel.classList.remove(
+        "open"
+    );
+};
+/* =====================================================
+   CRIAR TEMAS
+===================================================== */
+themes.forEach(
+    theme => {
+        const button =
+        document.createElement(
+            "button"
         );
-
+        button.className =
+        "option";
+        button.textContent =
+        theme[1];
+        button.dataset.theme =
+        theme[0];
+        button.onclick =
+        () => {
+            setAppTheme(
+                theme[0]
+            );
+            themePanel.classList.remove(
+                "open"
+            );
+        };
+        themeGrid.appendChild(
+            button
+        );
+    }
+);
+/* =====================================================
+   CRIAR FILTROS
+===================================================== */
+filters.forEach(
+    filter => {
+        const button =
+        document.createElement(
+            "button"
+        );
+        button.className =
+        "option";
+        button.textContent =
+        filter[1];
+        button.dataset.filter =
+        filter[0];
+        button.onclick =
+        () => {
+            setCameraFilter(
+                filter[0]
+            );
+            filterPanel.classList.remove(
+                "open"
+            );
+        };
+        filterGrid.appendChild(
+            button
+        );
+    }
+);
+/* =====================================================
+   TEMA DO APLICATIVO
+===================================================== */
+function setAppTheme(
+    name
+){
+    currentTheme =
+    name;
+    document.body.className =
+    "";
+    document.body.classList.add(
+        "theme-" + name
+    );
+    document
+    .querySelectorAll(
+        "[data-theme]"
+    )
+    .forEach(
+        button => {
+            button.classList.toggle(
+                "active",
+                button.dataset.theme
+                ===
+                name
+            );
+        }
+    );
+    showToast(
+        "🎨 Tema aplicado"
+    );
+}
+/* =====================================================
+   FILTRO DA CÂMERA
+===================================================== */
+function setCameraFilter(
+    name
+){
+    currentFilter =
+    name;
+    const found =
+    filters.find(
+        item =>
+        item[0] === name
+    );
+    modeLabel.textContent =
+    found
+    ?
+    found[1]
+    :
+    "NORMAL";
+    document
+    .querySelectorAll(
+        "[data-filter]"
+    )
+    .forEach(
+        button => {
+            button.classList.toggle(
+                "active",
+                button.dataset.filter
+                ===
+                name
+            );
+        }
+    );
+    updateLive();
+    showToast(
+        "🎞️ Filtro: "
+        +
+        (
+            found
+            ?
+            found[1]
+            :
+            name
+        )
+    );
+}
+/* =====================================================
+   FILTROS DA CÂMERA
+===================================================== */
+function filterForCamera(){
+    let filter =
+    `
+    brightness(${brightness.value})
+    contrast(${contrast.value})
+    saturate(${saturation.value})
+    `;
+    const map = {
+        night:
+        "brightness(.72) contrast(1.45) saturate(.75)",
+        nightgreen:
+        "brightness(.65) contrast(1.6) grayscale(.35) sepia(1) hue-rotate(55deg) saturate(2.5)",
+        nightred:
+        "brightness(.7) contrast(1.5) grayscale(.45) sepia(1) hue-rotate(325deg) saturate(3)",
+        infrared:
+        "grayscale(.8) sepia(1) hue-rotate(330deg) saturate(3.5) contrast(1.5)",
+        thermal:
+        "saturate(4) contrast(1.8) hue-rotate(275deg)",
+        noir:
+        "grayscale(1) contrast(1.75)",
+        cinema:
+        "contrast(1.2) saturate(.85) brightness(.97)",
+        vivid:
+        "saturate(1.8) contrast(1.18)",
+        negative:
+        "invert(1)",
+        kodak:
+        "contrast(1.12) saturate(1.12) sepia(.08)",
+        kodakgold:
+        "contrast(1.08) saturate(1.3) sepia(.14)",
+        portra:
+        "contrast(.95) saturate(.85) brightness(1.05)",
+        fuji:
+        "contrast(1.05) saturate(.92)",
+        velvia:
+        "contrast(1.2) saturate(1.7)",
+        cinestill:
+        "contrast(1.22) saturate(1.18)",
+        teal:
+        "contrast(1.18) saturate(1.4) hue-rotate(-8deg)",
+        bleach:
+        "grayscale(.35) contrast(1.5) saturate(.55)",
+        cross:
+        "contrast(1.4) saturate(1.55) hue-rotate(8deg)",
+        vintage:
+        "sepia(.3) saturate(.8) contrast(1.05)",
+        retro:
+        "sepia(.18) saturate(1.2) contrast(1.1)",
+        dream:
+        "brightness(1.08) contrast(.86) saturate(1.08)",
+        matte:
+        "contrast(.88) brightness(1.05) saturate(.85)",
+        faded:
+        "contrast(.8) saturate(.7) brightness(1.08)",
+        warm:
+        "sepia(.18) saturate(1.18)",
+        cold:
+        "saturate(.8) hue-rotate(165deg) contrast(1.1)",
+        sunset:
+        "sepia(.2) saturate(1.45) hue-rotate(-8deg)",
+        golden:
+        "sepia(.16) saturate(1.3) brightness(1.05)",
+        moon:
+        "saturate(.55) hue-rotate(170deg) brightness(.84)",
+        neon:
+        "saturate(2.2) contrast(1.4)",
+        cyber:
+        "saturate(1.9) contrast(1.35) hue-rotate(160deg)",
+        matrix:
+        "grayscale(.5) sepia(1) hue-rotate(60deg) saturate(3)",
+        documentary:
+        "contrast(1.18) saturate(.85)",
+        street:
+        "contrast(1.3) saturate(.9)",
+        fashion:
+        "contrast(1.2) saturate(1.15)",
+        portrait:
+        "contrast(.95) saturate(.92) brightness(1.04)",
+        softskin:
+        "contrast(.9) saturate(.85) brightness(1.06)",
+        vhs:
+        "contrast(1.15) saturate(.8) sepia(.12)",
+        analog:
+        "contrast(1.05) saturate(.9) sepia(.12)",
+        monochrome:
+        "grayscale(1) contrast(1.15)",
+        sepia:
+        "sepia(.9) saturate(.85)",
+        arctic:
+        "saturate(.65) hue-rotate(155deg)",
+        desert:
+        "sepia(.32) saturate(1.25)",
+        fire:
+        "saturate(1.8) sepia(.3)",
+        ocean:
+        "saturate(1.15) hue-rotate(145deg)",
+        emerald:
+        "saturate(1.6) hue-rotate(75deg)",
+        ruby:
+        "saturate(1.8) hue-rotate(325deg)",
+        sapphire:
+        "saturate(1.5) hue-rotate(185deg)",
+        purple:
+        "saturate(1.5) hue-rotate(280deg)",
+        amber:
+        "sepia(.25) saturate(1.5)",
+        silver:
+        "grayscale(.7) contrast(1.2)",
+        platinum:
+        "grayscale(.5) contrast(1.3)",
+        copper:
+        "sepia(.3) saturate(1.35)",
+        rose:
+        "saturate(1.2) hue-rotate(320deg)",
+        lavender:
+        "saturate(.9) hue-rotate(270deg)",
+        mint:
+        "saturate(1.2) hue-rotate(100deg)",
+        crystal:
+        "contrast(1.25) saturate(.9) brightness(1.05)",
+        storm:
+        "grayscale(.3) contrast(1.5) saturate(.7)",
+        rain:
+        "saturate(.7) contrast(1.25)",
+        fog:
+        "contrast(.8) brightness(1.1) saturate(.7)",
+        mist:
+        "contrast(.85) brightness(1.08)",
+        shadow:
+        "contrast(1.6) brightness(.85)",
+        highkey:
+        "brightness(1.25) contrast(.9)",
+        lowkey:
+        "brightness(.75) contrast(1.4)",
+        urban:
+        "contrast(1.3) saturate(.85)",
+        grunge:
+        "contrast(1.45) saturate(.7)",
+        luxury:
+        "contrast(1.18) saturate(1.12) brightness(1.03)",
+        classic:
+        "contrast(1.08) saturate(.95)",
+        editorial:
+        "contrast(1.22) saturate(.9)",
+        sports:
+        "contrast(1.35) saturate(1.3)",
+        action:
+        "contrast(1.4) saturate(1.15)",
+        travel:
+        "saturate(1.25) contrast(1.08)",
+        food:
+        "saturate(1.45) contrast(1.08)",
+        nature:
+        "saturate(1.4) contrast(1.1)",
+        architecture:
+        "contrast(1.4) saturate(.8)",
+        sunrise:
+        "sepia(.15) saturate(1.3) brightness(1.05)",
+        twilight:
+        "saturate(.75) hue-rotate(185deg) brightness(.9)",
+        deepblue:
+        "saturate(1.2) hue-rotate(180deg) contrast(1.2)",
+        finalcut:
+        "contrast(1.2) saturate(1.08)"
     };
-
-
-/* =========================================================
-   START
-========================================================= */
-
-async function init(){
-
+    if(
+        map[currentFilter]
+    ){
+        filter +=
+        map[currentFilter];
+    }
+    if(
+        nightEnabled
+    ){
+        filter +=
+        " brightness(.9) contrast(1.35)";
+    }
+    return filter;
+}
+/* =====================================================
+   CÂMERA AO VIVO
+===================================================== */
+function updateLive(){
+    video.style.filter =
+    filterForCamera();
+    video.style.transform =
+    `scale(${zoom.value})`;
+}
+/* =====================================================
+   CONTROLES
+===================================================== */
+function updateValues(){
+    document.getElementById(
+        "brightnessValue"
+    ).textContent =
+    Number(
+        brightness.value
+    ).toFixed(2);
+    document.getElementById(
+        "contrastValue"
+    ).textContent =
+    Number(
+        contrast.value
+    ).toFixed(2);
+    document.getElementById(
+        "saturationValue"
+    ).textContent =
+    Number(
+        saturation.value
+    ).toFixed(2);
+    document.getElementById(
+        "zoomValue"
+    ).textContent =
+    Number(
+        zoom.value
+    ).toFixed(2)
+    +
+    "x";
+    updateLive();
+}
+[
+    brightness,
+    contrast,
+    saturation,
+    zoom
+]
+.forEach(
+    element =>
+    element.addEventListener(
+        "input",
+        updateValues
+    )
+);
+/* =====================================================
+   AI
+===================================================== */
+aiButton.onclick =
+() => {
+    aiEnabled =
+    !aiEnabled;
+    aiButton.classList.toggle(
+        "active",
+        aiEnabled
+    );
+    showToast(
+        aiEnabled
+        ?
+        "🧠 AI ativada"
+        :
+        "🧠 AI desativada"
+    );
+};
+/* =====================================================
+   NOTURNO
+===================================================== */
+nightButton.onclick =
+() => {
+    nightEnabled =
+    !nightEnabled;
+    nightButton.classList.toggle(
+        "active",
+        nightEnabled
+    );
+    if(
+        nightEnabled
+    ){
+        setCameraFilter(
+            "night"
+        );
+    }
+    updateLive();
+};
+/* =====================================================
+   CAMERA
+===================================================== */
+async function startCamera(){
     try{
-
-        await openDB();
-
+        if(stream){
+            stream
+            .getTracks()
+            .forEach(
+                track =>
+                track.stop()
+            );
+        }
+        const selectedFPS =
+        Number(
+            document.getElementById(
+                "fps"
+            ).value
+        );
+        stream =
+        await navigator
+        .mediaDevices
+        .getUserMedia({
+            video:{
+                facingMode:
+                facing,
+                width:{
+                    ideal:3840
+                },
+                height:{
+                    ideal:2160
+                },
+                frameRate:{
+                    ideal:selectedFPS,
+                    max:selectedFPS
+                }
+            },
+            audio:true
+        });
+        video.srcObject =
+        stream;
+        await video.play();
+        loading.style.display =
+        "none";
+        updateLive();
     }catch(error){
-
         console.error(
             error
         );
-
+        loadingText.textContent =
+        "PERMITA O ACESSO À CÂMERA";
     }
-
-    showToast(
-        "RENATO VISION 3D pronto"
-    );
-
 }
-
-
-init();
-
-</script>
-
-</body>
-</html>
+/* =====================================================
+   TROCAR CAMERA
+===================================================== */
+flip.onclick =
+async () => {
+    if(recordingNow)
+    return;
+    facing =
+    facing ===
+    "environment"
+    ?
+    "user"
+    :
+    "environment";
+    await startCamera();
+};
+/* =====================================================
+   FPS
+===================================================== */
+document
+.getElementById("fps")
+.addEventListener(
+    "change",
+    async () => {
+        if(
+            !recordingNow
+        ){
+            await startCamera();
+        }
+    }
+);
+/* =====================================================
+   FOTO
+===================================================== */
+photo.onclick =
+async () => {
+    if(
+        recordingNow
+    ){
+        stopRecording();
+        return;
+    }
+    mainPanel.classList.remove(
+        "open"
+    );
+    themePanel.classList.remove(
+        "open"
+    );
+    filterPanel.classList.remove(
+        "open"
+    );
+    menuButton.classList.add(
+        "hidden"
+    );
+    showToast(
+        "Processando foto..."
+    );
+    await new Promise(
+        resolve =>
+        requestAnimationFrame(
+            resolve
+        )
+    );
+    try{
+        if(
+            !renderFrame()
+        ){
+            throw new Error(
+                "camera"
+            );
+        }
+        const selected =
+        document.getElementById(
+            "photoQuality"
+        ).value;
+        let output =
+        canvas;
+        if(
+            selected !==
+            "native"
+        ){
+            const parts =
+            selected.split(
+                "x"
+            );
+            const width =
+            Number(
+                parts[0]
+            );
+            const height =
+            Number(
+                parts[1]
+            );
+            try{
+                const big =
+                document.createElement(
+                    "canvas"
+                );
+                big.width =
+                width;
+                big.height =
+                height;
+                const bigCtx =
+                big.getContext(
+                    "2d"
+                );
+                bigCtx.imageSmoothingEnabled =
+                true;
+                bigCtx.imageSmoothingQuality =
+                "high";
+                bigCtx.drawImage(
+                    canvas,
+                    0,
+                    0,
+                    width,
+                    height
+                );
+                output =
+                big;
+            }catch(error){
+                showToast(
+                    "Memória insuficiente"
+                );
+            }
+        }
+        output.toBlob(
+            async blob => {
+                if(!blob){
+                    showToast(
+                        "Erro ao criar foto"
+                    );
+                    menuButton.classList.remove(
+                        "hidden"
+                    );
+                    return;
+                }
+                await saveMedia(
+                    blob,
+                    "photo"
+                );
+                showToast(
+                    "📸 Foto
